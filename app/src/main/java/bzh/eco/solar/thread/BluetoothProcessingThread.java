@@ -60,6 +60,7 @@ public class BluetoothProcessingThread extends Thread {
     public void run() {
         try {
             bluetoothSocket.connect();
+            serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_CONNECTED).sendToTarget();
 
             String charsetName = "US-ASCII";
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charsetName);
@@ -78,7 +79,7 @@ public class BluetoothProcessingThread extends Thread {
                         Log.i(TAG, "offset == FRAME_SIZE");
                         offset = 0;
                         BluetoothFrame bluetoothFrame = processBluetoothFrame(buffer);
-                        serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.BLUETOOTH_FRAME_PROCESSED, bluetoothFrame).sendToTarget();
+                        serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_FRAME_PROCESSED, bluetoothFrame).sendToTarget();
                     } else {
                         Log.e(TAG, "ATTENTION : offset = " + offset + " > FRAME_SIZE");
                     }
@@ -93,6 +94,7 @@ public class BluetoothProcessingThread extends Thread {
             Log.e(TAG, e.toString());
         } finally {
             try {
+                serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_DISCONNECTED).sendToTarget();
                 bluetoothSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, e.toString());

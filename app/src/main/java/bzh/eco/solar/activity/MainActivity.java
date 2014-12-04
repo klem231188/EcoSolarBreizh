@@ -6,10 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,7 +20,6 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
 import bzh.eco.solar.fragment.BluetoothDisplayFragment;
-import bzh.eco.solar.model.BluetoothFrame;
 import bzh.eco.solar.service.BluetoothService;
 
 
@@ -42,8 +38,6 @@ public class MainActivity
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     ViewPager mViewPager;
-
-    BroadcastReceiver mDataUpdateReceiver = new DataUpdateReceiver();
 
     // -------------------------------------------------------------------------------------
     // Section : @Override Method(s)
@@ -86,17 +80,6 @@ public class MainActivity
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-    }
-
-    @Override
-    protected void onResume() {
-        if (mDataUpdateReceiver == null) {
-            mDataUpdateReceiver = new DataUpdateReceiver();
-        }
-        IntentFilter intentFilter = new IntentFilter(BluetoothService.REFRESH_BLUETOOTH_FRAME);
-        registerReceiver(mDataUpdateReceiver, intentFilter);
-
-        super.onResume();
     }
 
     @Override
@@ -190,21 +173,6 @@ public class MainActivity
             }
 
             return null;
-        }
-    }
-
-    private class DataUpdateReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (BluetoothService.REFRESH_BLUETOOTH_FRAME.equals(action)) {
-                BluetoothFrame frame = (BluetoothFrame) intent.getSerializableExtra(BluetoothService.EXTRA_BLUETOOTH_FRAME);
-
-                BluetoothDisplayFragment fragment = (BluetoothDisplayFragment) mSectionsPagerAdapter.getItem(SectionsPagerAdapter.BLUETOOTH_DISPLAY_SECTION);
-                fragment.addFrameToDisplay(frame);
-            }
         }
     }
 }

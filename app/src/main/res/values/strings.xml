@@ -11,5 +11,6 @@
     <string name="loading">Loading...</string>
     <string name="title_bluetooth_connection_section">Connection</string>
     <string name="title_bluetooth_display_section">Display</string>
+    <string name="connected">Connected</string>
 
 </resources>
