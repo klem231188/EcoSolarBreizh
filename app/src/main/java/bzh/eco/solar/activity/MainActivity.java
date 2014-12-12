@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -20,17 +19,13 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
 import bzh.eco.solar.fragment.BluetoothDisplayFragment;
+import bzh.eco.solar.model.BluetoothDeviceWrapper;
 import bzh.eco.solar.service.BluetoothService;
 
 
 public class MainActivity
         extends Activity
         implements ActionBar.TabListener, BluetoothConnectionFragment.BluetoothCallback, BluetoothDisplayFragment.BluetoothCallback {
-
-    // -------------------------------------------------------------------------------------
-    // Section : Static Fields(s)
-    // -------------------------------------------------------------------------------------
-    private static final String TAG = "MainActivity";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
@@ -49,7 +44,9 @@ public class MainActivity
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -115,16 +112,14 @@ public class MainActivity
     }
 
     @Override
-    public void onBluetoothDeviceSelected(BluetoothDevice pairedDevice) {
-        onBluetoothDeviceUnselected();
-
+    public void onBluetoothConnecting(BluetoothDeviceWrapper device) {
         Intent startBluetoothServiceIntent = new Intent(this, BluetoothService.class);
-        startBluetoothServiceIntent.putExtra(BluetoothService.EXTRA_DEVICE, pairedDevice);
+        startBluetoothServiceIntent.putExtra(BluetoothService.EXTRA_DEVICE, device);
         startService(startBluetoothServiceIntent);
     }
 
     @Override
-    public void onBluetoothDeviceUnselected() {
+    public void onBluetoothDisconnecting() {
         Intent stopBluetoothServiceIntent = new Intent(this, BluetoothService.class);
         stopService(stopBluetoothServiceIntent);
     }

@@ -1,6 +1,5 @@
 package bzh.eco.solar.thread;
 
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+import bzh.eco.solar.model.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.BluetoothFrame;
 import bzh.eco.solar.service.BluetoothService;
 
@@ -37,13 +37,16 @@ public class BluetoothProcessingThread extends Thread {
 
     private boolean mStopped;
 
+    private BluetoothDeviceWrapper mDeviceBluetoothWrapper;
+
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
-    public BluetoothProcessingThread(Handler handler, BluetoothDevice device) {
+    public BluetoothProcessingThread(Handler handler, BluetoothDeviceWrapper device) {
         super();
         try {
-            bluetoothSocket = device.createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
+            mDeviceBluetoothWrapper = device;
+            bluetoothSocket = mDeviceBluetoothWrapper.getBluetoothDevice().createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
             serviceHandler = handler;
             inputStream = bluetoothSocket.getInputStream();
             outputStream = bluetoothSocket.getOutputStream();
@@ -60,6 +63,8 @@ public class BluetoothProcessingThread extends Thread {
     public void run() {
         try {
             bluetoothSocket.connect();
+
+            mDeviceBluetoothWrapper.setState(BluetoothDeviceWrapper.State.CONNECTED);
             serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_CONNECTED).sendToTarget();
 
             String charsetName = "US-ASCII";
@@ -94,11 +99,12 @@ public class BluetoothProcessingThread extends Thread {
             Log.e(TAG, e.toString());
         } finally {
             try {
-                serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_DISCONNECTED).sendToTarget();
                 bluetoothSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
             }
+            mDeviceBluetoothWrapper.setState(BluetoothDeviceWrapper.State.DISCONNECTED);
+            serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_DISCONNECTED).sendToTarget();
         }
     }
 
@@ -124,7 +130,7 @@ public class BluetoothProcessingThread extends Thread {
         }
     }
 
-    public void stopMySelf(){
+    public void stopMySelf() {
         mStopped = true;
     }
 }

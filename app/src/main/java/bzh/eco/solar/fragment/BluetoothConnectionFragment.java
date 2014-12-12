@@ -24,6 +24,8 @@ import android.widget.Toast;
 import java.util.Set;
 
 import bzh.eco.solar.R;
+import bzh.eco.solar.model.BluetoothDeviceWrapper;
+import bzh.eco.solar.service.BluetoothService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +44,6 @@ public class BluetoothConnectionFragment extends Fragment {
 
     private static final int BLUETOOTH_ENABLED = 1;
 
-    private static final int BLUETOOTH_CONNECTED = 1;
-
-    private static final int BLUETOOTH_DISCONNECTED = 2;
-
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
@@ -53,7 +51,7 @@ public class BluetoothConnectionFragment extends Fragment {
 
     boolean firstTimeStarting;
 
-    private ArrayAdapter<BluetoothDevice> mBluetoothDeviceArrayAdapter;
+    private BluetoothDeviceArrayAdapter mBluetoothDeviceArrayAdapter;
 
     private BroadcastReceiver mReceiver;
 
@@ -63,17 +61,11 @@ public class BluetoothConnectionFragment extends Fragment {
 
     private ListView mPairedDevicesListview;
 
-    private BluetoothDevice mCurrentSelectedDevice;
-
-    private int mCurrentSelectedDeviceState;
-
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
     public static BluetoothConnectionFragment newInstance() {
-        BluetoothConnectionFragment fragment = new BluetoothConnectionFragment();
-
-        return fragment;
+        return new BluetoothConnectionFragment();
     }
 
     public BluetoothConnectionFragment() {
@@ -100,8 +92,6 @@ public class BluetoothConnectionFragment extends Fragment {
         firstTimeStarting = true;
         mBluetoothDeviceArrayAdapter = new BluetoothDeviceArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mReceiver = new BluetoothDeviceBroadcastReceiver();
-        mCurrentSelectedDevice = null;
-        mCurrentSelectedDeviceState = BLUETOOTH_DISCONNECTED;
     }
 
     @Override
@@ -115,15 +105,24 @@ public class BluetoothConnectionFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mListener != null) {
-                    BluetoothDevice device = mBluetoothDeviceArrayAdapter.getItem(position);
-                    if (mCurrentSelectedDevice == device) {
-                        mCurrentSelectedDevice = null;
-                        mListener.onBluetoothDeviceUnselected();
+                    BluetoothDeviceWrapper selectedDevice = mBluetoothDeviceArrayAdapter.getItem(position);
+                    if (mBluetoothDeviceArrayAdapter.hasNoBluetoothDeviceSelected()) {
+                        selectedDevice.setState(BluetoothDeviceWrapper.State.CONNECTING);
+                        mBluetoothDeviceArrayAdapter.setActiveBluetoothDeviceWrapper(selectedDevice);
+                        mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
+                        mListener.onBluetoothConnecting(selectedDevice);
                     } else {
-                        mCurrentSelectedDevice = device;
-                        mListener.onBluetoothDeviceSelected(mCurrentSelectedDevice);
+                        BluetoothDeviceWrapper activeDevice = mBluetoothDeviceArrayAdapter.getActiveBluetoothDeviceWrapper();
+                        if (selectedDevice == activeDevice) {
+                            selectedDevice.setState(BluetoothDeviceWrapper.State.DISCONNECTING);
+                            mBluetoothDeviceArrayAdapter.setActiveBluetoothDeviceWrapper(null);
+                            mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
+                            mListener.onBluetoothDisconnecting();
+                        } else {
+                            String activeDeviceName = activeDevice.getBluetoothDevice().getName();
+                            Toast.makeText(getActivity(), "A bluetooth device is already active : " + activeDeviceName, Toast.LENGTH_SHORT).show();
+                        }
                     }
-
                 }
             }
         });
@@ -141,20 +140,17 @@ public class BluetoothConnectionFragment extends Fragment {
         if (firstTimeStarting) {
             firstTimeStarting = false;
 
-            // Making several intents registrations
-            IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-            IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
-            IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-            IntentFilter filter4 = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            IntentFilter filter5 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-            IntentFilter filter6 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            IntentFilter filter1 = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED);
+            IntentFilter filter2 = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_SOCKET_DISCONNECTED);
+            IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            IntentFilter filter4 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            IntentFilter filter5 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
             getActivity().registerReceiver(mReceiver, filter1);
             getActivity().registerReceiver(mReceiver, filter2);
             getActivity().registerReceiver(mReceiver, filter3);
             getActivity().registerReceiver(mReceiver, filter4);
             getActivity().registerReceiver(mReceiver, filter5);
-            getActivity().registerReceiver(mReceiver, filter6);
 
             if (mBluetoothAdapter != null) {
                 if (!mBluetoothAdapter.isEnabled()) {
@@ -181,7 +177,7 @@ public class BluetoothConnectionFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == BLUETOOTH_ENABLED) {
+        if (requestCode == BLUETOOTH_ENABLED) {
             mBluetoothAdapter.startDiscovery();
         }
     }
@@ -192,8 +188,8 @@ public class BluetoothConnectionFragment extends Fragment {
     private void addPairedDevices() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                mBluetoothDeviceArrayAdapter.add(device);
+            for (BluetoothDevice pairedDevice : pairedDevices) {
+                mBluetoothDeviceArrayAdapter.add(BluetoothDeviceWrapper.newInstance(pairedDevice));
             }
         }
     }
@@ -203,15 +199,18 @@ public class BluetoothConnectionFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     public interface BluetoothCallback {
 
-        public void onBluetoothDeviceSelected(BluetoothDevice device);
+        public void onBluetoothConnecting(BluetoothDeviceWrapper device);
 
-        public void onBluetoothDeviceUnselected();
+        public void onBluetoothDisconnecting();
     }
 
-    private class BluetoothDeviceArrayAdapter extends ArrayAdapter<BluetoothDevice> {
+    private class BluetoothDeviceArrayAdapter extends ArrayAdapter<BluetoothDeviceWrapper> {
+
+        private BluetoothDeviceWrapper mActiveBluetoothDeviceWrapper;
 
         public BluetoothDeviceArrayAdapter(Context context, int resource) {
             super(context, resource);
+            mActiveBluetoothDeviceWrapper = null;
         }
 
         @Override
@@ -225,28 +224,46 @@ public class BluetoothConnectionFragment extends Fragment {
                 v = vi.inflate(R.layout.layout_bluetooth_row, null);
             }
 
-            BluetoothDevice device = getItem(position);
+            BluetoothDeviceWrapper device = getItem(position);
+
+            ImageView connectionState = (ImageView) v.findViewById(R.id.connection_state);
+            TextView name = (TextView) v.findViewById(R.id.name);
+            TextView address = (TextView) v.findViewById(R.id.address);
 
             if (device != null) {
-                ImageView connectionState = (ImageView) v.findViewById(R.id.connection_state);
-                TextView name = (TextView) v.findViewById(R.id.name);
-                TextView address = (TextView) v.findViewById(R.id.address);
-                if (connectionState != null) {
-                    if (device == mCurrentSelectedDevice && mCurrentSelectedDeviceState == BLUETOOTH_CONNECTED) {
+                switch (device.getState()) {
+                    case CONNECTED:
                         connectionState.setImageDrawable(getResources().getDrawable(R.drawable.green_button));
-                    } else {
+                        break;
+                    case CONNECTING:
+                        connectionState.setImageDrawable(getResources().getDrawable(R.drawable.orange_button));
+                        break;
+                    case DISCONNECTING:
+                        connectionState.setImageDrawable(getResources().getDrawable(R.drawable.orange_button));
+                        break;
+                    case DISCONNECTED:
                         connectionState.setImageDrawable(getResources().getDrawable(R.drawable.red_button));
-                    }
+                        break;
+                    default:
+                        break;
                 }
-                if (name != null) {
-                    name.setText(device.getName());
-                }
-                if (address != null) {
-                    address.setText(String.valueOf(device.getAddress()));
-                }
+                name.setText(device.getBluetoothDevice().getName());
+                address.setText(String.valueOf(device.getBluetoothDevice().getAddress()));
             }
 
             return v;
+        }
+
+        public boolean hasNoBluetoothDeviceSelected() {
+            return mActiveBluetoothDeviceWrapper == null;
+        }
+
+        public void setActiveBluetoothDeviceWrapper(BluetoothDeviceWrapper activeBluetoothDeviceWrapper) {
+            mActiveBluetoothDeviceWrapper = activeBluetoothDeviceWrapper;
+        }
+
+        public BluetoothDeviceWrapper getActiveBluetoothDeviceWrapper() {
+            return mActiveBluetoothDeviceWrapper;
         }
     }
 
@@ -255,23 +272,13 @@ public class BluetoothConnectionFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 Toast.makeText(getActivity(), "ACTION_FOUND", Toast.LENGTH_SHORT).show();
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (!mBluetoothAdapter.getBondedDevices().contains(device)) {
-                    mBluetoothDeviceArrayAdapter.add(device);
+                    mBluetoothDeviceArrayAdapter.add(BluetoothDeviceWrapper.newInstance(device));
                 }
-            } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                Toast.makeText(getActivity(), "ACTION_ACL_CONNECTED", Toast.LENGTH_SHORT).show();
-                mCurrentSelectedDeviceState = BLUETOOTH_CONNECTED;
-                mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-                Toast.makeText(getActivity(), "ACTION_ACL_DISCONNECT_REQUESTED", Toast.LENGTH_SHORT).show();
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                Toast.makeText(getActivity(), "ACTION_ACL_DISCONNECTED", Toast.LENGTH_SHORT).show();
-                mCurrentSelectedDeviceState = BLUETOOTH_DISCONNECTED;
-                mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
             } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 Toast.makeText(getActivity(), "ACTION_DISCOVERY_STARTED", Toast.LENGTH_SHORT).show();
                 mLoadingPanel.setVisibility(View.VISIBLE);
@@ -280,6 +287,15 @@ public class BluetoothConnectionFragment extends Fragment {
                 addPairedDevices();
                 mLoadingPanel.setVisibility(View.GONE);
                 mPairedDevicesListview.setVisibility(View.VISIBLE);
+            } else if (BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED.equals(action)) {
+                Toast.makeText(getActivity(), "ACTION_BLUETOOTH_SOCKET_CONNECTED", Toast.LENGTH_SHORT).show();
+                mBluetoothDeviceArrayAdapter.getActiveBluetoothDeviceWrapper().setState(BluetoothDeviceWrapper.State.CONNECTED);
+                mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
+            } else if (BluetoothService.ACTION_BLUETOOTH_SOCKET_DISCONNECTED.equals(action)) {
+                Toast.makeText(getActivity(), "ACTION_BLUETOOTH_SOCKET_DISCONNECTED", Toast.LENGTH_SHORT).show();
+                mBluetoothDeviceArrayAdapter.getActiveBluetoothDeviceWrapper().setState(BluetoothDeviceWrapper.State.DISCONNECTED);
+                mBluetoothDeviceArrayAdapter.setActiveBluetoothDeviceWrapper(null);
+                mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
             }
         }
     }

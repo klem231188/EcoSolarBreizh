@@ -1,7 +1,6 @@
 package bzh.eco.solar.service;
 
 import android.app.Service;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -10,6 +9,7 @@ import android.widget.Toast;
 
 import java.util.UUID;
 
+import bzh.eco.solar.model.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.BluetoothFrame;
 import bzh.eco.solar.thread.BluetoothProcessingThread;
 
@@ -18,8 +18,6 @@ public class BluetoothService extends Service {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "BluetoothService";
-
     public static final UUID BLUETOOTH_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     public static final String EXTRA_DEVICE = "EXTRA_DEVICE";
@@ -39,7 +37,7 @@ public class BluetoothService extends Service {
 
     private BluetoothProcessingThread mBluetoothProcessingThread;
 
-    private BluetoothDevice mDevice;
+    private BluetoothDeviceWrapper mDevice;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
@@ -75,8 +73,8 @@ public class BluetoothService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mBluetoothProcessingThread.stopMySelf();
+        super.onDestroy();
     }
 
     @Override
