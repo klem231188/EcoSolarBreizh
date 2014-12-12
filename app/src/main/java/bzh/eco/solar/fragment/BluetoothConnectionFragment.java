@@ -115,7 +115,6 @@ public class BluetoothConnectionFragment extends Fragment {
                         BluetoothDeviceWrapper activeDevice = mBluetoothDeviceArrayAdapter.getActiveBluetoothDeviceWrapper();
                         if (selectedDevice == activeDevice) {
                             selectedDevice.setState(BluetoothDeviceWrapper.State.DISCONNECTING);
-                            mBluetoothDeviceArrayAdapter.setActiveBluetoothDeviceWrapper(null);
                             mBluetoothDeviceArrayAdapter.notifyDataSetChanged();
                             mListener.onBluetoothDisconnecting();
                         } else {
@@ -204,6 +203,8 @@ public class BluetoothConnectionFragment extends Fragment {
         public void onBluetoothDisconnecting();
     }
 
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
     private class BluetoothDeviceArrayAdapter extends ArrayAdapter<BluetoothDeviceWrapper> {
 
         private BluetoothDeviceWrapper mActiveBluetoothDeviceWrapper;
@@ -267,6 +268,8 @@ public class BluetoothConnectionFragment extends Fragment {
         }
     }
 
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
     private class BluetoothDeviceBroadcastReceiver extends BroadcastReceiver {
 
         @Override

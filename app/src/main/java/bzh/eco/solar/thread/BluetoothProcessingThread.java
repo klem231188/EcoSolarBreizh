@@ -1,7 +1,8 @@
 package bzh.eco.solar.thread;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -27,29 +28,29 @@ public class BluetoothProcessingThread extends Thread {
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
-    private Handler serviceHandler;
-
-    private BluetoothSocket bluetoothSocket;
-
-    private InputStream inputStream;
-
-    private OutputStream outputStream;
-
-    private boolean mStopped;
+    private Context mContext;
 
     private BluetoothDeviceWrapper mDeviceBluetoothWrapper;
+
+    private BluetoothSocket mBluetoothSocket;
+
+    private InputStream mInputStream;
+
+    private OutputStream mOutputStream;
+
+    private boolean mStopped;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
-    public BluetoothProcessingThread(Handler handler, BluetoothDeviceWrapper device) {
+    public BluetoothProcessingThread(Context context, BluetoothDeviceWrapper device) {
         super();
         try {
+            mContext = context;
             mDeviceBluetoothWrapper = device;
-            bluetoothSocket = mDeviceBluetoothWrapper.getBluetoothDevice().createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
-            serviceHandler = handler;
-            inputStream = bluetoothSocket.getInputStream();
-            outputStream = bluetoothSocket.getOutputStream();
+            mBluetoothSocket = mDeviceBluetoothWrapper.getBluetoothDevice().createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
+            mInputStream = mBluetoothSocket.getInputStream();
+            mOutputStream = mBluetoothSocket.getOutputStream();
             mStopped = false;
         } catch (IOException e) {
             // TODO
@@ -62,13 +63,15 @@ public class BluetoothProcessingThread extends Thread {
     @Override
     public void run() {
         try {
-            bluetoothSocket.connect();
+            mBluetoothSocket.connect();
 
-            mDeviceBluetoothWrapper.setState(BluetoothDeviceWrapper.State.CONNECTED);
-            serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_CONNECTED).sendToTarget();
+            // Le device est désormais connecté
+            Intent disconnectedIntent = new Intent(BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED);
+            mContext.sendBroadcast(disconnectedIntent);
 
+            // Lecture du flux d'entrée
             String charsetName = "US-ASCII";
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charsetName);
+            InputStreamReader inputStreamReader = new InputStreamReader(mInputStream, charsetName);
             BufferedReader reader = new BufferedReader(inputStreamReader, 8);
             //TODO : Séparer le thread de lecture de flux du/des thread(s) de traitement(s) ??
             char[] buffer = new char[FRAME_SIZE];
@@ -83,8 +86,8 @@ public class BluetoothProcessingThread extends Thread {
                     } else if (offset == FRAME_SIZE) {
                         Log.i(TAG, "offset == FRAME_SIZE");
                         offset = 0;
-                        BluetoothFrame bluetoothFrame = processBluetoothFrame(buffer);
-                        serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_FRAME_PROCESSED, bluetoothFrame).sendToTarget();
+                        BluetoothFrame bluetoothFrame = BluetoothFrame.makeInstance(mContext, buffer);
+                        bluetoothFrame.process();
                     } else {
                         Log.e(TAG, "ATTENTION : offset = " + offset + " > FRAME_SIZE");
                     }
@@ -99,33 +102,19 @@ public class BluetoothProcessingThread extends Thread {
             Log.e(TAG, e.toString());
         } finally {
             try {
-                bluetoothSocket.close();
+                mBluetoothSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
             }
-            mDeviceBluetoothWrapper.setState(BluetoothDeviceWrapper.State.DISCONNECTED);
-            serviceHandler.obtainMessage(BluetoothService.BluetoothServiceHandler.ACTION_BLUETOOTH_SOCKET_DISCONNECTED).sendToTarget();
+            Intent disconnectedIntent = new Intent(BluetoothService.ACTION_BLUETOOTH_SOCKET_DISCONNECTED);
+            mContext.sendBroadcast(disconnectedIntent);
         }
-    }
-
-    private BluetoothFrame processBluetoothFrame(char[] buffer) {
-        BluetoothFrame bluetoothFrame = new BluetoothFrame();
-
-        bluetoothFrame.id[0] = buffer[0];
-        bluetoothFrame.id[1] = buffer[1];
-
-        bluetoothFrame.data[0] = buffer[2];
-        bluetoothFrame.data[1] = buffer[3];
-        bluetoothFrame.data[2] = buffer[4];
-        bluetoothFrame.data[3] = buffer[5];
-
-        return bluetoothFrame;
     }
 
     @Deprecated
     public void write(byte[] bytes) {
         try {
-            outputStream.write(bytes);
+            mOutputStream.write(bytes);
         } catch (IOException e) {
         }
     }

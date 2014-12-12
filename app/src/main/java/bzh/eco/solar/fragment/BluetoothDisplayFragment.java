@@ -15,7 +15,6 @@ import android.widget.ListView;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.BluetoothFrame;
-import bzh.eco.solar.service.BluetoothService;
 
 public class BluetoothDisplayFragment extends Fragment {
 
@@ -34,8 +33,7 @@ public class BluetoothDisplayFragment extends Fragment {
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
     public static BluetoothDisplayFragment newInstance() {
-        BluetoothDisplayFragment fragment = new BluetoothDisplayFragment();
-        return fragment;
+        return new BluetoothDisplayFragment();
     }
 
     public BluetoothDisplayFragment() {
@@ -74,7 +72,7 @@ public class BluetoothDisplayFragment extends Fragment {
         if (mDataUpdateReceiver == null) {
             mDataUpdateReceiver = new DataUpdateReceiver();
         }
-        IntentFilter intentFilter = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_FRAME_PROCESSED);
+        IntentFilter intentFilter = new IntentFilter(BluetoothFrame.BLUETOOTH_FRAME_SOLAR_PANEL);
         getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
 
         super.onResume();
@@ -95,10 +93,6 @@ public class BluetoothDisplayFragment extends Fragment {
         mListener = null;
     }
 
-    public void addFrameToDisplay(BluetoothFrame frame) {
-        mDisplayFrameAdapter.add(frame.toString());
-    }
-
     // -------------------------------------------------------------------------------------
     // Section : Inner Class(es)
     // -------------------------------------------------------------------------------------
@@ -112,9 +106,11 @@ public class BluetoothDisplayFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothService.ACTION_BLUETOOTH_FRAME_PROCESSED.equals(action)) {
-                BluetoothFrame frame = (BluetoothFrame) intent.getSerializableExtra(BluetoothService.EXTRA_BLUETOOTH_FRAME);
-                BluetoothDisplayFragment.this.addFrameToDisplay(frame);
+            if (BluetoothFrame.BLUETOOTH_FRAME_SOLAR_PANEL.equals(action)) {
+                int id = intent.getIntExtra(BluetoothFrame.ID, 0);
+                char[] data = intent.getCharArrayExtra(BluetoothFrame.DATA);
+
+                mDisplayFrameAdapter.add("ID = " + id + " | DATA = " + String.valueOf(data));
             }
         }
     }
