@@ -8,6 +8,7 @@ import android.os.Parcelable;
  * @author : Clément.Tréguer
  */
 public class BluetoothDeviceWrapper implements Parcelable {
+
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------

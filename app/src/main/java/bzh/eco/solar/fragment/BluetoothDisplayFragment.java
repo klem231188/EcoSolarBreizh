@@ -29,6 +29,7 @@ public class BluetoothDisplayFragment extends Fragment {
     private ArrayAdapter<String> mDisplayFrameAdapter;
 
     private BroadcastReceiver mDataUpdateReceiver = new DataUpdateReceiver();
+
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
