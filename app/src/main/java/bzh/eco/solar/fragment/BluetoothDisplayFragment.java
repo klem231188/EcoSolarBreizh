@@ -14,7 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.BluetoothFrame;
+import bzh.eco.solar.manager.BluetoothFrameManager;
+import bzh.eco.solar.manager.SolarPanelElecticalPowerManager;
 
 public class BluetoothDisplayFragment extends Fragment {
 
@@ -72,7 +73,7 @@ public class BluetoothDisplayFragment extends Fragment {
         if (mDataUpdateReceiver == null) {
             mDataUpdateReceiver = new DataUpdateReceiver();
         }
-        IntentFilter intentFilter = new IntentFilter(BluetoothFrame.BLUETOOTH_FRAME_SOLAR_PANEL);
+        IntentFilter intentFilter = new IntentFilter(SolarPanelElecticalPowerManager.getInstance().getType().name());
         getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
 
         super.onResume();
@@ -104,14 +105,10 @@ public class BluetoothDisplayFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            int id = intent.getIntExtra(BluetoothFrameManager.ID, 0);
+            double data = intent.getDoubleExtra(BluetoothFrameManager.DATA, 0.0);
 
-            if (BluetoothFrame.BLUETOOTH_FRAME_SOLAR_PANEL.equals(action)) {
-                int id = intent.getIntExtra(BluetoothFrame.ID, 0);
-                char[] data = intent.getCharArrayExtra(BluetoothFrame.DATA);
-
-                mDisplayFrameAdapter.add("ID = " + id + " | DATA = " + String.valueOf(data));
-            }
+            mDisplayFrameAdapter.add("ID = " + id + " | DATA = " + String.valueOf(data));
         }
     }
 }

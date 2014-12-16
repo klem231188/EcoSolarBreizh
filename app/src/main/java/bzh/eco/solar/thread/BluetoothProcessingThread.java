@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+import bzh.eco.solar.manager.BluetoothFrameManagers;
 import bzh.eco.solar.model.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.BluetoothFrame;
 import bzh.eco.solar.service.BluetoothService;
@@ -86,8 +87,8 @@ public class BluetoothProcessingThread extends Thread {
                     } else if (offset == FRAME_SIZE) {
                         Log.i(TAG, "offset == FRAME_SIZE");
                         offset = 0;
-                        BluetoothFrame bluetoothFrame = BluetoothFrame.makeInstance(mContext, buffer);
-                        bluetoothFrame.process();
+                        BluetoothFrame bluetoothFrame = BluetoothFrame.makeInstance(buffer);
+                        BluetoothFrameManagers.getInstance().processFrame(mContext, bluetoothFrame);
                     } else {
                         Log.e(TAG, "ATTENTION : offset = " + offset + " > FRAME_SIZE");
                     }

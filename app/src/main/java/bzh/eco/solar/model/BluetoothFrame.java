@@ -1,11 +1,6 @@
 package bzh.eco.solar.model;
 
-import android.content.Context;
-import android.content.Intent;
-
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * DTO representing a bluetooth frame
@@ -19,41 +14,42 @@ public class BluetoothFrame implements Serializable {
     // -------------------------------------------------------------------------------------
     public static final String BLUETOOTH_FRAME_SOLAR_PANEL = "BLUETOOTH_FRAME_SOLAR_PANEL";
 
-    public static final String ID = "ID";
-
-    public static final String DATA = "DATA";
-
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
-    private Context mContext;
+    private char[] mOriginalID;
 
-    public char[] id;
+    private char[] mOriginalData;
 
-    public char[] data;
+    private int mID;
 
-    List<Integer> solarPanelIDs = Arrays.asList(51, 52, 53, 54, 55);
+    private double mData;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
-    private BluetoothFrame() {
-        id = new char[2];
-        data = new char[4];
+    protected BluetoothFrame() {
+        mOriginalID = new char[2];
+        mOriginalData = new char[4];
     }
 
-    public static BluetoothFrame makeInstance(Context context, char[] buffer) {
+    public static BluetoothFrame makeInstance(char[] buffer) {
         BluetoothFrame bluetoothFrame = new BluetoothFrame();
 
-        bluetoothFrame.mContext = context;
+        bluetoothFrame.mOriginalID[0] = buffer[0];
+        bluetoothFrame.mOriginalID[1] = buffer[1];
 
-        bluetoothFrame.id[0] = buffer[0];
-        bluetoothFrame.id[1] = buffer[1];
+        bluetoothFrame.mID = 0;
+        if (Character.isDigit(bluetoothFrame.mOriginalID[0]) && Character.isDigit(bluetoothFrame.mOriginalID[0])) {
+            bluetoothFrame.mID = Character.getNumericValue(bluetoothFrame.mOriginalID[0]) * 10 + Character.getNumericValue(bluetoothFrame.mOriginalID[1]);
+        }
 
-        bluetoothFrame.data[0] = buffer[2];
-        bluetoothFrame.data[1] = buffer[3];
-        bluetoothFrame.data[2] = buffer[4];
-        bluetoothFrame.data[3] = buffer[5];
+        bluetoothFrame.mOriginalData[0] = buffer[2];
+        bluetoothFrame.mOriginalData[1] = buffer[3];
+        bluetoothFrame.mOriginalData[2] = buffer[4];
+        bluetoothFrame.mOriginalData[3] = buffer[5];
+
+        bluetoothFrame.mData = 0;
 
         return bluetoothFrame;
     }
@@ -65,40 +61,35 @@ public class BluetoothFrame implements Serializable {
     public String toString() {
         StringBuilder ret = new StringBuilder();
         ret.append("ID = [")
-                .append(Character.isDigit(id[0]) ? id[0] : '.')
-                .append(Character.isDigit(id[1]) ? id[1] : '.')
+                .append(Character.isDigit(mOriginalID[0]) ? mOriginalID[0] : '.')
+                .append(Character.isDigit(mOriginalID[1]) ? mOriginalID[1] : '.')
                 .append("] - FRAME = [")
-                .append(Character.isDigit(data[0]) ? data[0] : '.')
-                .append(Character.isDigit(data[1]) ? data[1] : '.')
-                .append(Character.isDigit(data[2]) ? data[2] : '.')
-                .append(Character.isDigit(data[3]) ? data[3] : '.')
+                .append(Character.isDigit(mOriginalData[0]) ? mOriginalData[0] : '.')
+                .append(Character.isDigit(mOriginalData[1]) ? mOriginalData[1] : '.')
+                .append(Character.isDigit(mOriginalData[2]) ? mOriginalData[2] : '.')
+                .append(Character.isDigit(mOriginalData[3]) ? mOriginalData[3] : '.')
                 .append("]")
         ;
 
         return ret.toString();
     }
 
-    private boolean isSolarPanelFrame() {
-        boolean solarPanel = false;
-
-        if (Character.isDigit(id[0]) && Character.isDigit(id[0])) {
-            int decodedID = Character.getNumericValue(id[0]) * 10 + Character.getNumericValue(id[1]);
-            if (solarPanelIDs.contains(decodedID)) {
-                solarPanel = true;
-            }
-        }
-
-        return solarPanel;
+    // -------------------------------------------------------------------------------------
+    // Section : Setter(s)/Getter(s)
+    // -------------------------------------------------------------------------------------
+    public char[] getOriginalData() {
+        return mOriginalData;
     }
 
-    public void process() {
-        // TODO better
-        if (isSolarPanelFrame()) {
-            Intent processedIntent = new Intent(BLUETOOTH_FRAME_SOLAR_PANEL);
-            int decodedID = Character.getNumericValue(id[0]) * 10 + Character.getNumericValue(id[1]);
-            processedIntent.putExtra(ID, decodedID);
-            processedIntent.putExtra(DATA, data);
-            mContext.sendBroadcast(processedIntent);
-        }
+    public int getID() {
+        return mID;
+    }
+
+    public double getData() {
+        return mData;
+    }
+
+    public void setData(double data) {
+        mData = data;
     }
 }
