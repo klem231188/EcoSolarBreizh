@@ -1,4 +1,4 @@
-package bzh.eco.solar.model;
+package bzh.eco.solar.model.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;

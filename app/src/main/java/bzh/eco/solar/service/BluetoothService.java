@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import java.util.UUID;
 
-import bzh.eco.solar.model.BluetoothDeviceWrapper;
+import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.thread.BluetoothProcessingThread;
 
 public class BluetoothService extends Service {

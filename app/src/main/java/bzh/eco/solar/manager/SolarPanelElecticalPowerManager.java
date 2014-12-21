@@ -2,7 +2,7 @@ package bzh.eco.solar.manager;
 
 import java.util.Arrays;
 
-import bzh.eco.solar.model.BluetoothFrame;
+import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 
 /**
  * @author : Clément.Tréguer

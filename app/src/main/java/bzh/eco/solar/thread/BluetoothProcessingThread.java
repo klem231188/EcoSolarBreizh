@@ -3,6 +3,7 @@ package bzh.eco.solar.thread;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -13,8 +14,9 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import bzh.eco.solar.manager.BluetoothFrameManagers;
-import bzh.eco.solar.model.BluetoothDeviceWrapper;
-import bzh.eco.solar.model.BluetoothFrame;
+import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
+import bzh.eco.solar.model.bluetooth.BluetoothFrame;
+import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.service.BluetoothService;
 
 public class BluetoothProcessingThread extends Thread {
@@ -30,6 +32,8 @@ public class BluetoothProcessingThread extends Thread {
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
     private Context mContext;
+
+    private LocalBroadcastManager mLocalBroadcastManager;
 
     private BluetoothDeviceWrapper mDeviceBluetoothWrapper;
 
@@ -48,6 +52,7 @@ public class BluetoothProcessingThread extends Thread {
         super();
         try {
             mContext = context;
+            mLocalBroadcastManager = LocalBroadcastManager.getInstance(context);
             mDeviceBluetoothWrapper = device;
             mBluetoothSocket = mDeviceBluetoothWrapper.getBluetoothDevice().createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
             mInputStream = mBluetoothSocket.getInputStream();
@@ -88,7 +93,8 @@ public class BluetoothProcessingThread extends Thread {
                         Log.i(TAG, "offset == FRAME_SIZE");
                         offset = 0;
                         BluetoothFrame bluetoothFrame = BluetoothFrame.makeInstance(buffer);
-                        BluetoothFrameManagers.getInstance().processFrame(mContext, bluetoothFrame);
+                        Car.getInstance().update(bluetoothFrame, mContext);
+                        // BluetoothFrameManagers.getInstance().processFrame(mContext, bluetoothFrame);
                     } else {
                         Log.e(TAG, "ATTENTION : offset = " + offset + " > FRAME_SIZE");
                     }

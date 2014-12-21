@@ -24,7 +24,7 @@ import android.widget.Toast;
 import java.util.Set;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.BluetoothDeviceWrapper;
+import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.service.BluetoothService;
 
 /**

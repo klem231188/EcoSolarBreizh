@@ -19,7 +19,8 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
 import bzh.eco.solar.fragment.BluetoothDisplayFragment;
-import bzh.eco.solar.model.BluetoothDeviceWrapper;
+import bzh.eco.solar.fragment.SolarPanelElectricalPowerFragment;
+import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.service.BluetoothService;
 
 
@@ -133,6 +134,8 @@ public class MainActivity
 
         public static final int BLUETOOTH_DISPLAY_SECTION = 1;
 
+        public static final int SOLAR_PANEL_ELECTRICAL_POWER_SECTION = 2;
+
         List<Fragment> mFragments;
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -140,6 +143,7 @@ public class MainActivity
             mFragments = new ArrayList<Fragment>();
             mFragments.add(BluetoothConnectionFragment.newInstance());
             mFragments.add(BluetoothDisplayFragment.newInstance());
+            mFragments.add(SolarPanelElectricalPowerFragment.newInstance());
         }
 
         @Override
@@ -165,6 +169,8 @@ public class MainActivity
                     return getString(R.string.title_bluetooth_connection_section).toUpperCase(locale);
                 case BLUETOOTH_DISPLAY_SECTION:
                     return getString(R.string.title_bluetooth_display_section).toUpperCase(locale);
+                case SOLAR_PANEL_ELECTRICAL_POWER_SECTION:
+                    return getString(R.string.title_solar_panel_electical_power_section).toUpperCase(locale);
             }
 
             return null;

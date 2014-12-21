@@ -1,4 +1,4 @@
-package bzh.eco.solar.model;
+package bzh.eco.solar.model.bluetooth;
 
 import java.io.Serializable;
 
