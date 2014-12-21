@@ -130,16 +130,15 @@ public class MotorFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals("VALUE_CHANGED")) {
-                if(intent.getSerializableExtra("CAR_ELEMENT_TYPE") == Car.ElementType.MOTOR)
-                {
-                    if(intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.ELECTRICAL_POWER) {
+            if (intent.getAction().equals("VALUE_CHANGED")) {
+                if (intent.getSerializableExtra("CAR_ELEMENT_TYPE") == Car.ElementType.MOTOR) {
+                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.ELECTRICAL_POWER) {
                         mElectricalPowerArrayAdapter.notifyDataSetChanged();
                     }
-                    if(intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.TEMPERATURE) {
+                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.TEMPERATURE) {
                         mTemperatureArrayAdapter.notifyDataSetChanged();
                     }
-                    if(intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.SPEED) {
+                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.SPEED) {
                         mSpeedArrayAdapter.notifyDataSetChanged();
                     }
                 }

@@ -13,7 +13,6 @@ import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.measurement.SpeedMeasurementElement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
 
 /**
  * @author : Clément.Tréguer

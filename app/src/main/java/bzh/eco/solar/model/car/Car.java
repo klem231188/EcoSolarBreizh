@@ -1,8 +1,6 @@
 package bzh.eco.solar.model.car;
 
-import android.app.Application;
 import android.content.Context;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -23,8 +21,8 @@ public class Car {
 
     private List<CarElement> mCarElements = null;
 
-    public static Car getInstance(){
-        if(mInstance == null) {
+    public static Car getInstance() {
+        if (mInstance == null) {
             mInstance = new Car();
             mInstance.init();
         }
@@ -42,7 +40,7 @@ public class Car {
         Log.i(TAG, "update(" + frame + ")");
 
         for (CarElement carElement : mCarElements) {
-            if(carElement.isFrameAccepted(frame)) {
+            if (carElement.isFrameAccepted(frame)) {
                 carElement.update(frame, context);
             }
         }

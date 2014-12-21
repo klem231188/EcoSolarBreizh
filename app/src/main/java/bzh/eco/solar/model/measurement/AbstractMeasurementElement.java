@@ -10,7 +10,9 @@ import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 public abstract class AbstractMeasurementElement implements Serializable {
 
     private int id;
+
     private Measurement type;
+
     private String meaning;
 
     public AbstractMeasurementElement(int id, String meaning, Measurement type) {

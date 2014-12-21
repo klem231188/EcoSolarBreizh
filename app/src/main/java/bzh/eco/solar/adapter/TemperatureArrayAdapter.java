@@ -48,7 +48,7 @@ public class TemperatureArrayAdapter extends ArrayAdapter<TemperatureMeasurement
         if (measurementElement != null) {
             textViewMeaning.setText(measurementElement.getMeaning());
             textViewElectricalPower.setText(formatter.format(measurementElement.getTemperature()) + " °C");
-            progressBarElectricalPower.setProgress( (int)((measurementElement.getTemperature() * 100) / MAX_VALUE_TEMPERATURE) );
+            progressBarElectricalPower.setProgress((int) ((measurementElement.getTemperature() * 100) / MAX_VALUE_TEMPERATURE));
         }
 
         return v;

@@ -26,7 +26,7 @@ import bzh.eco.solar.service.BluetoothService;
 
 public class MainActivity
         extends Activity
-        implements ActionBar.TabListener, BluetoothConnectionFragment.BluetoothCallback{
+        implements ActionBar.TabListener, BluetoothConnectionFragment.BluetoothCallback {
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)

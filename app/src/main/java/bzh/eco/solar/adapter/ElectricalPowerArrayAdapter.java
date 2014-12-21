@@ -48,7 +48,7 @@ public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMea
         if (measurementElement != null) {
             textViewMeaning.setText(measurementElement.getMeaning());
             textViewElectricalPower.setText(formatter.format(measurementElement.getElectricalPower()) + " A");
-            progressBarElectricalPower.setProgress( (int)((measurementElement.getElectricalPower() * 100) / MAX_VALUE_ELECTRICAL_POWER) );
+            progressBarElectricalPower.setProgress((int) ((measurementElement.getElectricalPower() * 100) / MAX_VALUE_ELECTRICAL_POWER));
         }
 
         return v;
