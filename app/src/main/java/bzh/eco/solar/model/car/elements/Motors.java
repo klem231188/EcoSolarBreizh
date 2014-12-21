@@ -96,8 +96,9 @@ public class Motors implements Car.CarElement {
             if (frame.getID() == measurementElement.getId()) {
                 measurementElement.update(frame);
 
-                Intent intent = new Intent(getType().name() + "-" + measurementElement.getType().name());
-                intent.putExtra("MeasurementElement", measurementElement);
+                Intent intent = new Intent("VALUE_CHANGED");
+                intent.putExtra("CAR_ELEMENT_TYPE", getType());
+                intent.putExtra("MEASUREMENT_TYPE", measurementElement.getType());
                 context.sendBroadcast(intent);
 
                 break;
@@ -105,4 +106,15 @@ public class Motors implements Car.CarElement {
         }
     }
 
+    public List<ElectricalPowerMeasurementElement> getElectricalPowerMeasurementElements() {
+        return mElectricalPowerMeasurementElements;
+    }
+
+    public List<TemperatureMeasurementElement> getTemperatureMeasurementElements() {
+        return mTemperatureMeasurementElements;
+    }
+
+    public List<SpeedMeasurementElement> getSpeedMeasurementElements() {
+        return mSpeedMeasurementElements;
+    }
 }

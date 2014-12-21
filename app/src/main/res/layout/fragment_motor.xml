@@ -24,7 +24,7 @@
         <View style="@style/VerticalDivider"/>
 
         <ListView
-                android:id="@+id/list_view_solar_panel_electrical_power"
+                android:id="@+id/list_view_electrical_power"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -53,7 +53,36 @@
         <View style="@style/VerticalDivider"/>
 
         <ListView
-                android:id="@+id/list_view_solar_panel_temperature"
+                android:id="@+id/list_view_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+    </LinearLayout>
+
+    <View style="@style/HorizontalDivider"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+
+        <bzh.eco.solar.view.VerticalTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Speed"
+                android:layout_gravity="center"
+                android:gravity="bottom"
+                android:padding="10dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+        <View style="@style/VerticalDivider"/>
+
+        <ListView
+                android:id="@+id/list_view_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

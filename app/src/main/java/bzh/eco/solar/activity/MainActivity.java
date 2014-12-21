@@ -18,15 +18,15 @@ import java.util.Locale;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
-import bzh.eco.solar.fragment.BluetoothDisplayFragment;
-import bzh.eco.solar.fragment.SolarPanelElectricalPowerFragment;
+import bzh.eco.solar.fragment.MotorFragment;
+import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.service.BluetoothService;
 
 
 public class MainActivity
         extends Activity
-        implements ActionBar.TabListener, BluetoothConnectionFragment.BluetoothCallback, BluetoothDisplayFragment.BluetoothCallback {
+        implements ActionBar.TabListener, BluetoothConnectionFragment.BluetoothCallback{
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
@@ -132,9 +132,9 @@ public class MainActivity
 
         public static final int BLUETOOTH_CONNECTION_SECTION = 0;
 
-        public static final int BLUETOOTH_DISPLAY_SECTION = 1;
+        public static final int SOLAR_PANEL = 1;
 
-        public static final int SOLAR_PANEL_ELECTRICAL_POWER_SECTION = 2;
+        public static final int MOTOR_SECTION = 2;
 
         List<Fragment> mFragments;
 
@@ -142,8 +142,8 @@ public class MainActivity
             super(fm);
             mFragments = new ArrayList<Fragment>();
             mFragments.add(BluetoothConnectionFragment.newInstance());
-            mFragments.add(BluetoothDisplayFragment.newInstance());
-            mFragments.add(SolarPanelElectricalPowerFragment.newInstance());
+            mFragments.add(SolarPanelFragment.newInstance());
+            mFragments.add(MotorFragment.newInstance());
         }
 
         @Override
@@ -167,9 +167,9 @@ public class MainActivity
             switch (position) {
                 case BLUETOOTH_CONNECTION_SECTION:
                     return getString(R.string.title_bluetooth_connection_section).toUpperCase(locale);
-                case BLUETOOTH_DISPLAY_SECTION:
-                    return getString(R.string.title_bluetooth_display_section).toUpperCase(locale);
-                case SOLAR_PANEL_ELECTRICAL_POWER_SECTION:
+                case MOTOR_SECTION:
+                    return getString(R.string.title_motor_section).toUpperCase(locale);
+                case SOLAR_PANEL:
                     return getString(R.string.title_solar_panel_electical_power_section).toUpperCase(locale);
             }
 

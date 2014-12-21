@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import bzh.eco.solar.manager.BluetoothFrameManagers;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
@@ -33,8 +32,6 @@ public class BluetoothProcessingThread extends Thread {
     // -------------------------------------------------------------------------------------
     private Context mContext;
 
-    private LocalBroadcastManager mLocalBroadcastManager;
-
     private BluetoothDeviceWrapper mDeviceBluetoothWrapper;
 
     private BluetoothSocket mBluetoothSocket;
@@ -52,7 +49,6 @@ public class BluetoothProcessingThread extends Thread {
         super();
         try {
             mContext = context;
-            mLocalBroadcastManager = LocalBroadcastManager.getInstance(context);
             mDeviceBluetoothWrapper = device;
             mBluetoothSocket = mDeviceBluetoothWrapper.getBluetoothDevice().createRfcommSocketToServiceRecord(BluetoothService.BLUETOOTH_UUID);
             mInputStream = mBluetoothSocket.getInputStream();
@@ -94,7 +90,6 @@ public class BluetoothProcessingThread extends Thread {
                         offset = 0;
                         BluetoothFrame bluetoothFrame = BluetoothFrame.makeInstance(buffer);
                         Car.getInstance().update(bluetoothFrame, mContext);
-                        // BluetoothFrameManagers.getInstance().processFrame(mContext, bluetoothFrame);
                     } else {
                         Log.e(TAG, "ATTENTION : offset = " + offset + " > FRAME_SIZE");
                     }
