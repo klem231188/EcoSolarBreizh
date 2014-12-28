@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,14 +26,6 @@ import bzh.eco.solar.adapter.BluetoothDeviceArrayAdapter;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.service.BluetoothService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link bzh.eco.solar.fragment.BluetoothConnectionFragment.BluetoothCallback} interface
- * to handle interaction events.
- * Use the {@link BluetoothConnectionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BluetoothConnectionFragment extends Fragment {
 
     // -------------------------------------------------------------------------------------
@@ -47,33 +40,44 @@ public class BluetoothConnectionFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     private BluetoothAdapter mBluetoothAdapter;
 
-    boolean firstTimeStarting;
-
     private BluetoothDeviceArrayAdapter mBluetoothDeviceArrayAdapter;
 
     private BroadcastReceiver mReceiver;
 
     private BluetoothCallback mListener;
 
+    private LinearLayout mContentPanel;
+
     private LinearLayout mLoadingPanel;
 
     private ListView mPairedDevicesListview;
 
+    private Button mRefreshButton;
+
+    private Boolean mIsFirstTimeStarting;
+
+    private Boolean mIsDiscoveringDevices;
+
     // -------------------------------------------------------------------------------------
-    // Section : Constructor(s)
+    // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
     public static BluetoothConnectionFragment newInstance() {
         return new BluetoothConnectionFragment();
     }
 
     public BluetoothConnectionFragment() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mReceiver = new BluetoothDeviceBroadcastReceiver();
+        mIsFirstTimeStarting = true;
+        mIsDiscoveringDevices = false;
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : @Override Method(s)
+    // Section : Android Lifecycle Method(s)
     // -------------------------------------------------------------------------------------
     @Override
     public void onAttach(Activity activity) {
+        Log.i(TAG, "onAttach");
         super.onAttach(activity);
         try {
             mListener = (BluetoothCallback) activity;
@@ -84,19 +88,39 @@ public class BluetoothConnectionFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        firstTimeStarting = true;
         mBluetoothDeviceArrayAdapter = new BluetoothDeviceArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mReceiver = new BluetoothDeviceBroadcastReceiver();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         View root = inflater.inflate(R.layout.fragment_bluetooth_connection, container, false);
 
+        // Loading/Content Panels
+        mContentPanel = (LinearLayout) root.findViewById(R.id.content_panel);
         mLoadingPanel = (LinearLayout) root.findViewById(R.id.loading_panel);
+        if (mIsDiscoveringDevices) {
+            mLoadingPanel.setVisibility(View.VISIBLE);
+            mContentPanel.setVisibility(View.GONE);
+        } else {
+            mLoadingPanel.setVisibility(View.GONE);
+            mContentPanel.setVisibility(View.VISIBLE);
+        }
+
+        // Refresh button
+        mRefreshButton = (Button) root.findViewById(R.id.button_refresh);
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContentPanel.setVisibility(View.GONE);
+                mBluetoothDeviceArrayAdapter.clear();
+                startDiscovery();
+            }
+        });
+
+        // Paired devices ListView
         mPairedDevicesListview = (ListView) root.findViewById(R.id.list_view_paired_devices);
         mPairedDevicesListview.setAdapter(mBluetoothDeviceArrayAdapter);
         mPairedDevicesListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,18 +148,22 @@ public class BluetoothConnectionFragment extends Fragment {
             }
         });
 
-        mLoadingPanel.setVisibility(View.GONE);
-        mPairedDevicesListview.setVisibility(View.GONE);
-
         return root;
     }
 
     @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        Log.i(TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
+        Log.i(TAG, "onStart");
         super.onStart();
 
-        if (firstTimeStarting) {
-            firstTimeStarting = false;
+        if(mIsFirstTimeStarting) {
+            mIsFirstTimeStarting = false;
 
             IntentFilter filter1 = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED);
             IntentFilter filter2 = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_SOCKET_DISCONNECTED);
@@ -155,32 +183,56 @@ public class BluetoothConnectionFragment extends Fragment {
                     Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBluetoothIntent, BLUETOOTH_ENABLED);
                 } else {
-                    mBluetoothAdapter.startDiscovery();
+                    addPairedDevices();
                 }
             } else {
                 Log.e(TAG, "Bluetooth not supported");
             }
-        } else {
-            Log.i(TAG, "Fragment has already been started once");
-            mPairedDevicesListview.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.i(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
     }
 
     @Override
     public void onDetach() {
-        super.onDetach();
+        Log.i(TAG, "onDetach");
+        getActivity().unregisterReceiver(mReceiver);
         mListener = null;
+        super.onDetach();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult");
         if (requestCode == BLUETOOTH_ENABLED) {
-            mBluetoothAdapter.startDiscovery();
+            startDiscovery();
         }
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : Private Method(s)
+    // Other Method(s)
     // -------------------------------------------------------------------------------------
     private void addPairedDevices() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -189,6 +241,11 @@ public class BluetoothConnectionFragment extends Fragment {
                 mBluetoothDeviceArrayAdapter.add(BluetoothDeviceWrapper.newInstance(pairedDevice));
             }
         }
+    }
+
+    private void startDiscovery() {
+        mBluetoothAdapter.startDiscovery();
+        mIsDiscoveringDevices = true;
     }
 
     // -------------------------------------------------------------------------------------
@@ -221,9 +278,10 @@ public class BluetoothConnectionFragment extends Fragment {
                 mLoadingPanel.setVisibility(View.VISIBLE);
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Toast.makeText(getActivity(), "ACTION_DISCOVERY_FINISHED", Toast.LENGTH_SHORT).show();
+                mIsDiscoveringDevices = false;
                 addPairedDevices();
                 mLoadingPanel.setVisibility(View.GONE);
-                mPairedDevicesListview.setVisibility(View.VISIBLE);
+                mContentPanel.setVisibility(View.VISIBLE);
             } else if (BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED.equals(action)) {
                 Toast.makeText(getActivity(), "ACTION_BLUETOOTH_SOCKET_CONNECTED", Toast.LENGTH_SHORT).show();
                 mBluetoothDeviceArrayAdapter.getActiveBluetoothDeviceWrapper().setState(BluetoothDeviceWrapper.State.CONNECTED);

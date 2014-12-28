@@ -22,18 +22,16 @@ import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.measurement.AbstractMeasurementElement;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- * Use the {@link bzh.eco.solar.fragment.MotorFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MotorFragment extends Fragment {
 
     // -------------------------------------------------------------------------------------
-    // Section : Normal Fields(s)
+    // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
     public static final String TAG = "MotorFragment";
 
+    // -------------------------------------------------------------------------------------
+    // Section : Fields(s)
+    // -------------------------------------------------------------------------------------
     private BroadcastReceiver mDataUpdateReceiver = null;
 
     private ArrayAdapter mElectricalPowerArrayAdapter;
@@ -42,9 +40,6 @@ public class MotorFragment extends Fragment {
 
     private ArrayAdapter mSpeedArrayAdapter;
 
-    // -------------------------------------------------------------------------------------
-    // Section : UI Fields(s)
-    // -------------------------------------------------------------------------------------
     private ListView mListViewElectricalPower;
 
     private ListView mListViewTemperature;
@@ -52,7 +47,7 @@ public class MotorFragment extends Fragment {
     private ListView mListViewSpeed;
 
     // -------------------------------------------------------------------------------------
-    // Section : Constructor(s)
+    // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
     public static MotorFragment newInstance() {
         return new MotorFragment();
@@ -63,7 +58,7 @@ public class MotorFragment extends Fragment {
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : @Override Method(s)
+    // Section : Android Lifecycle Method(s)
     // -------------------------------------------------------------------------------------
     @Override
     public void onAttach(Activity activity) {

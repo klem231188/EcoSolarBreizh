@@ -18,6 +18,7 @@
             android:id="@+id/loading_panel"
             android:layout_gravity="center"
             >
+
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,11 +38,30 @@
 
     </LinearLayout>
 
-
-    <ListView
-            android:id="@+id/list_view_paired_devices"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:orientation="vertical"
+            android:id="@+id/content_panel"
+            android:layout_gravity="center"
+            >
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rafraîchir la liste des appareils bluetooth"
+                android:id="@+id/button_refresh"
+                />
+
+        <View style="@style/HorizontalDivider"/>
+
+        <ListView
+                android:id="@+id/list_view_paired_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+    </LinearLayout>
+
 
 </LinearLayout>

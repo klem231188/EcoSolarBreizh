@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,33 +22,28 @@ import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.model.car.elements.SolarPanels;
 import bzh.eco.solar.model.measurement.AbstractMeasurementElement;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SolarPanelFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SolarPanelFragment extends Fragment {
 
     // -------------------------------------------------------------------------------------
-    // Section : Normal Fields(s)
+    // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "SolarPanelElectricalPowerFragment";
+    public static final String TAG = "SolarPanelFragment";
 
+    // -------------------------------------------------------------------------------------
+    // Section : Fields(s)
+    // -------------------------------------------------------------------------------------
     private BroadcastReceiver mDataUpdateReceiver = null;
 
-    // -------------------------------------------------------------------------------------
-    // Section : UI Fields(s)
-    // -------------------------------------------------------------------------------------
     private ListView mListViewSolarPanelElectricalPower;
 
-    private ArrayAdapter mElectricalPowerArrayAdapter;
-
     private ListView mListViewSolarPanelTemperature;
+
+    private ArrayAdapter mElectricalPowerArrayAdapter;
 
     private ArrayAdapter mTemperatureArrayAdapter;
 
     // -------------------------------------------------------------------------------------
-    // Section : Constructor(s)
+    // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
     public static SolarPanelFragment newInstance() {
         return new SolarPanelFragment();
@@ -58,20 +54,23 @@ public class SolarPanelFragment extends Fragment {
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : @Override Method(s)
+    // Section : Android Lifecycle Method(s)
     // -------------------------------------------------------------------------------------
     @Override
     public void onAttach(Activity activity) {
+        Log.i(TAG, "onAttach");
         super.onAttach(activity);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         View root = inflater.inflate(R.layout.fragment_solar_panel, container, false);
 
         mListViewSolarPanelElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
@@ -89,6 +88,7 @@ public class SolarPanelFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.i(TAG, "onResume");
         if (mDataUpdateReceiver == null) {
             mDataUpdateReceiver = new DataUpdateReceiver();
         }
@@ -101,6 +101,7 @@ public class SolarPanelFragment extends Fragment {
 
     @Override
     public void onPause() {
+        Log.i(TAG, "onPause");
         if (mDataUpdateReceiver == null) {
             getActivity().unregisterReceiver(mDataUpdateReceiver);
         }
@@ -109,7 +110,26 @@ public class SolarPanelFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.i(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        Log.i(TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
     public void onDetach() {
+        Log.i(TAG, "onDetach");
         super.onDetach();
     }
 
