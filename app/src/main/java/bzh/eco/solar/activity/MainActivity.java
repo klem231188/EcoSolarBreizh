@@ -150,6 +150,9 @@ public class MainActivity
         return super.onOptionsItemSelected(item);
     }
 
+    // -------------------------------------------------------------------------------------
+    // Section : ActionBar.TabListener Method(s)
+    // -------------------------------------------------------------------------------------
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -163,6 +166,9 @@ public class MainActivity
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
+    // -------------------------------------------------------------------------------------
+    // Section : BluetoothConnectionFragment.BluetoothCallback Method(s)
+    // -------------------------------------------------------------------------------------
     @Override
     public void onBluetoothConnecting(BluetoothDeviceWrapper device) {
         Intent startBluetoothServiceIntent = new Intent(this, BluetoothService.class);

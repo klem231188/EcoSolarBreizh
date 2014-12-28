@@ -162,7 +162,7 @@ public class BluetoothConnectionFragment extends Fragment {
         Log.i(TAG, "onStart");
         super.onStart();
 
-        if(mIsFirstTimeStarting) {
+        if (mIsFirstTimeStarting) {
             mIsFirstTimeStarting = false;
 
             IntentFilter filter1 = new IntentFilter(BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED);
@@ -218,7 +218,9 @@ public class BluetoothConnectionFragment extends Fragment {
     @Override
     public void onDetach() {
         Log.i(TAG, "onDetach");
-        getActivity().unregisterReceiver(mReceiver);
+        if (mReceiver != null) {
+            getActivity().unregisterReceiver(mReceiver);
+        }
         mListener = null;
         super.onDetach();
     }

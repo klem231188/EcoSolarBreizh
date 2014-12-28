@@ -102,7 +102,7 @@ public class SolarPanelFragment extends Fragment {
     @Override
     public void onPause() {
         Log.i(TAG, "onPause");
-        if (mDataUpdateReceiver == null) {
+        if (mDataUpdateReceiver != null) {
             getActivity().unregisterReceiver(mDataUpdateReceiver);
         }
 

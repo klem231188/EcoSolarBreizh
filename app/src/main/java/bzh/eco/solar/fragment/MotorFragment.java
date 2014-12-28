@@ -106,7 +106,7 @@ public class MotorFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (mDataUpdateReceiver == null) {
+        if (mDataUpdateReceiver != null) {
             getActivity().unregisterReceiver(mDataUpdateReceiver);
         }
 
