@@ -15,13 +15,19 @@ public abstract class AbstractMeasurementElement implements Serializable {
 
     private String meaning;
 
-    public AbstractMeasurementElement(int id, String meaning, Measurement type) {
+    private ConvertType convertType;
+
+    protected double value;
+
+    public AbstractMeasurementElement(int id, String meaning, Measurement type, ConvertType convertType) {
         this.id = id;
         this.meaning = meaning;
         this.type = type;
+        this.convertType = convertType;
+        this.value = 0.0;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -42,11 +48,72 @@ public abstract class AbstractMeasurementElement implements Serializable {
                 '}';
     }
 
-    public abstract void update(BluetoothFrame frame);
+    public void update(BluetoothFrame frame) {
+        if (convertType == ConvertType.INTEGER) {
+            updateToInteger(frame);
+        } else {
+            updateToFloat(frame);
+        }
+    }
 
-    public enum Measurement {
+    // TODO : conversion correcte ? Voir avec sébastien.
+    private void updateToInteger(BluetoothFrame frame) {
+        char[] originalData = frame.getOriginalData();
+        char decade = originalData[0];
+        char unit = originalData[1];
+
+        if (unit == 0x00) {
+            unit = decade;
+            decade = '0';
+        }
+
+        if (Character.isDigit(decade)
+                && Character.isDigit(unit)
+                ) {
+
+            value = Character.getNumericValue(decade) * 10;
+            value += Character.getNumericValue(unit);
+        }
+    }
+
+    private void updateToFloat(BluetoothFrame frame) {
+        char[] originalData = frame.getOriginalData();
+        char decade = originalData[0];
+        char unit = originalData[1];
+        char tenth = originalData[2];
+        char hundredth = originalData[3];
+
+        // Rule 1)
+        if (unit == 0x00) {
+            unit = decade;
+            decade = '0';
+        }
+        // Rule 2)
+        if (hundredth == 0x00) {
+            hundredth = tenth;
+            tenth = '0';
+        }
+        // Rule 3)
+        if (Character.isDigit(decade)
+                && Character.isDigit(unit)
+                && Character.isDigit(tenth)
+                && Character.isDigit(hundredth)) {
+
+            value = Character.getNumericValue(decade) * 10;
+            value += Character.getNumericValue(unit);
+            value += Character.getNumericValue(tenth) * 0.1;
+            value += Character.getNumericValue(hundredth) * 0.01;
+        }
+    }
+
+    public static enum Measurement {
         TEMPERATURE,
         ELECTRICAL_POWER,
         SPEED
+    }
+
+    public static enum ConvertType {
+        INTEGER,
+        FLOAT
     }
 }
