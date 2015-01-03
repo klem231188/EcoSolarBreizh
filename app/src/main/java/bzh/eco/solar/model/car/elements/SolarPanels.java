@@ -10,6 +10,7 @@ import java.util.List;
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.model.measurement.AbstractMeasurementElement;
+import bzh.eco.solar.model.measurement.AbstractMeasurementElement.ConvertType;
 import bzh.eco.solar.model.measurement.ElectricalPowerMeasurementElement;
 import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
 
@@ -49,26 +50,26 @@ public class SolarPanels implements Car.CarElement {
     private void initTemperatureMeasurementElements() {
         mTemperatureMeasurementElements = new ArrayList<TemperatureMeasurementElement>();
 
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(11, "Température avant des panneaux"));
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(12, "Température milieu des panneaux"));
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(13, "Température arrière des panneaux"));
+        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(11, "Température avant des panneaux", ConvertType.INTEGER));
+        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(12, "Température milieu des panneaux", ConvertType.INTEGER));
+        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(13, "Température arrière des panneaux", ConvertType.INTEGER));
     }
 
     private void initElectricalPowerMeasurementElements() {
         mElectricalPowerMeasurementElements = new ArrayList<ElectricalPowerMeasurementElement>();
 
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(52, "Panneau 1 secteur 1-2"));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(51, "Panneau 2 secteur 3-4"));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(53, "Panneau 3 secteur 5-6"));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(56, "Panneau 4 secteur 7-8"));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(57, "Panneau 5 secteur 9-10"));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(58, "Courant global des panneaux"));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(52, "Panneau 1 secteur 1-2", ConvertType.FLOAT));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(51, "Panneau 2 secteur 3-4", ConvertType.FLOAT));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(53, "Panneau 3 secteur 5-6", ConvertType.FLOAT));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(56, "Panneau 4 secteur 7-8", ConvertType.FLOAT));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(57, "Panneau 5 secteur 9-10", ConvertType.FLOAT));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(58, "Courant global des panneaux", ConvertType.FLOAT));
     }
 
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
         for (AbstractMeasurementElement measurementElement : mMeasurementElements) {
-            if (frame.getID() == measurementElement.getId()) {
+            if (frame.getID() == measurementElement.getID()) {
                 return true;
             }
         }
@@ -86,11 +87,10 @@ public class SolarPanels implements Car.CarElement {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
         for (AbstractMeasurementElement measurementElement : mMeasurementElements) {
-            if (frame.getID() == measurementElement.getId()) {
+            if (frame.getID() == measurementElement.getID()) {
                 measurementElement.update(frame);
 
-                Intent intent = new Intent("VALUE_CHANGED");
-                intent.putExtra("CAR_ELEMENT_TYPE", getType());
+                Intent intent = new Intent(getType().name());
                 intent.putExtra("MEASUREMENT_TYPE", measurementElement.getType());
                 context.sendBroadcast(intent);
 

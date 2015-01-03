@@ -18,11 +18,11 @@ import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
 /**
  * @author : Clément.Tréguer
  */
-public class Motors implements Car.CarElement {
+public class Generals implements Car.CarElement {
 
-    private static final String TAG = "Motors";
+    private static final String TAG = "Generals";
 
-    private static Motors mInstance = null;
+    private static Generals mInstance = null;
 
     private List<AbstractMeasurementElement> mMeasurementElements = null;
 
@@ -32,9 +32,9 @@ public class Motors implements Car.CarElement {
 
     private List<SpeedMeasurementElement> mSpeedMeasurementElements = null;
 
-    public static Motors getInstance() {
+    public static Generals getInstance() {
         if (mInstance == null) {
-            mInstance = new Motors();
+            mInstance = new Generals();
             mInstance.init();
         }
 
@@ -55,22 +55,22 @@ public class Motors implements Car.CarElement {
     private void initTemperatureMeasurementElements() {
         mTemperatureMeasurementElements = new ArrayList<TemperatureMeasurementElement>();
 
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(65, "Température moteur droit", ConvertType.INTEGER));
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(66, "Température moteur gauche", ConvertType.INTEGER));
+        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(80, "Température Cockpit", ConvertType.INTEGER));
+        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(81, "Température Processeur RX63N", ConvertType.INTEGER));
     }
 
     private void initElectricalPowerMeasurementElements() {
         mElectricalPowerMeasurementElements = new ArrayList<ElectricalPowerMeasurementElement>();
 
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(54, "Courant moteur droit", ConvertType.INTEGER));
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(55, "Courant moteur gauche", ConvertType.INTEGER));
+        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(70, "Mesure du courant général consommé par l’électronique (12v et 5v) en mA", ConvertType.INTEGER));
     }
 
     private void initSpeedMeasurementElements() {
         mSpeedMeasurementElements = new ArrayList<SpeedMeasurementElement>();
 
-        mSpeedMeasurementElements.add(new SpeedMeasurementElement(61, "Nombre de tours moteur droit", ConvertType.INTEGER));
-        mSpeedMeasurementElements.add(new SpeedMeasurementElement(62, "Nombre de tours moteur gauche", ConvertType.INTEGER));
+        mSpeedMeasurementElements.add(new SpeedMeasurementElement(23, "Vitesse de la voiture", ConvertType.INTEGER));
+        mSpeedMeasurementElements.add(new SpeedMeasurementElement(00, "Etat Régulateur", ConvertType.INTEGER));
+        mSpeedMeasurementElements.add(new SpeedMeasurementElement(43, "Consigne de vitesse", ConvertType.INTEGER));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Motors implements Car.CarElement {
 
     @Override
     public Car.ElementType getType() {
-        return Car.ElementType.MOTOR;
+        return Car.ElementType.GENERAL;
     }
 
     @Override
@@ -99,22 +99,11 @@ public class Motors implements Car.CarElement {
 
                 Intent intent = new Intent(getType().name());
                 intent.putExtra("MEASUREMENT_TYPE", measurementElement.getType());
+                intent.putExtra("MEASUREMENT_ELEMENT", measurementElement);
                 context.sendBroadcast(intent);
 
                 break;
             }
         }
-    }
-
-    public List<ElectricalPowerMeasurementElement> getElectricalPowerMeasurementElements() {
-        return mElectricalPowerMeasurementElements;
-    }
-
-    public List<TemperatureMeasurementElement> getTemperatureMeasurementElements() {
-        return mTemperatureMeasurementElements;
-    }
-
-    public List<SpeedMeasurementElement> getSpeedMeasurementElements() {
-        return mSpeedMeasurementElements;
     }
 }

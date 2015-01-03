@@ -6,7 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">Loading...</string>
     <string name="title_bluetooth_connection_section">Connection</string>
-    <string name="title_bluetooth_display_section">Display</string>
+    <string name="title_dashboard_section">Dashboard</string>
     <string name="connected">Connected</string>
     <string name="title_solar_panel_electical_power_section">Solar Panel</string>
     <string name="solar_panel_51">Panel 51</string>

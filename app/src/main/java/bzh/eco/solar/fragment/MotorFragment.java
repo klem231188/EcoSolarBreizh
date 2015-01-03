@@ -18,9 +18,8 @@ import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
 import bzh.eco.solar.adapter.SpeedArrayAdapter;
 import bzh.eco.solar.adapter.TemperatureArrayAdapter;
-import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.model.car.elements.Motors;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement;
+import bzh.eco.solar.model.measurement.AbstractMeasurementElement.Measurement;
 
 public class MotorFragment extends Fragment {
 
@@ -98,7 +97,7 @@ public class MotorFragment extends Fragment {
             mDataUpdateReceiver = new DataUpdateReceiver();
         }
 
-        IntentFilter intentFilter = new IntentFilter("VALUE_CHANGED");
+        IntentFilter intentFilter = new IntentFilter(Motors.getInstance().getType().name());
         getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
 
         super.onResume();
@@ -125,17 +124,15 @@ public class MotorFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("VALUE_CHANGED")) {
-                if (intent.getSerializableExtra("CAR_ELEMENT_TYPE") == Car.ElementType.MOTOR) {
-                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.ELECTRICAL_POWER) {
-                        mElectricalPowerArrayAdapter.notifyDataSetChanged();
-                    }
-                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.TEMPERATURE) {
-                        mTemperatureArrayAdapter.notifyDataSetChanged();
-                    }
-                    if (intent.getSerializableExtra("MEASUREMENT_TYPE") == AbstractMeasurementElement.Measurement.SPEED) {
-                        mSpeedArrayAdapter.notifyDataSetChanged();
-                    }
+            if (intent.getAction().equals(Motors.getInstance().getType().name())) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
+                    mElectricalPowerArrayAdapter.notifyDataSetChanged();
+                }
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
+                    mTemperatureArrayAdapter.notifyDataSetChanged();
+                }
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.SPEED) {
+                    mSpeedArrayAdapter.notifyDataSetChanged();
                 }
             }
         }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
+import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.car.elements.SolarPanels;
 
@@ -32,6 +33,7 @@ public class Car {
 
     private void init() {
         mCarElements = new ArrayList<CarElement>();
+        mCarElements.add(Generals.getInstance());
         mCarElements.add(SolarPanels.getInstance());
         mCarElements.add(Motors.getInstance());
     }
@@ -48,7 +50,8 @@ public class Car {
 
     public enum ElementType {
         SOLAR_PANEL,
-        MOTOR
+        MOTOR,
+        GENERAL
     }
 
     public interface CarElement {

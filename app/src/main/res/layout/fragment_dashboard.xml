@@ -1,0 +1,34 @@
+<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+        <TextView
+                android:id="@+id/text_view_car_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textSize="150sp"
+                android:gravity="center"
+                android:layout_marginRight="5dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="km/h"
+                android:textSize="30sp"
+                android:layout_toRightOf="@id/text_view_car_speed"
+                android:layout_alignBaseline="@id/text_view_car_speed"
+                />
+    </RelativeLayout>
+
+</LinearLayout>

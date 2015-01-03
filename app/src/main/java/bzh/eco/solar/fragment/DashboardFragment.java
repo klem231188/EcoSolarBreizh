@@ -12,43 +12,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
-import bzh.eco.solar.adapter.TemperatureArrayAdapter;
-import bzh.eco.solar.model.car.elements.SolarPanels;
+import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.measurement.AbstractMeasurementElement.Measurement;
+import bzh.eco.solar.model.measurement.ElectricalPowerMeasurementElement;
+import bzh.eco.solar.model.measurement.SpeedMeasurementElement;
+import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
 
-public class SolarPanelFragment extends Fragment {
+public class DashboardFragment extends Fragment {
 
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "SolarPanelFragment";
+    public static final String TAG = "DashboardFragment";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
     private BroadcastReceiver mDataUpdateReceiver = null;
 
-    private ListView mListViewSolarPanelElectricalPower;
-
-    private ListView mListViewSolarPanelTemperature;
-
-    private ArrayAdapter mElectricalPowerArrayAdapter;
-
-    private ArrayAdapter mTemperatureArrayAdapter;
+    private TextView mTextViewCarSpeed = null;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
-    public static SolarPanelFragment newInstance() {
-        return new SolarPanelFragment();
+    public static DashboardFragment newInstance() {
+        return new DashboardFragment();
     }
 
-    public SolarPanelFragment() {
+    public DashboardFragment() {
         mDataUpdateReceiver = new DataUpdateReceiver();
     }
 
@@ -57,42 +54,30 @@ public class SolarPanelFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     @Override
     public void onAttach(Activity activity) {
-        Log.i(TAG, "onAttach");
         super.onAttach(activity);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
-        View root = inflater.inflate(R.layout.fragment_solar_panel, container, false);
+        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        mListViewSolarPanelElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
-        mElectricalPowerArrayAdapter = new ElectricalPowerArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mElectricalPowerArrayAdapter.addAll(SolarPanels.getInstance().getElectricalPowerMeasurementElements());
-        mListViewSolarPanelElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
-
-        mListViewSolarPanelTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
-        mTemperatureArrayAdapter = new TemperatureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mTemperatureArrayAdapter.addAll(SolarPanels.getInstance().getTemperatureMeasurementElements());
-        mListViewSolarPanelTemperature.setAdapter(mTemperatureArrayAdapter);
+        mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
 
         return root;
     }
 
     @Override
     public void onResume() {
-        Log.i(TAG, "onResume");
         if (mDataUpdateReceiver == null) {
             mDataUpdateReceiver = new DataUpdateReceiver();
         }
 
-        IntentFilter intentFilter = new IntentFilter(SolarPanels.getInstance().getType().name());
+        IntentFilter intentFilter = new IntentFilter(Generals.getInstance().getType().name());
         getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
 
         super.onResume();
@@ -100,7 +85,6 @@ public class SolarPanelFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.i(TAG, "onPause");
         if (mDataUpdateReceiver != null) {
             getActivity().unregisterReceiver(mDataUpdateReceiver);
         }
@@ -109,26 +93,7 @@ public class SolarPanelFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState");
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        Log.i(TAG, "onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onStop() {
-        Log.i(TAG, "onStop");
-        super.onStop();
-    }
-
-    @Override
     public void onDetach() {
-        Log.i(TAG, "onDetach");
         super.onDetach();
     }
 
@@ -139,12 +104,23 @@ public class SolarPanelFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(SolarPanels.getInstance().getType().name())) {
+            NumberFormat formatter = new DecimalFormat("#0.0");
+
+            if (intent.getAction().equals(Generals.getInstance().getType().name())) {
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
-                    mElectricalPowerArrayAdapter.notifyDataSetChanged();
+                    ElectricalPowerMeasurementElement measurementElement = (ElectricalPowerMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurementElement.toString());
                 }
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
-                    mTemperatureArrayAdapter.notifyDataSetChanged();
+                    TemperatureMeasurementElement measurementElement = (TemperatureMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurementElement.toString());
+                }
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.SPEED) {
+                    SpeedMeasurementElement measurementElement = (SpeedMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurementElement.toString());
+                    if (measurementElement.getID() == 23) {
+                        mTextViewCarSpeed.setText(formatter.format(measurementElement.getSpeed()));
+                    }
                 }
             }
         }
