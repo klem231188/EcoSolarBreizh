@@ -9,11 +9,11 @@ import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement.ConvertType;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurementElement;
-import bzh.eco.solar.model.measurement.SpeedMeasurementElement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
+import bzh.eco.solar.model.measurement.AbstractMeasurement;
+import bzh.eco.solar.model.measurement.AbstractMeasurement.ConvertType;
+import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
+import bzh.eco.solar.model.measurement.SpeedMeasurement;
+import bzh.eco.solar.model.measurement.TemperatureMeasurement;
 
 /**
  * @author : Clément.Tréguer
@@ -24,13 +24,13 @@ public class Generals implements Car.CarElement {
 
     private static Generals mInstance = null;
 
-    private List<AbstractMeasurementElement> mMeasurementElements = null;
+    private List<AbstractMeasurement> mMeasurements = null;
 
-    private List<ElectricalPowerMeasurementElement> mElectricalPowerMeasurementElements = null;
+    private List<ElectricalPowerMeasurement> mElectricalPowerMeasurements = null;
 
-    private List<TemperatureMeasurementElement> mTemperatureMeasurementElements = null;
+    private List<TemperatureMeasurement> mTemperatureMeasurements = null;
 
-    private List<SpeedMeasurementElement> mSpeedMeasurementElements = null;
+    private List<SpeedMeasurement> mSpeedMeasurements = null;
 
     public static Generals getInstance() {
         if (mInstance == null) {
@@ -42,41 +42,41 @@ public class Generals implements Car.CarElement {
     }
 
     private void init() {
-        initElectricalPowerMeasurementElements();
-        initTemperatureMeasurementElements();
-        initSpeedMeasurementElements();
+        initElectricalPowerMeasurements();
+        initTemperatureMeasurements();
+        initSpeedMeasurements();
 
-        mMeasurementElements = new ArrayList<AbstractMeasurementElement>();
-        mMeasurementElements.addAll(mElectricalPowerMeasurementElements);
-        mMeasurementElements.addAll(mTemperatureMeasurementElements);
-        mMeasurementElements.addAll(mSpeedMeasurementElements);
+        mMeasurements = new ArrayList<AbstractMeasurement>();
+        mMeasurements.addAll(mElectricalPowerMeasurements);
+        mMeasurements.addAll(mTemperatureMeasurements);
+        mMeasurements.addAll(mSpeedMeasurements);
     }
 
-    private void initTemperatureMeasurementElements() {
-        mTemperatureMeasurementElements = new ArrayList<TemperatureMeasurementElement>();
+    private void initTemperatureMeasurements() {
+        mTemperatureMeasurements = new ArrayList<TemperatureMeasurement>();
 
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(80, "Température Cockpit", ConvertType.INTEGER));
-        mTemperatureMeasurementElements.add(new TemperatureMeasurementElement(81, "Température Processeur RX63N", ConvertType.INTEGER));
+        mTemperatureMeasurements.add(new TemperatureMeasurement(80, "Température Cockpit", ConvertType.INTEGER));
+        mTemperatureMeasurements.add(new TemperatureMeasurement(81, "Température Processeur RX63N", ConvertType.INTEGER));
     }
 
-    private void initElectricalPowerMeasurementElements() {
-        mElectricalPowerMeasurementElements = new ArrayList<ElectricalPowerMeasurementElement>();
+    private void initElectricalPowerMeasurements() {
+        mElectricalPowerMeasurements = new ArrayList<ElectricalPowerMeasurement>();
 
-        mElectricalPowerMeasurementElements.add(new ElectricalPowerMeasurementElement(70, "Mesure du courant général consommé par l’électronique (12v et 5v) en mA", ConvertType.INTEGER));
+        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(70, "Mesure du courant général consommé par l’électronique (12v et 5v) en mA", ConvertType.INTEGER));
     }
 
-    private void initSpeedMeasurementElements() {
-        mSpeedMeasurementElements = new ArrayList<SpeedMeasurementElement>();
+    private void initSpeedMeasurements() {
+        mSpeedMeasurements = new ArrayList<SpeedMeasurement>();
 
-        mSpeedMeasurementElements.add(new SpeedMeasurementElement(23, "Vitesse de la voiture", ConvertType.INTEGER));
-        mSpeedMeasurementElements.add(new SpeedMeasurementElement(00, "Etat Régulateur", ConvertType.INTEGER));
-        mSpeedMeasurementElements.add(new SpeedMeasurementElement(43, "Consigne de vitesse", ConvertType.INTEGER));
+        mSpeedMeasurements.add(new SpeedMeasurement(23, "Vitesse de la voiture", ConvertType.INTEGER));
+        mSpeedMeasurements.add(new SpeedMeasurement(00, "Etat Régulateur", ConvertType.INTEGER));
+        mSpeedMeasurements.add(new SpeedMeasurement(43, "Consigne de vitesse", ConvertType.INTEGER));
     }
 
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
-        for (AbstractMeasurementElement measurementElement : mMeasurementElements) {
-            if (frame.getID() == measurementElement.getID()) {
+        for (AbstractMeasurement measurement : mMeasurements) {
+            if (frame.getID() == measurement.getID()) {
                 return true;
             }
         }
@@ -93,13 +93,13 @@ public class Generals implements Car.CarElement {
     public void update(BluetoothFrame frame, Context context) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
-        for (AbstractMeasurementElement measurementElement : mMeasurementElements) {
-            if (frame.getID() == measurementElement.getID()) {
-                measurementElement.update(frame);
+        for (AbstractMeasurement measurement : mMeasurements) {
+            if (frame.getID() == measurement.getID()) {
+                measurement.update(frame);
 
                 Intent intent = new Intent(getType().name());
-                intent.putExtra("MEASUREMENT_TYPE", measurementElement.getType());
-                intent.putExtra("MEASUREMENT_ELEMENT", measurementElement);
+                intent.putExtra("MEASUREMENT_TYPE", measurement.getType());
+                intent.putExtra("MEASUREMENT_ELEMENT", measurement);
                 context.sendBroadcast(intent);
 
                 break;

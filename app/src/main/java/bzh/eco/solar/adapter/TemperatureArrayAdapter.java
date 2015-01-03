@@ -12,12 +12,12 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
+import bzh.eco.solar.model.measurement.TemperatureMeasurement;
 
 /**
  * @author : Clément.Tréguer
  */
-public class TemperatureArrayAdapter extends ArrayAdapter<TemperatureMeasurementElement> {
+public class TemperatureArrayAdapter extends ArrayAdapter<TemperatureMeasurement> {
 
     private static final double MAX_VALUE_TEMPERATURE = 100; //°C
 
@@ -39,16 +39,16 @@ public class TemperatureArrayAdapter extends ArrayAdapter<TemperatureMeasurement
             v = vi.inflate(R.layout.layout_measurement_row, null);
         }
 
-        TemperatureMeasurementElement measurementElement = getItem(position);
+        TemperatureMeasurement measurement = getItem(position);
 
         TextView textViewMeaning = (TextView) v.findViewById(R.id.text_view_meaning);
         TextView textViewElectricalPower = (TextView) v.findViewById(R.id.text_view_value);
         ProgressBar progressBarElectricalPower = (ProgressBar) v.findViewById(R.id.progress_bar_value);
 
-        if (measurementElement != null) {
-            textViewMeaning.setText(measurementElement.getMeaning());
-            textViewElectricalPower.setText(formatter.format(measurementElement.getTemperature()) + " °C");
-            progressBarElectricalPower.setProgress((int) ((measurementElement.getTemperature() * 100) / MAX_VALUE_TEMPERATURE));
+        if (measurement != null) {
+            textViewMeaning.setText(measurement.getMeaning());
+            textViewElectricalPower.setText(formatter.format(measurement.getTemperature()) + " °C");
+            progressBarElectricalPower.setProgress((int) ((measurement.getTemperature() * 100) / MAX_VALUE_TEMPERATURE));
         }
 
         return v;

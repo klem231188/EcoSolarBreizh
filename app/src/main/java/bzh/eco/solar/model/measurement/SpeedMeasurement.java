@@ -3,9 +3,9 @@ package bzh.eco.solar.model.measurement;
 /**
  * @author : Clément.Tréguer
  */
-public class SpeedMeasurementElement extends AbstractMeasurementElement {
+public class SpeedMeasurement extends AbstractMeasurement {
 
-    public SpeedMeasurementElement(int id, String meaning, ConvertType convertType) {
+    public SpeedMeasurement(int id, String meaning, ConvertType convertType) {
         super(id, meaning, Measurement.SPEED, convertType);
     }
 

@@ -7,7 +7,7 @@ import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 /**
  * @author : Clément.Tréguer
  */
-public abstract class AbstractMeasurementElement implements Serializable {
+public abstract class AbstractMeasurement implements Serializable {
 
     private int id;
 
@@ -19,7 +19,7 @@ public abstract class AbstractMeasurementElement implements Serializable {
 
     protected double value;
 
-    public AbstractMeasurementElement(int id, String meaning, Measurement type, ConvertType convertType) {
+    public AbstractMeasurement(int id, String meaning, Measurement type, ConvertType convertType) {
         this.id = id;
         this.meaning = meaning;
         this.type = type;
@@ -41,7 +41,7 @@ public abstract class AbstractMeasurementElement implements Serializable {
 
     @Override
     public String toString() {
-        return "AbstractMeasurementElement{" +
+        return "AbstractMeasurement{" +
                 "id=" + id +
                 ", type=" + type +
                 ", meaning='" + meaning + '\'' +

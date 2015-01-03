@@ -12,12 +12,12 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurementElement;
+import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
 
 /**
  * @author : Clément.Tréguer
  */
-public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMeasurementElement> {
+public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMeasurement> {
 
     private static final double MAX_VALUE_ELECTRICAL_POWER = 1; // Ampère
 
@@ -39,16 +39,16 @@ public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMea
             v = vi.inflate(R.layout.layout_measurement_row, null);
         }
 
-        ElectricalPowerMeasurementElement measurementElement = getItem(position);
+        ElectricalPowerMeasurement measurement = getItem(position);
 
         TextView textViewMeaning = (TextView) v.findViewById(R.id.text_view_meaning);
         TextView textViewElectricalPower = (TextView) v.findViewById(R.id.text_view_value);
         ProgressBar progressBarElectricalPower = (ProgressBar) v.findViewById(R.id.progress_bar_value);
 
-        if (measurementElement != null) {
-            textViewMeaning.setText(measurementElement.getMeaning());
-            textViewElectricalPower.setText(formatter.format(measurementElement.getElectricalPower()) + " A");
-            progressBarElectricalPower.setProgress((int) ((measurementElement.getElectricalPower() * 100) / MAX_VALUE_ELECTRICAL_POWER));
+        if (measurement != null) {
+            textViewMeaning.setText(measurement.getMeaning());
+            textViewElectricalPower.setText(formatter.format(measurement.getElectricalPower()) + " A");
+            progressBarElectricalPower.setProgress((int) ((measurement.getElectricalPower() * 100) / MAX_VALUE_ELECTRICAL_POWER));
         }
 
         return v;

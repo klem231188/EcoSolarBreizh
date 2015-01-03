@@ -3,9 +3,9 @@ package bzh.eco.solar.model.measurement;
 /**
  * @author : Clément.Tréguer
  */
-public class ElectricalPowerMeasurementElement extends AbstractMeasurementElement {
+public class ElectricalPowerMeasurement extends AbstractMeasurement {
 
-    public ElectricalPowerMeasurementElement(int id, String meaning, ConvertType convertType) {
+    public ElectricalPowerMeasurement(int id, String meaning, ConvertType convertType) {
         super(id, meaning, Measurement.ELECTRICAL_POWER, convertType);
     }
 

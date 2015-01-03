@@ -19,7 +19,7 @@ import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
 import bzh.eco.solar.adapter.SpeedArrayAdapter;
 import bzh.eco.solar.adapter.TemperatureArrayAdapter;
 import bzh.eco.solar.model.car.elements.Motors;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement.Measurement;
+import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
 
 public class MotorFragment extends Fragment {
 
@@ -75,17 +75,17 @@ public class MotorFragment extends Fragment {
 
         mListViewElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
         mElectricalPowerArrayAdapter = new ElectricalPowerArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mElectricalPowerArrayAdapter.addAll(Motors.getInstance().getElectricalPowerMeasurementElements());
+        mElectricalPowerArrayAdapter.addAll(Motors.getInstance().getElectricalPowerMeasurements());
         mListViewElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
 
         mListViewTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
         mTemperatureArrayAdapter = new TemperatureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mTemperatureArrayAdapter.addAll(Motors.getInstance().getTemperatureMeasurementElements());
+        mTemperatureArrayAdapter.addAll(Motors.getInstance().getTemperatureMeasurements());
         mListViewTemperature.setAdapter(mTemperatureArrayAdapter);
 
         mListViewSpeed = (ListView) root.findViewById(R.id.list_view_speed);
         mSpeedArrayAdapter = new SpeedArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mSpeedArrayAdapter.addAll(Motors.getInstance().getSpeedMeasurementElements());
+        mSpeedArrayAdapter.addAll(Motors.getInstance().getSpeedMeasurements());
         mListViewSpeed.setAdapter(mSpeedArrayAdapter);
 
         return root;

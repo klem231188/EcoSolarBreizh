@@ -19,7 +19,7 @@ import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
 import bzh.eco.solar.adapter.TemperatureArrayAdapter;
 import bzh.eco.solar.model.car.elements.SolarPanels;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement.Measurement;
+import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
 
 public class SolarPanelFragment extends Fragment {
 
@@ -74,12 +74,12 @@ public class SolarPanelFragment extends Fragment {
 
         mListViewSolarPanelElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
         mElectricalPowerArrayAdapter = new ElectricalPowerArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mElectricalPowerArrayAdapter.addAll(SolarPanels.getInstance().getElectricalPowerMeasurementElements());
+        mElectricalPowerArrayAdapter.addAll(SolarPanels.getInstance().getElectricalPowerMeasurements());
         mListViewSolarPanelElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
 
         mListViewSolarPanelTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
         mTemperatureArrayAdapter = new TemperatureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mTemperatureArrayAdapter.addAll(SolarPanels.getInstance().getTemperatureMeasurementElements());
+        mTemperatureArrayAdapter.addAll(SolarPanels.getInstance().getTemperatureMeasurements());
         mListViewSolarPanelTemperature.setAdapter(mTemperatureArrayAdapter);
 
         return root;

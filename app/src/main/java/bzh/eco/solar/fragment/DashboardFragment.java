@@ -19,10 +19,10 @@ import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.elements.Generals;
-import bzh.eco.solar.model.measurement.AbstractMeasurementElement.Measurement;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurementElement;
-import bzh.eco.solar.model.measurement.SpeedMeasurementElement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurementElement;
+import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
+import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
+import bzh.eco.solar.model.measurement.SpeedMeasurement;
+import bzh.eco.solar.model.measurement.TemperatureMeasurement;
 
 public class DashboardFragment extends Fragment {
 
@@ -108,18 +108,18 @@ public class DashboardFragment extends Fragment {
 
             if (intent.getAction().equals(Generals.getInstance().getType().name())) {
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
-                    ElectricalPowerMeasurementElement measurementElement = (ElectricalPowerMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
-                    Log.i(TAG, measurementElement.toString());
+                    ElectricalPowerMeasurement measurement = (ElectricalPowerMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurement.toString());
                 }
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
-                    TemperatureMeasurementElement measurementElement = (TemperatureMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
-                    Log.i(TAG, measurementElement.toString());
+                    TemperatureMeasurement measurement = (TemperatureMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurement.toString());
                 }
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.SPEED) {
-                    SpeedMeasurementElement measurementElement = (SpeedMeasurementElement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
-                    Log.i(TAG, measurementElement.toString());
-                    if (measurementElement.getID() == 23) {
-                        mTextViewCarSpeed.setText(formatter.format(measurementElement.getSpeed()));
+                    SpeedMeasurement measurement = (SpeedMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                    Log.i(TAG, measurement.toString());
+                    if (measurement.getID() == 23) {
+                        mTextViewCarSpeed.setText(formatter.format(measurement.getSpeed()));
                     }
                 }
             }
