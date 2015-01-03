@@ -19,10 +19,7 @@ import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.elements.Generals;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
-import bzh.eco.solar.model.measurement.SpeedMeasurement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 public class DashboardFragment extends Fragment {
 
@@ -107,19 +104,18 @@ public class DashboardFragment extends Fragment {
             NumberFormat formatter = new DecimalFormat("#0.0");
 
             if (intent.getAction().equals(Generals.getInstance().getType().name())) {
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
-                    ElectricalPowerMeasurement measurement = (ElectricalPowerMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                Measurement measurement = (Measurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
                     Log.i(TAG, measurement.toString());
                 }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
-                    TemperatureMeasurement measurement = (TemperatureMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
                     Log.i(TAG, measurement.toString());
                 }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.SPEED) {
-                    SpeedMeasurement measurement = (SpeedMeasurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.SPEED) {
                     Log.i(TAG, measurement.toString());
                     if (measurement.getID() == 23) {
-                        mTextViewCarSpeed.setText(formatter.format(measurement.getSpeed()));
+                        mTextViewCarSpeed.setText(formatter.format(measurement.getValue()));
                     }
                 }
             }

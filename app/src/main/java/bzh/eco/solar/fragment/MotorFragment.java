@@ -11,15 +11,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
-import bzh.eco.solar.adapter.SpeedArrayAdapter;
-import bzh.eco.solar.adapter.TemperatureArrayAdapter;
+import bzh.eco.solar.adapter.MeasurementArrayAdapter;
 import bzh.eco.solar.model.car.elements.Motors;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 public class MotorFragment extends Fragment {
 
@@ -33,11 +30,11 @@ public class MotorFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     private BroadcastReceiver mDataUpdateReceiver = null;
 
-    private ArrayAdapter mElectricalPowerArrayAdapter;
+    private MeasurementArrayAdapter mElectricalPowerArrayAdapter;
 
-    private ArrayAdapter mTemperatureArrayAdapter;
+    private MeasurementArrayAdapter mTemperatureArrayAdapter;
 
-    private ArrayAdapter mSpeedArrayAdapter;
+    private MeasurementArrayAdapter mSpeedArrayAdapter;
 
     private ListView mListViewElectricalPower;
 
@@ -74,17 +71,17 @@ public class MotorFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_motor, container, false);
 
         mListViewElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
-        mElectricalPowerArrayAdapter = new ElectricalPowerArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
+        mElectricalPowerArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mElectricalPowerArrayAdapter.addAll(Motors.getInstance().getElectricalPowerMeasurements());
         mListViewElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
 
         mListViewTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
-        mTemperatureArrayAdapter = new TemperatureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
+        mTemperatureArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mTemperatureArrayAdapter.addAll(Motors.getInstance().getTemperatureMeasurements());
         mListViewTemperature.setAdapter(mTemperatureArrayAdapter);
 
         mListViewSpeed = (ListView) root.findViewById(R.id.list_view_speed);
-        mSpeedArrayAdapter = new SpeedArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
+        mSpeedArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mSpeedArrayAdapter.addAll(Motors.getInstance().getSpeedMeasurements());
         mListViewSpeed.setAdapter(mSpeedArrayAdapter);
 
@@ -125,13 +122,13 @@ public class MotorFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Motors.getInstance().getType().name())) {
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
                     mElectricalPowerArrayAdapter.notifyDataSetChanged();
                 }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
                     mTemperatureArrayAdapter.notifyDataSetChanged();
                 }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.SPEED) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.SPEED) {
                     mSpeedArrayAdapter.notifyDataSetChanged();
                 }
             }

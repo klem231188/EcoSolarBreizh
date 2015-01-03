@@ -9,11 +9,10 @@ import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
-import bzh.eco.solar.model.measurement.AbstractMeasurement;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.ConvertType;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
-import bzh.eco.solar.model.measurement.SpeedMeasurement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurement;
+import bzh.eco.solar.model.measurement.Measurement;
+import bzh.eco.solar.model.measurement.Measurement.ConvertType;
+import bzh.eco.solar.model.measurement.Measurement.Type;
+import bzh.eco.solar.model.measurement.Measurement.Unity;
 
 /**
  * @author : Clément.Tréguer
@@ -24,13 +23,13 @@ public class Generals implements Car.CarElement {
 
     private static Generals mInstance = null;
 
-    private List<AbstractMeasurement> mMeasurements = null;
+    private List<Measurement> mMeasurements = null;
 
-    private List<ElectricalPowerMeasurement> mElectricalPowerMeasurements = null;
+    private List<Measurement> mElectricalPowerMeasurements = null;
 
-    private List<TemperatureMeasurement> mTemperatureMeasurements = null;
+    private List<Measurement> mTemperatureMeasurements = null;
 
-    private List<SpeedMeasurement> mSpeedMeasurements = null;
+    private List<Measurement> mSpeedMeasurements = null;
 
     public static Generals getInstance() {
         if (mInstance == null) {
@@ -46,36 +45,31 @@ public class Generals implements Car.CarElement {
         initTemperatureMeasurements();
         initSpeedMeasurements();
 
-        mMeasurements = new ArrayList<AbstractMeasurement>();
+        mMeasurements = new ArrayList<Measurement>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
         mMeasurements.addAll(mSpeedMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<TemperatureMeasurement>();
+        mTemperatureMeasurements = new ArrayList<Measurement>();
 
-        mTemperatureMeasurements.add(new TemperatureMeasurement(80, "Température Cockpit", ConvertType.INTEGER));
-        mTemperatureMeasurements.add(new TemperatureMeasurement(81, "Température Processeur RX63N", ConvertType.INTEGER));
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<ElectricalPowerMeasurement>();
+        mElectricalPowerMeasurements = new ArrayList<Measurement>();
 
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(70, "Mesure du courant général consommé par l’électronique (12v et 5v) en mA", ConvertType.INTEGER));
     }
 
     private void initSpeedMeasurements() {
-        mSpeedMeasurements = new ArrayList<SpeedMeasurement>();
+        mSpeedMeasurements = new ArrayList<Measurement>();
 
-        mSpeedMeasurements.add(new SpeedMeasurement(23, "Vitesse de la voiture", ConvertType.INTEGER));
-        mSpeedMeasurements.add(new SpeedMeasurement(00, "Etat Régulateur", ConvertType.INTEGER));
-        mSpeedMeasurements.add(new SpeedMeasurement(43, "Consigne de vitesse", ConvertType.INTEGER));
+        mSpeedMeasurements.add(new Measurement(23, "Vitesse de la voiture", Type.SPEED, Unity.KILOMETER_PER_HOUR, 150, ConvertType.INTEGER));
     }
 
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 return true;
             }
@@ -93,7 +87,7 @@ public class Generals implements Car.CarElement {
     public void update(BluetoothFrame frame, Context context) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
 

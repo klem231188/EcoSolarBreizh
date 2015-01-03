@@ -12,14 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.adapter.ElectricalPowerArrayAdapter;
-import bzh.eco.solar.adapter.TemperatureArrayAdapter;
+import bzh.eco.solar.adapter.MeasurementArrayAdapter;
 import bzh.eco.solar.model.car.elements.SolarPanels;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.Measurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 public class SolarPanelFragment extends Fragment {
 
@@ -37,9 +35,9 @@ public class SolarPanelFragment extends Fragment {
 
     private ListView mListViewSolarPanelTemperature;
 
-    private ArrayAdapter mElectricalPowerArrayAdapter;
+    private MeasurementArrayAdapter mElectricalPowerArrayAdapter;
 
-    private ArrayAdapter mTemperatureArrayAdapter;
+    private MeasurementArrayAdapter mTemperatureArrayAdapter;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
@@ -73,12 +71,12 @@ public class SolarPanelFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_solar_panel, container, false);
 
         mListViewSolarPanelElectricalPower = (ListView) root.findViewById(R.id.list_view_electrical_power);
-        mElectricalPowerArrayAdapter = new ElectricalPowerArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
+        mElectricalPowerArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mElectricalPowerArrayAdapter.addAll(SolarPanels.getInstance().getElectricalPowerMeasurements());
         mListViewSolarPanelElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
 
         mListViewSolarPanelTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
-        mTemperatureArrayAdapter = new TemperatureArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
+        mTemperatureArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mTemperatureArrayAdapter.addAll(SolarPanels.getInstance().getTemperatureMeasurements());
         mListViewSolarPanelTemperature.setAdapter(mTemperatureArrayAdapter);
 
@@ -140,10 +138,10 @@ public class SolarPanelFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(SolarPanels.getInstance().getType().name())) {
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.ELECTRICAL_POWER) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
                     mElectricalPowerArrayAdapter.notifyDataSetChanged();
                 }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.TEMPERATURE) {
+                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
                     mTemperatureArrayAdapter.notifyDataSetChanged();
                 }
             }

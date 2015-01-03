@@ -9,10 +9,7 @@ import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
-import bzh.eco.solar.model.measurement.AbstractMeasurement;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.ConvertType;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 /**
  * @author : Clément.Tréguer
@@ -23,11 +20,11 @@ public class SolarPanels implements Car.CarElement {
 
     private static SolarPanels mInstance = null;
 
-    private List<AbstractMeasurement> mMeasurements = null;
+    private List<Measurement> mMeasurements = null;
 
-    private List<ElectricalPowerMeasurement> mElectricalPowerMeasurements = null;
+    private List<Measurement> mElectricalPowerMeasurements = null;
 
-    private List<TemperatureMeasurement> mTemperatureMeasurements = null;
+    private List<Measurement> mTemperatureMeasurements = null;
 
     public static SolarPanels getInstance() {
         if (mInstance == null) {
@@ -42,33 +39,33 @@ public class SolarPanels implements Car.CarElement {
         initElectricalPowerMeasurements();
         initTemperatureMeasurements();
 
-        mMeasurements = new ArrayList<AbstractMeasurement>();
+        mMeasurements = new ArrayList<Measurement>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<TemperatureMeasurement>();
+        mTemperatureMeasurements = new ArrayList<Measurement>();
 
-        mTemperatureMeasurements.add(new TemperatureMeasurement(11, "Température avant des panneaux", ConvertType.INTEGER));
-        mTemperatureMeasurements.add(new TemperatureMeasurement(12, "Température milieu des panneaux", ConvertType.INTEGER));
-        mTemperatureMeasurements.add(new TemperatureMeasurement(13, "Température arrière des panneaux", ConvertType.INTEGER));
+        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(11, "Température avant des panneaux"));
+        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(12, "Température milieu des panneaux"));
+        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(13, "Température arrière des panneaux"));
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<ElectricalPowerMeasurement>();
+        mElectricalPowerMeasurements = new ArrayList<Measurement>();
 
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(52, "Panneau 1 secteur 1-2", ConvertType.FLOAT));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(51, "Panneau 2 secteur 3-4", ConvertType.FLOAT));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(53, "Panneau 3 secteur 5-6", ConvertType.FLOAT));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(56, "Panneau 4 secteur 7-8", ConvertType.FLOAT));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(57, "Panneau 5 secteur 9-10", ConvertType.FLOAT));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(58, "Courant global des panneaux", ConvertType.FLOAT));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(52, "Panneau 1 secteur 1-2"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(51, "Panneau 2 secteur 3-4"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(53, "Panneau 3 secteur 5-6"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(56, "Panneau 4 secteur 7-8"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(57, "Panneau 5 secteur 9-10"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(58, "Courant global des panneaux"));
     }
 
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 return true;
             }
@@ -86,7 +83,7 @@ public class SolarPanels implements Car.CarElement {
     public void update(BluetoothFrame frame, Context context) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
 
@@ -99,11 +96,11 @@ public class SolarPanels implements Car.CarElement {
         }
     }
 
-    public List<ElectricalPowerMeasurement> getElectricalPowerMeasurements() {
+    public List<Measurement> getElectricalPowerMeasurements() {
         return mElectricalPowerMeasurements;
     }
 
-    public List<TemperatureMeasurement> getTemperatureMeasurements() {
+    public List<Measurement> getTemperatureMeasurements() {
         return mTemperatureMeasurements;
     }
 }

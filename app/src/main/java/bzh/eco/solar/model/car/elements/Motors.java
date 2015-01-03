@@ -9,11 +9,7 @@ import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
-import bzh.eco.solar.model.measurement.AbstractMeasurement;
-import bzh.eco.solar.model.measurement.AbstractMeasurement.ConvertType;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
-import bzh.eco.solar.model.measurement.SpeedMeasurement;
-import bzh.eco.solar.model.measurement.TemperatureMeasurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 /**
  * @author : Clément.Tréguer
@@ -24,13 +20,13 @@ public class Motors implements Car.CarElement {
 
     private static Motors mInstance = null;
 
-    private List<AbstractMeasurement> mMeasurements = null;
+    private List<Measurement> mMeasurements = null;
 
-    private List<ElectricalPowerMeasurement> mElectricalPowerMeasurements = null;
+    private List<Measurement> mElectricalPowerMeasurements = null;
 
-    private List<TemperatureMeasurement> mTemperatureMeasurements = null;
+    private List<Measurement> mTemperatureMeasurements = null;
 
-    private List<SpeedMeasurement> mSpeedMeasurements = null;
+    private List<Measurement> mSpeedMeasurements = null;
 
     public static Motors getInstance() {
         if (mInstance == null) {
@@ -46,36 +42,36 @@ public class Motors implements Car.CarElement {
         initTemperatureMeasurements();
         initSpeedMeasurements();
 
-        mMeasurements = new ArrayList<AbstractMeasurement>();
+        mMeasurements = new ArrayList<Measurement>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
         mMeasurements.addAll(mSpeedMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<TemperatureMeasurement>();
+        mTemperatureMeasurements = new ArrayList<Measurement>();
 
-        mTemperatureMeasurements.add(new TemperatureMeasurement(65, "Température moteur droit", ConvertType.INTEGER));
-        mTemperatureMeasurements.add(new TemperatureMeasurement(66, "Température moteur gauche", ConvertType.INTEGER));
+        mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(65, "Température moteur droit"));
+        mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(66, "Température moteur gauche"));
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<ElectricalPowerMeasurement>();
+        mElectricalPowerMeasurements = new ArrayList<Measurement>();
 
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(54, "Courant moteur droit", ConvertType.INTEGER));
-        mElectricalPowerMeasurements.add(new ElectricalPowerMeasurement(55, "Courant moteur gauche", ConvertType.INTEGER));
+        mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(54, "Courant moteur droit"));
+        mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(55, "Courant moteur gauche"));
     }
 
     private void initSpeedMeasurements() {
-        mSpeedMeasurements = new ArrayList<SpeedMeasurement>();
+        mSpeedMeasurements = new ArrayList<Measurement>();
 
-        mSpeedMeasurements.add(new SpeedMeasurement(61, "Nombre de tours moteur droit", ConvertType.INTEGER));
-        mSpeedMeasurements.add(new SpeedMeasurement(62, "Nombre de tours moteur gauche", ConvertType.INTEGER));
+        mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(61, "Nombre de tours moteur droit"));
+        mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(62, "Nombre de tours moteur gauche"));
     }
 
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 return true;
             }
@@ -93,7 +89,7 @@ public class Motors implements Car.CarElement {
     public void update(BluetoothFrame frame, Context context) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
-        for (AbstractMeasurement measurement : mMeasurements) {
+        for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
 
@@ -106,15 +102,15 @@ public class Motors implements Car.CarElement {
         }
     }
 
-    public List<ElectricalPowerMeasurement> getElectricalPowerMeasurements() {
+    public List<Measurement> getElectricalPowerMeasurements() {
         return mElectricalPowerMeasurements;
     }
 
-    public List<TemperatureMeasurement> getTemperatureMeasurements() {
+    public List<Measurement> getTemperatureMeasurements() {
         return mTemperatureMeasurements;
     }
 
-    public List<SpeedMeasurement> getSpeedMeasurements() {
+    public List<Measurement> getSpeedMeasurements() {
         return mSpeedMeasurements;
     }
 }

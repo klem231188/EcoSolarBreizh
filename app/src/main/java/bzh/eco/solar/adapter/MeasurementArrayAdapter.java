@@ -12,20 +12,18 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.measurement.ElectricalPowerMeasurement;
+import bzh.eco.solar.model.measurement.Measurement;
 
 /**
  * @author : Clément.Tréguer
  */
-public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMeasurement> {
+public class MeasurementArrayAdapter extends ArrayAdapter<Measurement> {
 
-    private static final double MAX_VALUE_ELECTRICAL_POWER = 1; // Ampère
+    private NumberFormat formatter = null;
 
-    NumberFormat formatter = null;
-
-    public ElectricalPowerArrayAdapter(Context context, int resource) {
+    public MeasurementArrayAdapter(Context context, int resource) {
         super(context, resource);
-        formatter = new DecimalFormat("#0.00");
+        this.formatter = new DecimalFormat("#0.00");
     }
 
     @Override
@@ -39,16 +37,16 @@ public class ElectricalPowerArrayAdapter extends ArrayAdapter<ElectricalPowerMea
             v = vi.inflate(R.layout.layout_measurement_row, null);
         }
 
-        ElectricalPowerMeasurement measurement = getItem(position);
+        Measurement measurement = getItem(position);
 
         TextView textViewMeaning = (TextView) v.findViewById(R.id.text_view_meaning);
-        TextView textViewElectricalPower = (TextView) v.findViewById(R.id.text_view_value);
-        ProgressBar progressBarElectricalPower = (ProgressBar) v.findViewById(R.id.progress_bar_value);
+        TextView textViewValue = (TextView) v.findViewById(R.id.text_view_value);
+        ProgressBar progressBarValue = (ProgressBar) v.findViewById(R.id.progress_bar_value);
 
         if (measurement != null) {
             textViewMeaning.setText(measurement.getMeaning());
-            textViewElectricalPower.setText(formatter.format(measurement.getElectricalPower()) + " A");
-            progressBarElectricalPower.setProgress((int) ((measurement.getElectricalPower() * 100) / MAX_VALUE_ELECTRICAL_POWER));
+            textViewValue.setText(formatter.format(measurement.getValue()) + " " + measurement.getUnity().getValue());
+            progressBarValue.setProgress((int) ((measurement.getValue() * 100) / measurement.getMaxValue()));
         }
 
         return v;
