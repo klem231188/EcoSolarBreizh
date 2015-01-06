@@ -30,5 +30,12 @@
                 android:layout_alignBaseline="@id/text_view_car_speed"
                 />
     </RelativeLayout>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test send command"
+            android:id="@+id/button_test_send_command"
+            android:layout_gravity="center_horizontal"
+            />
 
 </LinearLayout>

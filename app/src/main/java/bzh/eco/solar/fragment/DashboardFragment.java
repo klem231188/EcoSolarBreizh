@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -20,6 +21,7 @@ import java.text.NumberFormat;
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.measurement.Measurement;
+import bzh.eco.solar.service.BluetoothService;
 
 public class DashboardFragment extends Fragment {
 
@@ -34,6 +36,8 @@ public class DashboardFragment extends Fragment {
     private BroadcastReceiver mDataUpdateReceiver = null;
 
     private TextView mTextViewCarSpeed = null;
+
+    private Button mButtonTestSendCommand = null;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
@@ -64,6 +68,15 @@ public class DashboardFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
+        mButtonTestSendCommand = (Button) root.findViewById(R.id.button_test_send_command);
+
+        mButtonTestSendCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BluetoothService.ACTION_SEND_COMMAND);
+                getActivity().sendBroadcast(intent);
+            }
+        });
 
         return root;
     }
