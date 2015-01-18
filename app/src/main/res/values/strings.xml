@@ -12,5 +12,8 @@
     <string name="solar_panel_51">Panel 51</string>
     <string name="solar_panel_52">Panel 52</string>
     <string name="title_motor_section">Motor</string>
+    <string name="full_headlights">full_headlights</string>
+    <string name="button_warnings">button_warnings</string>
+    <string name="deeped_headlights">deeped_headlights</string>
 
 </resources>

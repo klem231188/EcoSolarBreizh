@@ -1,41 +1,147 @@
 <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         >
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            >
-        <TextView
-                android:id="@+id/text_view_car_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.0"
-                android:textSize="150sp"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                />
+    <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/button_turn_left"
+            android:layout_weight="15"
+            android:src="@drawable/left_white_triangle"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            />
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="km/h"
-                android:textSize="30sp"
-                android:layout_toRightOf="@id/text_view_car_speed"
-                android:layout_alignBaseline="@id/text_view_car_speed"
-                />
-    </RelativeLayout>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test send command"
-            android:id="@+id/button_test_send_command"
-            android:layout_gravity="center_horizontal"
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="70"
+            android:layout_height="fill_parent"
+            >
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="20"
+                android:gravity="center_vertical|center_horizontal"
+                >
+            <ImageButton
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:id="@+id/button_full_headlights"
+                    android:src="@drawable/full_headlights_selector"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/full_headlights"
+                    android:layout_margin="20dp"
+                    android:scaleType="fitCenter"
+                    />
+
+            <ImageButton android:layout_width="75dp"
+                         android:layout_height="75dp"
+                         android:id="@+id/button_warnings"
+                         android:src="@drawable/warnings_off"
+                         android:background="@android:color/transparent"
+                         android:contentDescription="@string/button_warnings"
+                         android:cropToPadding="false"
+                         android:layout_margin="20dp"
+                         android:scaleType="fitCenter"
+                    />
+
+            <ImageButton android:layout_width="75dp"
+                         android:layout_height="75dp"
+                         android:id="@+id/button_deeped_headlights_off"
+                         android:src="@drawable/deeped_headlights_off"
+                         android:background="@android:color/transparent"
+                         android:contentDescription="@string/deeped_headlights"
+                         android:layout_margin="20dp"
+                         android:scaleType="fitCenter"
+                    />
+        </LinearLayout>
+
+        <View style="@style/HorizontalDivider"/>
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="60"
+                android:gravity="center"
+                >
+            <TextView
+                    android:id="@+id/text_view_car_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+                    android:textSize="200sp"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="km/h"
+                    android:textSize="30sp"
+                    android:layout_toRightOf="@id/text_view_car_speed"
+                    android:layout_alignBaseline="@id/text_view_car_speed"
+                    />
+        </RelativeLayout>
+
+        <View style="@style/HorizontalDivider"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="20"
+                android:gravity="center_vertical"
+                >
+            <ImageButton
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:id="@+id/button_speed_regulator"
+                    android:src="@drawable/speed_regulator_off"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="50dp"
+                    />
+            <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical|left"
+                    android:layout_marginLeft="30dp">
+                <TextView
+                        android:id="@+id/text_view_car_speed_regulator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textSize="40sp"
+                        android:layout_marginRight="5dp"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="km/h"
+                        android:textSize="14sp"
+                        android:layout_toRightOf="@id/text_view_car_speed_regulator"
+                        android:layout_alignBaseline="@id/text_view_car_speed_regulator"
+                        />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/button_turn_right"
+            android:layout_weight="15"
+            android:src="@drawable/right_white_triangle"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
             />
 
 </LinearLayout>

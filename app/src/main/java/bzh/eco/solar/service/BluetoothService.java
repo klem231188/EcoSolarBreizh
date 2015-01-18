@@ -83,6 +83,9 @@ public class BluetoothService extends Service {
     public void onCreate() {
         super.onCreate();
         Toast.makeText(this, "BluetoothService onCreate ", Toast.LENGTH_SHORT).show();
+
+        IntentFilter filter = new IntentFilter(BluetoothService.ACTION_SEND_COMMAND);
+        registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -146,7 +149,7 @@ public class BluetoothService extends Service {
                 switch (msg.what) {
                     case BLUETOOTH_SOCKET_CONNECTED: {
                         Intent connectedIntent = new Intent(BluetoothService.ACTION_BLUETOOTH_SOCKET_CONNECTED);
-                        sendBroadcast(connectedIntent);
+                        parent.sendBroadcast(connectedIntent);
 
                         mBluetoothSocket = (BluetoothSocket) msg.obj;
 
@@ -156,27 +159,19 @@ public class BluetoothService extends Service {
                         mOutputProcessingThread = new BluetoothOutputProcessingThread(mBluetoothSocket);
                         mOutputProcessingThread.start();
 
-                        IntentFilter filter = new IntentFilter(BluetoothService.ACTION_SEND_COMMAND);
-                        registerReceiver(mReceiver, filter);
-
                         break;
                     }
                     case BLUETOOTH_SOCKET_DISCONNECTED: {
                         Intent disconnectedIntent = new Intent(BluetoothService.ACTION_BLUETOOTH_SOCKET_DISCONNECTED);
-                        sendBroadcast(disconnectedIntent);
+                        parent.sendBroadcast(disconnectedIntent);
 
                         if (mBluetoothSocket != null) {
                             try {
                                 mBluetoothSocket.close();
+                                mBluetoothSocket = null;
                             } catch (IOException e) {
                                 Log.e(TAG, e.toString());
                             }
-                        }
-
-                        mBluetoothSocket = null;
-
-                        if (mReceiver != null) {
-                            unregisterReceiver(mReceiver);
                         }
 
                         break;

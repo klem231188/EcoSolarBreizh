@@ -68,15 +68,15 @@ public class DashboardFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
-        mButtonTestSendCommand = (Button) root.findViewById(R.id.button_test_send_command);
-
-        mButtonTestSendCommand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(BluetoothService.ACTION_SEND_COMMAND);
-                getActivity().sendBroadcast(intent);
-            }
-        });
+//        mButtonTestSendCommand = (Button) root.findViewById(R.id.button_test_send_command);
+//
+//        mButtonTestSendCommand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(BluetoothService.ACTION_SEND_COMMAND);
+//                getActivity().sendBroadcast(intent);
+//            }
+//        });
 
         return root;
     }
