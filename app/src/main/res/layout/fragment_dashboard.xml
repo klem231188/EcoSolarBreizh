@@ -44,7 +44,7 @@
                          android:id="@+id/button_warnings"
                          android:src="@drawable/warnings_off"
                          android:background="@android:color/transparent"
-                         android:contentDescription="@string/button_warnings"
+                         android:contentDescription="@string/warnings"
                          android:cropToPadding="false"
                          android:layout_margin="20dp"
                          android:scaleType="fitCenter"

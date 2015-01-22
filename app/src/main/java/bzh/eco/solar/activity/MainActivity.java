@@ -225,6 +225,9 @@ public class MainActivity
         @Override
         public CharSequence getPageTitle(int position) {
             Locale locale = Locale.getDefault();
+
+            // TODO use list instead and put name of fragment in fragment.
+
             switch (position) {
                 case BLUETOOTH_CONNECTION_SECTION:
                     return getString(R.string.title_bluetooth_connection_section).toUpperCase(locale);

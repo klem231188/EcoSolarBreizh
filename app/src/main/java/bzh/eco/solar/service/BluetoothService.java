@@ -90,6 +90,7 @@ public class BluetoothService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         Toast.makeText(this, "BluetoothService onStartCommand ", Toast.LENGTH_SHORT).show();
 
         mDevice = intent.getParcelableExtra(EXTRA_DEVICE);
@@ -205,6 +206,30 @@ public class BluetoothService extends Service {
         }
     }
 
+    private class OutputProcessingHandler extends Handler {
+
+        WeakReference<BluetoothService> mParent;
+
+        public OutputProcessingHandler(WeakReference<BluetoothService> parent) {
+            mParent = parent;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            BluetoothService parent = mParent.get();
+            if (null != parent) {
+                switch (msg.what) {
+                    case BLUETOOTH_FRAME_PROCESSED: {
+                        BluetoothFrame bluetoothFrame = (BluetoothFrame) msg.obj;
+                        Car.getInstance().update(bluetoothFrame, BluetoothService.this);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private class ServiceBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -214,8 +239,8 @@ public class BluetoothService extends Service {
             if (BluetoothService.ACTION_SEND_COMMAND.equals(action)) {
                 if (mOutputProcessingThread != null) {
                     if (mOutputProcessingThread.getHandler() != null) {
-                        int commandValue = 0;
-                        Message msg = Message.obtain(mOutputProcessingThread.getHandler(), commandValue);
+                        Message msg = Message.obtain(mOutputProcessingThread.getHandler());
+                        msg.obj = intent.getSerializableExtra("COMMAND");
                         msg.sendToTarget();
                     }
                 }
