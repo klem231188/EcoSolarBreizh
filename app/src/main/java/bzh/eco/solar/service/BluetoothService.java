@@ -28,6 +28,8 @@ public class BluetoothService extends Service {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
+    public static final String TAG = "BluetoothService";
+
     public static final UUID BLUETOOTH_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     public static final String EXTRA_DEVICE = "EXTRA_DEVICE";
@@ -41,8 +43,6 @@ public class BluetoothService extends Service {
     public static final int BLUETOOTH_SOCKET_DISCONNECTED = 1;
 
     public static final int BLUETOOTH_FRAME_PROCESSED = 0;
-
-    public static final String TAG = "BluetoothService";
 
     public static final String ACTION_SEND_COMMAND = "ACTION_SEND_COMMAND";
 

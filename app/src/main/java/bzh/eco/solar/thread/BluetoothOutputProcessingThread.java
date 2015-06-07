@@ -17,7 +17,7 @@ public class BluetoothOutputProcessingThread extends Thread {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "BluetoothOutputProcessingThread";
+    public static final String TAG = "OutputProcessing";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)

@@ -1,8 +1,6 @@
 package bzh.eco.solar.thread;
 
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -13,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
-import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.service.BluetoothService;
 
 public class BluetoothInputProcessingThread extends Thread {
@@ -21,7 +18,7 @@ public class BluetoothInputProcessingThread extends Thread {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "BluetoothInputProcessingThread";
+    public static final String TAG = "InputProcessing";
 
     public static final int FRAME_SIZE = 8;
 

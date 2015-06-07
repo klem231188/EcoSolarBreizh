@@ -19,7 +19,7 @@ import java.util.Locale;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
-import bzh.eco.solar.fragment.DashboardFragment;
+import bzh.eco.solar.fragment.DashboardFragmentV2;
 import bzh.eco.solar.fragment.MotorFragment;
 import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
@@ -202,7 +202,7 @@ public class MainActivity
             super(fm);
             mFragments = new ArrayList<Fragment>();
             mFragments.add(BluetoothConnectionFragment.newInstance());
-            mFragments.add(DashboardFragment.newInstance());
+            mFragments.add(DashboardFragmentV2.newInstance());
             mFragments.add(SolarPanelFragment.newInstance());
             mFragments.add(MotorFragment.newInstance());
         }

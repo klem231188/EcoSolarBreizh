@@ -16,7 +16,7 @@ public class BluetoothConnectionThread extends Thread {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    public static final String TAG = "BluetoothConnectionThread";
+    public static final String TAG = "Connection";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
