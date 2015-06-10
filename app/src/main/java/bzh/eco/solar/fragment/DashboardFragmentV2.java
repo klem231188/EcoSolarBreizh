@@ -68,7 +68,13 @@ public class DashboardFragmentV2 extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard_v2, container, false);
 
         mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
+        initSpeedometerGauge(root);
 
+
+        return root;
+    }
+
+    private void initSpeedometerGauge(View root) {
         mSpeedometer = (SpeedometerGauge) root.findViewById(R.id.speedometer);
         mSpeedometer.setMaxSpeed(150);
         mSpeedometer.setLabelConverter(new SpeedometerGauge.LabelConverter() {
@@ -82,9 +88,7 @@ public class DashboardFragmentV2 extends Fragment {
         mSpeedometer.addColoredRange(0, 80, Color.GREEN);
         mSpeedometer.addColoredRange(80, 120, Color.YELLOW);
         mSpeedometer.addColoredRange(120, 150, Color.RED);
-        mSpeedometer.setSpeed(80, 200, 0);
-
-        return root;
+        mSpeedometer.setSpeed(0, 0, 0);
     }
 
 
@@ -135,7 +139,9 @@ public class DashboardFragmentV2 extends Fragment {
                 if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.SPEED) {
                     Log.i(TAG, measurement.toString());
                     if (measurement.getID() == 23) {
-                        mTextViewCarSpeed.setText(formatter.format(measurement.getValue()));
+                        double speed = measurement.getValue();
+                        mTextViewCarSpeed.setText(formatter.format(speed));
+                        mSpeedometer.setSpeed(speed, 50, 0);
                     }
                 }
             }

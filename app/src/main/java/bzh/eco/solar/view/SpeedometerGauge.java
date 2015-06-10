@@ -17,6 +17,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import bzh.eco.solar.R;
+
 /**
  * Speedometer with needle.
  *
@@ -49,7 +51,7 @@ public class SpeedometerGauge extends View {
 
     private LabelConverter labelConverter;
 
-    private List<ColoredRange> ranges = new ArrayList<ColoredRange>();
+    private List<ColoredRange> ranges = new ArrayList<>();
 
     private Paint backgroundPaint;
 
@@ -129,7 +131,7 @@ public class SpeedometerGauge extends View {
             public Double evaluate(float fraction, Double startValue, Double endValue) {
                 return startValue + fraction * (endValue - startValue);
             }
-        }, Double.valueOf(getSpeed()), Double.valueOf(progress));
+        }, getSpeed(), progress);
 
         va.setDuration(duration);
         va.setStartDelay(startDelay);
@@ -408,7 +410,7 @@ public class SpeedometerGauge extends View {
         txtPaint.setTextAlign(Paint.Align.CENTER);
         txtPaint.setLinearText(true);
 
-        mMask = BitmapFactory.decodeResource(getResources(), com.cardiomood.android.controls.R.drawable.spot_mask);
+        mMask = BitmapFactory.decodeResource(getResources(), R.drawable.spot_mask);
         mMask = Bitmap.createBitmap(mMask, 0, 0, mMask.getWidth(), mMask.getHeight() / 2);
 
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -436,7 +438,7 @@ public class SpeedometerGauge extends View {
     }
 
 
-    public static interface LabelConverter {
+    public interface LabelConverter {
 
         String getLabelFor(double progress, double maxProgress);
 

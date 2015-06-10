@@ -16,5 +16,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v13:20.+'
-    compile 'com.cardiomood.android:android-widgets:0.1.1'
 }
