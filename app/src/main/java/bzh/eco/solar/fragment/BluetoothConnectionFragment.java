@@ -31,7 +31,7 @@ public class BluetoothConnectionFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     // Section : Static Fields(s)
     // -------------------------------------------------------------------------------------
-    private static final String TAG = "BluetoothConnectionFragment";
+    private static final String TAG = "Bluetooth";
 
     private static final int BLUETOOTH_ENABLED = 1;
 
@@ -152,12 +152,6 @@ public class BluetoothConnectionFragment extends Fragment {
     }
 
     @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        Log.i(TAG, "onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
     public void onStart() {
         Log.i(TAG, "onStart");
         super.onStart();
@@ -189,6 +183,12 @@ public class BluetoothConnectionFragment extends Fragment {
                 Log.e(TAG, "Bluetooth not supported");
             }
         }
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        Log.i(TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
@@ -255,9 +255,9 @@ public class BluetoothConnectionFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     public interface BluetoothCallback {
 
-        public void onBluetoothConnecting(BluetoothDeviceWrapper device);
+        void onBluetoothConnecting(BluetoothDeviceWrapper device);
 
-        public void onBluetoothDisconnecting();
+        void onBluetoothDisconnecting();
     }
 
 

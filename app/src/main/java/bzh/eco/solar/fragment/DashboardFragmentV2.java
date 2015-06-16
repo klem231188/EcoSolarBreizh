@@ -3,10 +3,6 @@ package bzh.eco.solar.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.measurement.Measurement;
 import bzh.eco.solar.view.SpeedometerGauge;
+import de.greenrobot.event.EventBus;
 
 public class DashboardFragmentV2 extends Fragment {
 
@@ -33,11 +28,13 @@ public class DashboardFragmentV2 extends Fragment {
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
-    private BroadcastReceiver mDataUpdateReceiver = null;
-
     private TextView mTextViewCarSpeed = null;
 
     private SpeedometerGauge mSpeedometer = null;
+
+    private TextView mTextViewMotorsValue = null;
+
+    private TextView mTextViewCellsValue = null;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
@@ -47,7 +44,6 @@ public class DashboardFragmentV2 extends Fragment {
     }
 
     public DashboardFragmentV2() {
-        mDataUpdateReceiver = new DataUpdateReceiver();
     }
 
     // -------------------------------------------------------------------------------------
@@ -68,12 +64,58 @@ public class DashboardFragmentV2 extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard_v2, container, false);
 
         mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
+        mTextViewMotorsValue = (TextView) root.findViewById(R.id.text_view_motors_value);
+        mTextViewCellsValue = (TextView) root.findViewById(R.id.text_view_cells_value);
         initSpeedometerGauge(root);
-
 
         return root;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    // -------------------------------------------------------------------------------------
+    // Section : EventBus onEvent Method(s)
+    // -------------------------------------------------------------------------------------
+    public void onEvent(Measurement measurement) {
+        switch (measurement.getID()) {
+            case 23:
+                updateSpeedValue(measurement);
+                break;
+            case 58:
+                updateCellsValue(measurement);
+                break;
+            default:
+                break;
+        }
+    }
+
+    // -------------------------------------------------------------------------------------
+    // Section : Private Methods
+    // -------------------------------------------------------------------------------------
     private void initSpeedometerGauge(View root) {
         mSpeedometer = (SpeedometerGauge) root.findViewById(R.id.speedometer);
         mSpeedometer.setMaxSpeed(150);
@@ -91,60 +133,13 @@ public class DashboardFragmentV2 extends Fragment {
         mSpeedometer.setSpeed(0, 0, 0);
     }
 
-
-    @Override
-    public void onResume() {
-        if (mDataUpdateReceiver == null) {
-            mDataUpdateReceiver = new DataUpdateReceiver();
-        }
-
-        IntentFilter intentFilter = new IntentFilter(Generals.getInstance().getType().name());
-        getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
-
-        super.onResume();
+    private void updateSpeedValue(Measurement measurement) {
+        double speed = measurement.getValue();
+        mTextViewCarSpeed.setText(new DecimalFormat("#0.0").format(speed));
+        mSpeedometer.setSpeed(speed, 50, 0);
     }
 
-    @Override
-    public void onPause() {
-        if (mDataUpdateReceiver != null) {
-            getActivity().unregisterReceiver(mDataUpdateReceiver);
-        }
-
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    // -------------------------------------------------------------------------------------
-    // Section : Inner Class(es)
-    // -------------------------------------------------------------------------------------
-    private class DataUpdateReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            NumberFormat formatter = new DecimalFormat("#0.0");
-
-            if (intent.getAction().equals(Generals.getInstance().getType().name())) {
-                Measurement measurement = (Measurement) intent.getSerializableExtra("MEASUREMENT_ELEMENT");
-
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
-                    Log.i(TAG, measurement.toString());
-                }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
-                    Log.i(TAG, measurement.toString());
-                }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.SPEED) {
-                    Log.i(TAG, measurement.toString());
-                    if (measurement.getID() == 23) {
-                        double speed = measurement.getValue();
-                        mTextViewCarSpeed.setText(formatter.format(speed));
-                        mSpeedometer.setSpeed(speed, 50, 0);
-                    }
-                }
-            }
-        }
+    private void updateCellsValue(Measurement measurement) {
+        mTextViewCellsValue.setText(new DecimalFormat("#0.00").format(measurement.getValue()) + " " + measurement.getUnity().getValue());
     }
 }

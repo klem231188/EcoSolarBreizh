@@ -1,8 +1,5 @@
 package bzh.eco.solar.model.car;
 
-import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,18 +29,16 @@ public class Car {
     }
 
     private void init() {
-        mCarElements = new ArrayList<CarElement>();
+        mCarElements = new ArrayList<>();
         mCarElements.add(Generals.getInstance());
         mCarElements.add(SolarPanels.getInstance());
         mCarElements.add(Motors.getInstance());
     }
 
-    public void update(BluetoothFrame frame, Context context) {
-        Log.i(TAG, "update(" + frame + ")");
-
+    public void update(BluetoothFrame frame) {
         for (CarElement carElement : mCarElements) {
             if (carElement.isFrameAccepted(frame)) {
-                carElement.update(frame, context);
+                carElement.update(frame);
             }
         }
     }
@@ -60,7 +55,7 @@ public class Car {
 
         ElementType getType();
 
-        void update(BluetoothFrame frame, Context context);
+        void update(BluetoothFrame frame);
     }
 }
 

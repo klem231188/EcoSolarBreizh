@@ -1,7 +1,5 @@
 package bzh.eco.solar.model.car.elements;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -39,13 +37,13 @@ public class SolarPanels implements Car.CarElement {
         initElectricalPowerMeasurements();
         initTemperatureMeasurements();
 
-        mMeasurements = new ArrayList<Measurement>();
+        mMeasurements = new ArrayList<>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<Measurement>();
+        mTemperatureMeasurements = new ArrayList<>();
 
         mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(11, "Température avant des panneaux"));
         mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(12, "Température milieu des panneaux"));
@@ -53,7 +51,7 @@ public class SolarPanels implements Car.CarElement {
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<Measurement>();
+        mElectricalPowerMeasurements = new ArrayList<>();
 
         mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(52, "Panneau 1 secteur 1-2"));
         mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(51, "Panneau 2 secteur 3-4"));
@@ -80,17 +78,12 @@ public class SolarPanels implements Car.CarElement {
     }
 
     @Override
-    public void update(BluetoothFrame frame, Context context) {
+    public void update(BluetoothFrame frame) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
         for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
-
-                Intent intent = new Intent(getType().name());
-                intent.putExtra("MEASUREMENT_TYPE", measurement.getType());
-                context.sendBroadcast(intent);
-
                 break;
             }
         }

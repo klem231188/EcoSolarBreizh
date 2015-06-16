@@ -45,24 +45,24 @@ public class Generals implements Car.CarElement {
         initTemperatureMeasurements();
         initSpeedMeasurements();
 
-        mMeasurements = new ArrayList<Measurement>();
+        mMeasurements = new ArrayList<>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
         mMeasurements.addAll(mSpeedMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<Measurement>();
+        mTemperatureMeasurements = new ArrayList<>();
 
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<Measurement>();
+        mElectricalPowerMeasurements = new ArrayList<>();
 
     }
 
     private void initSpeedMeasurements() {
-        mSpeedMeasurements = new ArrayList<Measurement>();
+        mSpeedMeasurements = new ArrayList<>();
 
         mSpeedMeasurements.add(new Measurement(23, "Vitesse de la voiture", Type.SPEED, Unity.KILOMETER_PER_HOUR, 150, ConvertType.INTEGER));
     }
@@ -84,18 +84,10 @@ public class Generals implements Car.CarElement {
     }
 
     @Override
-    public void update(BluetoothFrame frame, Context context) {
-        Log.i(TAG, "update(" + frame.toString() + ")");
-
+    public void update(BluetoothFrame frame) {
         for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
-
-                Intent intent = new Intent(getType().name());
-                intent.putExtra("MEASUREMENT_TYPE", measurement.getType());
-                intent.putExtra("MEASUREMENT_ELEMENT", measurement);
-                context.sendBroadcast(intent);
-
                 break;
             }
         }

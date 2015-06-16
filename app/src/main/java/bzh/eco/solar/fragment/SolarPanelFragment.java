@@ -4,9 +4,6 @@ package bzh.eco.solar.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +15,7 @@ import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.MeasurementArrayAdapter;
 import bzh.eco.solar.model.car.elements.SolarPanels;
 import bzh.eco.solar.model.measurement.Measurement;
+import de.greenrobot.event.EventBus;
 
 public class SolarPanelFragment extends Fragment {
 
@@ -47,7 +45,6 @@ public class SolarPanelFragment extends Fragment {
     }
 
     public SolarPanelFragment() {
-        mDataUpdateReceiver = new DataUpdateReceiver();
     }
 
     // -------------------------------------------------------------------------------------
@@ -84,16 +81,9 @@ public class SolarPanelFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        Log.i(TAG, "onResume");
-        if (mDataUpdateReceiver == null) {
-            mDataUpdateReceiver = new DataUpdateReceiver();
-        }
-
-        IntentFilter intentFilter = new IntentFilter(SolarPanels.getInstance().getType().name());
-        getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
-
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -120,7 +110,7 @@ public class SolarPanelFragment extends Fragment {
 
     @Override
     public void onStop() {
-        Log.i(TAG, "onStop");
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -131,20 +121,18 @@ public class SolarPanelFragment extends Fragment {
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : Inner Class(es)
+    // Section : EventBus onEvent Method(s)
     // -------------------------------------------------------------------------------------
-    private class DataUpdateReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(SolarPanels.getInstance().getType().name())) {
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
-                    mElectricalPowerArrayAdapter.notifyDataSetChanged();
-                }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
-                    mTemperatureArrayAdapter.notifyDataSetChanged();
-                }
-            }
+    public void onEvent(Measurement measurement) {
+        switch (measurement.getType()) {
+            case ELECTRICAL_POWER:
+                mElectricalPowerArrayAdapter.notifyDataSetChanged();
+                break;
+            case TEMPERATURE:
+                mTemperatureArrayAdapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
         }
     }
 }

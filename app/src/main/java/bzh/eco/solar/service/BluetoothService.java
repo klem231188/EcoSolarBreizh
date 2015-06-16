@@ -71,8 +71,8 @@ public class BluetoothService extends Service {
     public BluetoothService() {
         super();
 
-        mConnectionHandler = new ConnectionHandler(new WeakReference<BluetoothService>(this));
-        mInputProcessingHandler = new InputProcessingHandler(new WeakReference<BluetoothService>(this));
+        mConnectionHandler = new ConnectionHandler(new WeakReference<>(this));
+        mInputProcessingHandler = new InputProcessingHandler(new WeakReference<>(this));
         mReceiver = new ServiceBroadcastReceiver();
     }
 
@@ -197,7 +197,7 @@ public class BluetoothService extends Service {
                 switch (msg.what) {
                     case BLUETOOTH_FRAME_PROCESSED: {
                         BluetoothFrame bluetoothFrame = (BluetoothFrame) msg.obj;
-                        Car.getInstance().update(bluetoothFrame, BluetoothService.this);
+                        Car.getInstance().update(bluetoothFrame);
 
                         break;
                     }
@@ -221,7 +221,7 @@ public class BluetoothService extends Service {
                 switch (msg.what) {
                     case BLUETOOTH_FRAME_PROCESSED: {
                         BluetoothFrame bluetoothFrame = (BluetoothFrame) msg.obj;
-                        Car.getInstance().update(bluetoothFrame, BluetoothService.this);
+                        Car.getInstance().update(bluetoothFrame);
 
                         break;
                     }

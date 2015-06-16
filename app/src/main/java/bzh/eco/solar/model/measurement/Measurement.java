@@ -3,6 +3,7 @@ package bzh.eco.solar.model.measurement;
 import java.io.Serializable;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
+import de.greenrobot.event.EventBus;
 
 /**
  * @author : Clément.Tréguer
@@ -63,6 +64,9 @@ public class Measurement implements Serializable {
         } else {
             updateToFloat(frame);
         }
+
+        // Send to event bus changing state
+        EventBus.getDefault().post(this);
     }
 
     // TODO : conversion correcte ? Voir avec sébastien.
@@ -128,13 +132,13 @@ public class Measurement implements Serializable {
                 '}';
     }
 
-    public static enum Type {
+    public enum Type {
         TEMPERATURE,
         ELECTRICAL_POWER,
         SPEED
     }
 
-    public static enum Unity {
+    public enum Unity {
         CELSIUS("°C"),
         AMPERE("A"),
         MILLI_AMPERE("mA"),
@@ -152,7 +156,7 @@ public class Measurement implements Serializable {
         }
     }
 
-    public static enum ConvertType {
+    public enum ConvertType {
         INTEGER,
         FLOAT
     }

@@ -4,9 +4,6 @@ package bzh.eco.solar.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +14,7 @@ import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.MeasurementArrayAdapter;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.measurement.Measurement;
+import de.greenrobot.event.EventBus;
 
 public class MotorFragment extends Fragment {
 
@@ -28,8 +26,6 @@ public class MotorFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
-    private BroadcastReceiver mDataUpdateReceiver = null;
-
     private MeasurementArrayAdapter mElectricalPowerArrayAdapter;
 
     private MeasurementArrayAdapter mTemperatureArrayAdapter;
@@ -50,7 +46,6 @@ public class MotorFragment extends Fragment {
     }
 
     public MotorFragment() {
-        mDataUpdateReceiver = new DataUpdateReceiver();
     }
 
     // -------------------------------------------------------------------------------------
@@ -89,24 +84,15 @@ public class MotorFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        if (mDataUpdateReceiver == null) {
-            mDataUpdateReceiver = new DataUpdateReceiver();
-        }
-
-        IntentFilter intentFilter = new IntentFilter(Motors.getInstance().getType().name());
-        getActivity().registerReceiver(mDataUpdateReceiver, intentFilter);
-
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onPause() {
-        if (mDataUpdateReceiver != null) {
-            getActivity().unregisterReceiver(mDataUpdateReceiver);
-        }
-
-        super.onPause();
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -115,23 +101,21 @@ public class MotorFragment extends Fragment {
     }
 
     // -------------------------------------------------------------------------------------
-    // Section : Inner Class(es)
+    // Section : EventBus onEvent Method(s)
     // -------------------------------------------------------------------------------------
-    private class DataUpdateReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Motors.getInstance().getType().name())) {
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.ELECTRICAL_POWER) {
-                    mElectricalPowerArrayAdapter.notifyDataSetChanged();
-                }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.TEMPERATURE) {
-                    mTemperatureArrayAdapter.notifyDataSetChanged();
-                }
-                if (intent.getSerializableExtra("MEASUREMENT_TYPE") == Measurement.Type.SPEED) {
-                    mSpeedArrayAdapter.notifyDataSetChanged();
-                }
-            }
+    public void onEvent(Measurement measurement) {
+        switch (measurement.getType()) {
+            case ELECTRICAL_POWER:
+                mElectricalPowerArrayAdapter.notifyDataSetChanged();
+                break;
+            case TEMPERATURE:
+                mTemperatureArrayAdapter.notifyDataSetChanged();
+                break;
+            case SPEED:
+                mSpeedArrayAdapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
         }
     }
 }

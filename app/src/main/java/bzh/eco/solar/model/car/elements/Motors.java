@@ -42,28 +42,28 @@ public class Motors implements Car.CarElement {
         initTemperatureMeasurements();
         initSpeedMeasurements();
 
-        mMeasurements = new ArrayList<Measurement>();
+        mMeasurements = new ArrayList<>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
         mMeasurements.addAll(mTemperatureMeasurements);
         mMeasurements.addAll(mSpeedMeasurements);
     }
 
     private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<Measurement>();
+        mTemperatureMeasurements = new ArrayList<>();
 
         mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(65, "Température moteur droit"));
         mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(66, "Température moteur gauche"));
     }
 
     private void initElectricalPowerMeasurements() {
-        mElectricalPowerMeasurements = new ArrayList<Measurement>();
+        mElectricalPowerMeasurements = new ArrayList<>();
 
         mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(54, "Courant moteur droit"));
         mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(55, "Courant moteur gauche"));
     }
 
     private void initSpeedMeasurements() {
-        mSpeedMeasurements = new ArrayList<Measurement>();
+        mSpeedMeasurements = new ArrayList<>();
 
         mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(61, "Nombre de tours moteur droit"));
         mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(62, "Nombre de tours moteur gauche"));
@@ -86,7 +86,7 @@ public class Motors implements Car.CarElement {
     }
 
     @Override
-    public void update(BluetoothFrame frame, Context context) {
+    public void update(BluetoothFrame frame) {
         Log.i(TAG, "update(" + frame.toString() + ")");
 
         for (Measurement measurement : mMeasurements) {
@@ -95,7 +95,7 @@ public class Motors implements Car.CarElement {
 
                 Intent intent = new Intent(getType().name());
                 intent.putExtra("MEASUREMENT_TYPE", measurement.getType());
-                context.sendBroadcast(intent);
+                //context.sendBroadcast(intent);
 
                 break;
             }

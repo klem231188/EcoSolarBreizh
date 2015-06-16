@@ -200,7 +200,7 @@ public class MainActivity
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            mFragments = new ArrayList<Fragment>();
+            mFragments = new ArrayList<>();
             mFragments.add(BluetoothConnectionFragment.newInstance());
             mFragments.add(DashboardFragmentV2.newInstance());
             mFragments.add(SolarPanelFragment.newInstance());
