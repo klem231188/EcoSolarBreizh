@@ -1,9 +1,5 @@
 package bzh.eco.solar.model.car.elements;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,19 +83,21 @@ public class Motors implements Car.CarElement {
 
     @Override
     public void update(BluetoothFrame frame) {
-        Log.i(TAG, "update(" + frame.toString() + ")");
-
         for (Measurement measurement : mMeasurements) {
             if (frame.getID() == measurement.getID()) {
                 measurement.update(frame);
-
-                Intent intent = new Intent(getType().name());
-                intent.putExtra("MEASUREMENT_TYPE", measurement.getType());
-                //context.sendBroadcast(intent);
-
                 break;
             }
         }
+    }
+
+    public double getGlobalElectricalPower() {
+        double gobalElectricalPower = 0.0;
+        for (Measurement electricalPowerMeasurement : mElectricalPowerMeasurements) {
+            gobalElectricalPower += electricalPowerMeasurement.getValue();
+        }
+
+        return gobalElectricalPower;
     }
 
     public List<Measurement> getElectricalPowerMeasurements() {
