@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.measurement.Measurement;
+import bzh.eco.solar.view.BatteryIndicatorGauge;
 import bzh.eco.solar.view.SpeedometerGauge;
 import de.greenrobot.event.EventBus;
 
@@ -32,9 +33,13 @@ public class DashboardFragmentV2 extends Fragment {
 
     private SpeedometerGauge mSpeedometer = null;
 
+    private BatteryIndicatorGauge mBatteryIndicatorGauge = null;
+
     private TextView mTextViewMotorsValue = null;
 
     private TextView mTextViewCellsValue = null;
+
+    private TextView mTextViewBatteryValue = null;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
@@ -66,7 +71,9 @@ public class DashboardFragmentV2 extends Fragment {
         mTextViewCarSpeed = (TextView) root.findViewById(R.id.text_view_car_speed);
         mTextViewMotorsValue = (TextView) root.findViewById(R.id.text_view_motors_value);
         mTextViewCellsValue = (TextView) root.findViewById(R.id.text_view_cells_value);
+        mTextViewBatteryValue = (TextView) root.findViewById(R.id.text_view_battery_value);
         initSpeedometerGauge(root);
+        initBatteryIndicatorGauge(root);
 
         return root;
     }
@@ -108,6 +115,7 @@ public class DashboardFragmentV2 extends Fragment {
                 break;
             case 58:
                 updateCellsValue(measurement);
+                updateBatteryValue(measurement);
                 break;
             case 54:
             case 55:
@@ -138,6 +146,13 @@ public class DashboardFragmentV2 extends Fragment {
         mSpeedometer.setSpeed(0, 0, 0);
     }
 
+    private void initBatteryIndicatorGauge(View root) {
+        mBatteryIndicatorGauge = (BatteryIndicatorGauge) root.findViewById(R.id.battery);
+        mBatteryIndicatorGauge.setMax(100);
+        mBatteryIndicatorGauge.setMin(0);
+        mBatteryIndicatorGauge.setValue(0);
+    }
+
     private void updateSpeedValue(Measurement measurement) {
         double speed = measurement.getValue();
         mTextViewCarSpeed.setText(new DecimalFormat("#0.0").format(speed));
@@ -150,5 +165,11 @@ public class DashboardFragmentV2 extends Fragment {
 
     private void updateMotorsValue() {
         mTextViewMotorsValue.setText(new DecimalFormat("#0.00").format(Motors.getInstance().getGlobalElectricalPower()) + " " + Measurement.Unity.AMPERE.getValue());
+    }
+
+    private void updateBatteryValue(Measurement measurement) {
+        double value = measurement.getValue() / measurement.getMaxValue();
+        mBatteryIndicatorGauge.setValue((float) value);
+        mTextViewBatteryValue.setText(new DecimalFormat("#0.00").format(value) + " %");
     }
 }
