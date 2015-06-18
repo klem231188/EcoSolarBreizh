@@ -1,0 +1,30 @@
+-------------------------------------------------------------------
+Eco Solar Breizh - Beta V1.0.1
+-------------------------------------------------------------------
+- Dashboard
+-- Add gauge battery
+
+-------------------------------------------------------------------
+Eco Solar Breizh - Beta V1.0.0
+-------------------------------------------------------------------
+- Service
+-- Enable to read data from bluetooth connection
+
+- Bluetooth
+-- Activate bluetooth if inactive
+-- List bluetooth device around
+-- Ability to connect to one device maximum in a row
+
+- Dashboard
+-- Speedometer + Text value
+-- Cells value (A)
+-- Motors value (A)
+
+- Solar panels fragment
+-- electrical measurements
+-- temperature measurements
+
+- Motors fragment
+-- electrical measurements
+-- temperature measurements
+-- speed measurements
