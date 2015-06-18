@@ -17,5 +17,6 @@
     <string name="deeped_headlights">deeped_headlights</string>
     <string name="cells">Cells</string>
     <string name="motors">Motors</string>
+    <string name="version">version</string>
 
 </resources>

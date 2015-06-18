@@ -6,6 +6,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -135,6 +137,8 @@ public class MainActivity
         Log.i(TAG, "onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        initVersionInMenu(menu);
+
         return true;
     }
 
@@ -145,7 +149,7 @@ public class MainActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_version) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -242,4 +246,18 @@ public class MainActivity
             return null;
         }
     }
+
+    // -------------------------------------------------------------------------------------
+    // Section : Private Method(s)
+    // -------------------------------------------------------------------------------------
+    private void initVersionInMenu(Menu menu) {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = pInfo.versionName;
+            menu.findItem(R.id.action_version).setTitle(versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Impossible de trouver la version", e);
+        }
+    }
+
 }
