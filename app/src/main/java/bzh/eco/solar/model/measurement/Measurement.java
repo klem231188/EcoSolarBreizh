@@ -143,6 +143,7 @@ public class Measurement implements Serializable {
         AMPERE("A"),
         MILLI_AMPERE("mA"),
         KILOMETER_PER_HOUR("Km/h"),
+        PERCENTAGE("%"),
         RPM("Tr/Min");
 
         private String value;
@@ -184,6 +185,12 @@ public class Measurement implements Serializable {
 
             public static Measurement buildTemperatureMeasurement(int id, String meaning){
                 return new Measurement(id, meaning, Type.TEMPERATURE, Unity.CELSIUS, 100, ConvertType.INTEGER);
+            }
+        }
+
+        public static class Battery {
+            public static Measurement buildElectricalMeasurement(int id, String meaning){
+                return new Measurement(id, meaning, Type.ELECTRICAL_POWER, Unity.AMPERE, 1, ConvertType.INTEGER);
             }
         }
     }

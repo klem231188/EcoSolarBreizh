@@ -115,6 +115,8 @@ public class DashboardFragmentV2 extends Fragment {
                 break;
             case 58:
                 updateCellsValue(measurement);
+                break;
+            case 22:
                 updateBatteryValue(measurement);
                 break;
             case 54:
