@@ -3,6 +3,8 @@ Eco Solar Breizh - Beta V1.0.1
 -------------------------------------------------------------------
 - Dashboard
 -- Add gauge battery
+- All
+-- Fix measurements max value, unity, ...
 
 -------------------------------------------------------------------
 Eco Solar Breizh - Beta V1.0.0

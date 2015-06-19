@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cells"
-                android:textSize="50sp"
+                android:textSize="30sp"
                 android:layout_marginTop="15dp"
                 />
 
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/motors"
-                android:textSize="50sp"
+                android:textSize="30sp"
                 android:layout_marginTop="15dp"
                 />
 
