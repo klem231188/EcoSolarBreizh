@@ -22,15 +22,15 @@ public class Measurement implements Serializable {
 
     private final double maxValue;
 
-    protected double value;
+    private double value;
 
-    public Measurement(int id, String meaning, Type type, Unity unity, double maxValue, ConvertType convertType) {
-        this.id = id;
-        this.meaning = meaning;
-        this.type = type;
-        this.unity = unity;
-        this.maxValue = maxValue;
-        this.convertType = convertType;
+    private Measurement(Builder builder) {
+        this.id = builder.mId;
+        this.meaning = builder.mMeaning;
+        this.type = builder.mType;
+        this.unity = builder.mUnity;
+        this.maxValue = builder.mMaxValue;
+        this.convertType = builder.mConvertType;
         this.value = 0.0;
     }
 
@@ -80,9 +80,7 @@ public class Measurement implements Serializable {
             decade = '0';
         }
 
-        if (Character.isDigit(decade)
-                && Character.isDigit(unit)
-                ) {
+        if (Character.isDigit(decade) && Character.isDigit(unit)) {
 
             value = Character.getNumericValue(decade) * 10;
             value += Character.getNumericValue(unit);
@@ -148,12 +146,12 @@ public class Measurement implements Serializable {
 
         private String value;
 
-        public String getValue() {
-            return value;
-        }
-
         Unity(String value) {
             this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 
@@ -164,34 +162,50 @@ public class Measurement implements Serializable {
 
     public static class Builder {
 
-        public static class SolarPanel {
-            public static Measurement buildElectricalMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.ELECTRICAL_POWER, Unity.AMPERE, 1, ConvertType.FLOAT);
-            }
+        private int mId;
 
-            public static Measurement buildTemperatureMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.TEMPERATURE, Unity.CELSIUS, 100, ConvertType.INTEGER);
-            }
+        private String mMeaning;
+
+        private Measurement.Type mType;
+
+        private Measurement.Unity mUnity;
+
+        private double mMaxValue;
+
+        private Measurement.ConvertType mConvertType;
+
+        public Builder setId(int id) {
+            mId = id;
+            return this;
         }
 
-        public static class Motors {
-            public static Measurement buildElectricalMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.ELECTRICAL_POWER, Unity.AMPERE, 1, ConvertType.INTEGER);
-            }
-
-            public static Measurement buildSpeedMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.SPEED, Unity.RPM, 100, ConvertType.INTEGER);
-            }
-
-            public static Measurement buildTemperatureMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.TEMPERATURE, Unity.CELSIUS, 100, ConvertType.INTEGER);
-            }
+        public Builder setMeaning(String meaning) {
+            mMeaning = meaning;
+            return this;
         }
 
-        public static class Battery {
-            public static Measurement buildElectricalMeasurement(int id, String meaning){
-                return new Measurement(id, meaning, Type.ELECTRICAL_POWER, Unity.AMPERE, 1, ConvertType.INTEGER);
-            }
+        public Builder setType(Measurement.Type type) {
+            mType = type;
+            return this;
+        }
+
+        public Builder setUnity(Measurement.Unity unity) {
+            mUnity = unity;
+            return this;
+        }
+
+        public Builder setMaxValue(double maxValue) {
+            mMaxValue = maxValue;
+            return this;
+        }
+
+        public Builder setConvertType(Measurement.ConvertType convertType) {
+            mConvertType = convertType;
+            return this;
+        }
+
+        public Measurement createMeasurement() {
+            return new Measurement(this);
         }
     }
 }

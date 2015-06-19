@@ -39,7 +39,17 @@ public class Battery implements Car.CarElement {
 
     private void initElectricalPowerMeasurements() {
         mElectricalPowerMeasurements = new ArrayList<>();
-        mElectricalPowerMeasurements.add(new Measurement(22, "Charge batterie", Measurement.Type.ELECTRICAL_POWER, Measurement.Unity.PERCENTAGE, 1, Measurement.ConvertType.INTEGER));
+
+        // ID = 22 / CHARGE BATTERIE
+        Measurement CHARGE_BATTERIE = new Measurement.Builder()
+                .setId(22)
+                .setMeaning("CHARGE BATTERIE")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.PERCENTAGE)
+                .setMaxValue(100)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(CHARGE_BATTERIE);
     }
 
     @Override

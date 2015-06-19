@@ -1,9 +1,5 @@
 package bzh.eco.solar.model.car.elements;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +54,31 @@ public class Generals implements Car.CarElement {
 
     private void initElectricalPowerMeasurements() {
         mElectricalPowerMeasurements = new ArrayList<>();
-
+        // ID = 70 / COURANT_RESEAU
+        Measurement COURANT_RESEAU = new Measurement.Builder()
+                .setId(70)
+                .setMeaning("COURANT RESEAU (Courant consommé par l'électronique)")
+                .setType(Type.ELECTRICAL_POWER)
+                .setUnity(Unity.MILLI_AMPERE)
+                .setMaxValue(2000)
+                .setConvertType(ConvertType.INTEGER)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_RESEAU);
     }
 
     private void initSpeedMeasurements() {
         mSpeedMeasurements = new ArrayList<>();
 
-        mSpeedMeasurements.add(new Measurement(23, "Vitesse de la voiture", Type.SPEED, Unity.KILOMETER_PER_HOUR, 150, ConvertType.INTEGER));
+        // ID = 23 / VITESSE REELLE
+        Measurement VITESSE_REELLE = new Measurement.Builder()
+                .setId(23)
+                .setMeaning("VITESSE REELLE")
+                .setType(Type.SPEED)
+                .setUnity(Unity.KILOMETER_PER_HOUR)
+                .setMaxValue(150)
+                .setConvertType(ConvertType.INTEGER)
+                .createMeasurement();
+        mSpeedMeasurements.add(VITESSE_REELLE);
     }
 
     @Override

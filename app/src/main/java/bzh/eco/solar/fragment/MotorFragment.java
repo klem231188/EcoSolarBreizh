@@ -3,12 +3,13 @@ package bzh.eco.solar.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.MeasurementArrayAdapter;
@@ -38,14 +39,14 @@ public class MotorFragment extends Fragment {
 
     private ListView mListViewSpeed;
 
+    public MotorFragment() {
+    }
+
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
     public static MotorFragment newInstance() {
         return new MotorFragment();
-    }
-
-    public MotorFragment() {
     }
 
     // -------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ public class MotorFragment extends Fragment {
 
         mListViewTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
         mTemperatureArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mTemperatureArrayAdapter.addAll(Motors.getInstance().getTemperatureMeasurements());
+        mTemperatureArrayAdapter.addAll(new ArrayList<Measurement>());
         mListViewTemperature.setAdapter(mTemperatureArrayAdapter);
 
         mListViewSpeed = (ListView) root.findViewById(R.id.list_view_speed);

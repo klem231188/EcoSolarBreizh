@@ -20,8 +20,6 @@ public class Motors implements Car.CarElement {
 
     private List<Measurement> mElectricalPowerMeasurements = null;
 
-    private List<Measurement> mTemperatureMeasurements = null;
-
     private List<Measurement> mSpeedMeasurements = null;
 
     public static Motors getInstance() {
@@ -35,34 +33,63 @@ public class Motors implements Car.CarElement {
 
     private void init() {
         initElectricalPowerMeasurements();
-        initTemperatureMeasurements();
         initSpeedMeasurements();
 
         mMeasurements = new ArrayList<>();
         mMeasurements.addAll(mElectricalPowerMeasurements);
-        mMeasurements.addAll(mTemperatureMeasurements);
         mMeasurements.addAll(mSpeedMeasurements);
-    }
-
-    private void initTemperatureMeasurements() {
-        mTemperatureMeasurements = new ArrayList<>();
-
-        mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(65, "Température moteur droit"));
-        mTemperatureMeasurements.add(Measurement.Builder.Motors.buildTemperatureMeasurement(66, "Température moteur gauche"));
     }
 
     private void initElectricalPowerMeasurements() {
         mElectricalPowerMeasurements = new ArrayList<>();
 
-        mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(54, "Courant moteur droit"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.Motors.buildElectricalMeasurement(55, "Courant moteur gauche"));
+        // ID = 54 / COURANT MOTEUR DROIT
+        Measurement COURANT_MOTEUR_DROIT = new Measurement.Builder()
+                .setId(54)
+                .setMeaning("COURANT MOTEUR DROIT")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(200)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_MOTEUR_DROIT);
+
+        // ID = 55 / COURANT MOTEUR GAUCHE
+        Measurement COURANT_MOTEUR_GAUCHE = new Measurement.Builder()
+                .setId(55)
+                .setMeaning("COURANT MOTEUR GAUCHE")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(200)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_MOTEUR_GAUCHE);
     }
 
     private void initSpeedMeasurements() {
         mSpeedMeasurements = new ArrayList<>();
 
-        mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(61, "Nombre de tours moteur droit"));
-        mSpeedMeasurements.add(Measurement.Builder.Motors.buildSpeedMeasurement(62, "Nombre de tours moteur gauche"));
+        // ID = 61 / VITESSE_MOTEUR_DROIT
+        Measurement VITESSE_MOTEUR_DROIT = new Measurement.Builder()
+                .setId(61)
+                .setMeaning("VITESSE MOTEUR DROIT")
+                .setType(Measurement.Type.SPEED)
+                .setUnity(Measurement.Unity.RPM)
+                .setMaxValue(10000)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mSpeedMeasurements.add(VITESSE_MOTEUR_DROIT);
+
+        // ID = 62 / VITESSE_MOTEUR_GAUCHE
+        Measurement VITESSE_MOTEUR_GAUCHE = new Measurement.Builder()
+                .setId(62)
+                .setMeaning("VITESSE MOTEUR GAUCHE")
+                .setType(Measurement.Type.SPEED)
+                .setUnity(Measurement.Unity.RPM)
+                .setMaxValue(10000)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mSpeedMeasurements.add(VITESSE_MOTEUR_GAUCHE);
     }
 
     @Override
@@ -102,10 +129,6 @@ public class Motors implements Car.CarElement {
 
     public List<Measurement> getElectricalPowerMeasurements() {
         return mElectricalPowerMeasurements;
-    }
-
-    public List<Measurement> getTemperatureMeasurements() {
-        return mTemperatureMeasurements;
     }
 
     public List<Measurement> getSpeedMeasurements() {

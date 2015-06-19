@@ -45,20 +45,108 @@ public class SolarPanels implements Car.CarElement {
     private void initTemperatureMeasurements() {
         mTemperatureMeasurements = new ArrayList<>();
 
-        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(11, "Température avant des panneaux"));
-        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(12, "Température milieu des panneaux"));
-        mTemperatureMeasurements.add(Measurement.Builder.SolarPanel.buildTemperatureMeasurement(13, "Température arrière des panneaux"));
+        // ID = 11 / TEMPERATURE_PANNEAU_AVANT
+        Measurement TEMPERATURE_PANNEAU_AVANT = new Measurement.Builder()
+                .setId(11)
+                .setMeaning("TEMPERATURE PANNEAU AVANT")
+                .setType(Measurement.Type.TEMPERATURE)
+                .setUnity(Measurement.Unity.CELSIUS)
+                .setMaxValue(100)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mTemperatureMeasurements.add(TEMPERATURE_PANNEAU_AVANT);
+
+        // ID = 12 / TEMPERATURE_PANNEAU_MILIEU
+        Measurement TEMPERATURE_PANNEAU_MILIEU = new Measurement.Builder()
+                .setId(12)
+                .setMeaning("TEMPERATURE PANNEAU MILIEU")
+                .setType(Measurement.Type.TEMPERATURE)
+                .setUnity(Measurement.Unity.CELSIUS)
+                .setMaxValue(100)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mTemperatureMeasurements.add(TEMPERATURE_PANNEAU_MILIEU);
+
+        // ID = 13 / TEMPERATURE_PANNEAU_ARRIERE
+        Measurement TEMPERATURE_PANNEAU_ARRIERE = new Measurement.Builder()
+                .setId(13)
+                .setMeaning("TEMPERATURE PANNEAU ARRIERE")
+                .setType(Measurement.Type.TEMPERATURE)
+                .setUnity(Measurement.Unity.CELSIUS)
+                .setMaxValue(100)
+                .setConvertType(Measurement.ConvertType.INTEGER)
+                .createMeasurement();
+        mTemperatureMeasurements.add(TEMPERATURE_PANNEAU_ARRIERE);
     }
 
     private void initElectricalPowerMeasurements() {
         mElectricalPowerMeasurements = new ArrayList<>();
 
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(52, "Panneau 1 secteur 1-2"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(51, "Panneau 2 secteur 3-4"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(53, "Panneau 3 secteur 5-6"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(56, "Panneau 4 secteur 7-8"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(57, "Panneau 5 secteur 9-10"));
-        mElectricalPowerMeasurements.add(Measurement.Builder.SolarPanel.buildElectricalMeasurement(58, "Courant global des panneaux"));
+        // ID = 51 / COURANT_PANNEAU_AVANT
+        Measurement COURANT_PANNEAU_AVANT = new Measurement.Builder()
+                .setId(51)
+                .setMeaning("COURANT PANNEAU AVANT")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_PANNEAU_AVANT);
+
+        // ID = 52 / COURANT_PANNEAU_MILIEU
+        Measurement COURANT_PANNEAU_MILIEU = new Measurement.Builder()
+                .setId(52)
+                .setMeaning("COURANT PANNEAU MILIEU")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_PANNEAU_MILIEU);
+
+        // ID = 53 / COURANT_PANNEAU_ARRIERE
+        Measurement COURANT_PANNEAU_ARRIERE = new Measurement.Builder()
+                .setId(53)
+                .setMeaning("COURANT PANNEAU ARRIERE")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_PANNEAU_ARRIERE);
+
+        // ID = 56 / COURANT_4E_PANNEAU_ARRIERE
+        Measurement COURANT_4E_PANNEAU_ARRIERE = new Measurement.Builder()
+                .setId(56)
+                .setMeaning("COURANT 4E PANNEAU ARRIERE")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_4E_PANNEAU_ARRIERE);
+
+        // ID = 57 / COURANT_5E_PANNEAU_ARRIERE
+        Measurement COURANT_5E_PANNEAU_ARRIERE = new Measurement.Builder()
+                .setId(57)
+                .setMeaning("COURANT 5E PANNEAU ARRIERE")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_5E_PANNEAU_ARRIERE);
+
+        // ID = 58 / COURANT_GLOBAL
+        Measurement COURANT_GLOBAL = new Measurement.Builder()
+                .setId(58)
+                .setMeaning("COURANT GLOBAL")
+                .setType(Measurement.Type.ELECTRICAL_POWER)
+                .setUnity(Measurement.Unity.AMPERE)
+                .setMaxValue(10)
+                .setConvertType(Measurement.ConvertType.FLOAT)
+                .createMeasurement();
+        mElectricalPowerMeasurements.add(COURANT_GLOBAL);
     }
 
     @Override
