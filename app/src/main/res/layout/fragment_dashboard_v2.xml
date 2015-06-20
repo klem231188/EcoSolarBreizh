@@ -87,7 +87,7 @@
                     android:id="@+id/text_view_car_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.0"
+                    android:text="0"
                     android:textSize="150sp"
                     android:layout_marginRight="5dp"
                     android:layout_centerHorizontal="true"

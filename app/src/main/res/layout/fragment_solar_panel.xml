@@ -1,8 +1,8 @@
 <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="fill_parent">
 
     <LinearLayout
             android:orientation="horizontal"
@@ -12,7 +12,7 @@
         <bzh.eco.solar.view.VerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Electrical"
+                android:text="@string/electricite"
                 android:layout_gravity="center"
                 android:gravity="bottom"
                 android:padding="10dp"
@@ -41,7 +41,7 @@
         <bzh.eco.solar.view.VerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Temperature"
+                android:text="@string/temperature"
                 android:layout_gravity="center"
                 android:gravity="bottom"
                 android:padding="10dp"

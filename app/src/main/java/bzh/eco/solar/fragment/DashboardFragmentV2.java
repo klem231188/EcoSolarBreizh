@@ -41,14 +41,14 @@ public class DashboardFragmentV2 extends Fragment {
 
     private TextView mTextViewBatteryValue = null;
 
+    public DashboardFragmentV2() {
+    }
+
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
     // -------------------------------------------------------------------------------------
     public static DashboardFragmentV2 newInstance() {
         return new DashboardFragmentV2();
-    }
-
-    public DashboardFragmentV2() {
     }
 
     // -------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ public class DashboardFragmentV2 extends Fragment {
 
     private void updateSpeedValue(Measurement measurement) {
         double speed = measurement.getValue();
-        mTextViewCarSpeed.setText(new DecimalFormat("#0.0").format(speed));
+        mTextViewCarSpeed.setText(new DecimalFormat("#0").format(speed));
         mSpeedometer.setSpeed(speed, 50, 0);
     }
 
@@ -166,12 +166,12 @@ public class DashboardFragmentV2 extends Fragment {
     }
 
     private void updateMotorsValue() {
-        mTextViewMotorsValue.setText(new DecimalFormat("#0.00").format(Motors.getInstance().getGlobalElectricalPower()) + " " + Measurement.Unity.AMPERE.getValue());
+        mTextViewMotorsValue.setText(new DecimalFormat("#0").format(Motors.getInstance().getGlobalElectricalPower()) + " " + Measurement.Unity.AMPERE.getValue());
     }
 
     private void updateBatteryValue(Measurement measurement) {
-        double value = measurement.getValue() / measurement.getMaxValue();
+        double value = measurement.getValue();
         mBatteryIndicatorGauge.setValue((float) value);
-        mTextViewBatteryValue.setText(new DecimalFormat("#0.00").format(value) + " %");
+        mTextViewBatteryValue.setText(new DecimalFormat("#0").format(value) + " %");
     }
 }
