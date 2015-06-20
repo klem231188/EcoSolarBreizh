@@ -1,9 +1,6 @@
 -------------------------------------------------------------------
-Eco Solar Breizh - Beta V1.0.1
+Eco Solar Breizh - V1.0.2
 -------------------------------------------------------------------
-- Dashboard
--- Add gauge battery
-
 - FileWriter
 -- Add File writer fragment to write measurement update in a file
 
@@ -11,7 +8,13 @@ Eco Solar Breizh - Beta V1.0.1
 -- Fix measurements max value, unity, ...
 
 -------------------------------------------------------------------
-Eco Solar Breizh - Beta V1.0.0
+Eco Solar Breizh - V1.0.1
+-------------------------------------------------------------------
+- Dashboard
+-- Add gauge battery
+
+-------------------------------------------------------------------
+Eco Solar Breizh - V1.0.0
 -------------------------------------------------------------------
 - Service
 -- Enable to read data from bluetooth connection
