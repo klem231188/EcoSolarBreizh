@@ -22,6 +22,7 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
 import bzh.eco.solar.fragment.DashboardFragmentV2;
+import bzh.eco.solar.fragment.FileWriterFragment;
 import bzh.eco.solar.fragment.MotorFragment;
 import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
@@ -64,6 +65,8 @@ public class MainActivity
         if (actionBar != null) {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         }
+
+        getFragmentManager().beginTransaction().add(FileWriterFragment.newInstance(), "FileWriter").commit();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -188,6 +191,19 @@ public class MainActivity
     }
 
     // -------------------------------------------------------------------------------------
+    // Section : Private Method(s)
+    // -------------------------------------------------------------------------------------
+    private void initVersionInMenu(Menu menu) {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = pInfo.versionName;
+            menu.findItem(R.id.action_version).setTitle(versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Impossible de trouver la version", e);
+        }
+    }
+
+    // -------------------------------------------------------------------------------------
     // Section : Inner Class(es)
     // -------------------------------------------------------------------------------------
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -244,19 +260,6 @@ public class MainActivity
             }
 
             return null;
-        }
-    }
-
-    // -------------------------------------------------------------------------------------
-    // Section : Private Method(s)
-    // -------------------------------------------------------------------------------------
-    private void initVersionInMenu(Menu menu) {
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionName = pInfo.versionName;
-            menu.findItem(R.id.action_version).setTitle(versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Impossible de trouver la version", e);
         }
     }
 

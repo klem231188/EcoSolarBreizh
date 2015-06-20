@@ -1,6 +1,8 @@
 package bzh.eco.solar.model.measurement;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import de.greenrobot.event.EventBus;
@@ -23,6 +25,8 @@ public class Measurement implements Serializable {
     private final double maxValue;
 
     private double value;
+
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 
     private Measurement(Builder builder) {
         this.id = builder.mId;
@@ -69,7 +73,6 @@ public class Measurement implements Serializable {
         EventBus.getDefault().post(this);
     }
 
-    // TODO : conversion correcte ? Voir avec sébastien.
     private void updateToInteger(BluetoothFrame frame) {
         char[] originalData = frame.getOriginalData();
         char decade = originalData[0];
@@ -128,6 +131,11 @@ public class Measurement implements Serializable {
                 ", maxValue=" + maxValue +
                 ", value=" + value +
                 '}';
+    }
+
+    public String flush() {
+        String timestamp = mDateFormat.format(new Date());
+        return timestamp + " - " + id + " - " + value;
     }
 
     public enum Type {

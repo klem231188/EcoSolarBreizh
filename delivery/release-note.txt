@@ -3,6 +3,10 @@ Eco Solar Breizh - Beta V1.0.1
 -------------------------------------------------------------------
 - Dashboard
 -- Add gauge battery
+
+- FileWriter
+-- Add File writer fragment to write measurement update in a file
+
 - All
 -- Fix measurements max value, unity, ...
 
