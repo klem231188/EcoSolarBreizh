@@ -14,8 +14,8 @@
     <string name="full_headlights">full_headlights</string>
     <string name="warnings">button_warnings</string>
     <string name="deeped_headlights">deeped_headlights</string>
-    <string name="cells">Courant Panneaux</string>
-    <string name="motors">Courant Moteurs</string>
+    <string name="cells">Panneaux</string>
+    <string name="motors">Moteurs</string>
     <string name="version">version</string>
     <string name="electricite">Electricité</string>
     <string name="temperature">Température</string>

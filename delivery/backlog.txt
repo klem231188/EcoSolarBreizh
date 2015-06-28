@@ -1,0 +1,18 @@
+@IHM
+- Empêcher la mise en veille
+- Mettre tous les chiffres en blanc et en caractères épais (maximum de contraste sur le fond noir)
+- Renforcer l’épaisseur du cercle du compteur, et surtout grossir les chiffres des graduations.
+
+@Enregistrement
+- Revoir le format d'enregistrement des données pour pouvoir les traiter facilement avec excel --> format CSV
+- Revoir la fréquence d'enregistrement. Toutes les secondes au lieu d'un événement de mise à jour.
+
+Les évolutions déjà prévues :
+@Régulateur
+-- IHM (boutons à droite du compteur de vitesse)
+-- Envoi de commande en bluetooth
+-- Réception en bluetooth de l'état du régulateur ON/OFF
+
+@Doc
+- Faire une documentation fonctionnelle (complète)
+- Faire une documentation technique (light)
