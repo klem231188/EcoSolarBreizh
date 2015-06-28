@@ -7,7 +7,6 @@
 - Revoir le format d'enregistrement des données pour pouvoir les traiter facilement avec excel --> format CSV
 - Revoir la fréquence d'enregistrement. Toutes les secondes au lieu d'un événement de mise à jour.
 
-Les évolutions déjà prévues :
 @Régulateur
 -- IHM (boutons à droite du compteur de vitesse)
 -- Envoi de commande en bluetooth
