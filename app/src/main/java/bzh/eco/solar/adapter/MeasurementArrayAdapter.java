@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.measurement.Measurement;
@@ -19,11 +21,13 @@ import bzh.eco.solar.model.measurement.Measurement;
  */
 public class MeasurementArrayAdapter extends ArrayAdapter<Measurement> {
 
-    private NumberFormat formatter = null;
+    private NumberFormat mNumberFormat = null;
 
     public MeasurementArrayAdapter(Context context, int resource) {
         super(context, resource);
-        this.formatter = new DecimalFormat("#0.00");
+        mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
+        mNumberFormat.setMaximumFractionDigits(2);
+        mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class MeasurementArrayAdapter extends ArrayAdapter<Measurement> {
 
         if (measurement != null) {
             textViewMeaning.setText(measurement.getMeaning());
-            textViewValue.setText(formatter.format(measurement.getValue()) + " " + measurement.getUnity().getValue());
+            textViewValue.setText(mNumberFormat.format(measurement.getValue()) + " " + measurement.getUnity().getValue());
             progressBarValue.setProgress((int) ((measurement.getValue() * 100) / measurement.getMaxValue()));
         }
 

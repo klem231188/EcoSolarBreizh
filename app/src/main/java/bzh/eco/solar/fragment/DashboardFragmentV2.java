@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.elements.Motors;
@@ -41,7 +44,12 @@ public class DashboardFragmentV2 extends Fragment {
 
     private TextView mTextViewBatteryValue = null;
 
+    private NumberFormat mNumberFormat;
+
     public DashboardFragmentV2() {
+        mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
+        mNumberFormat.setMaximumFractionDigits(2);
+        mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
 
     // -------------------------------------------------------------------------------------
@@ -157,21 +165,21 @@ public class DashboardFragmentV2 extends Fragment {
 
     private void updateSpeedValue(Measurement measurement) {
         double speed = measurement.getValue();
-        mTextViewCarSpeed.setText(new DecimalFormat("#0").format(speed));
+        mTextViewCarSpeed.setText(mNumberFormat.format(speed));
         mSpeedometer.setSpeed(speed, 50, 0);
     }
 
     private void updateCellsValue(Measurement measurement) {
-        mTextViewCellsValue.setText(new DecimalFormat("#0.00").format(measurement.getValue()) + " " + measurement.getUnity().getValue());
+        mTextViewCellsValue.setText(mNumberFormat.format(measurement.getValue()) + " " + measurement.getUnity().getValue());
     }
 
     private void updateMotorsValue() {
-        mTextViewMotorsValue.setText(new DecimalFormat("#0").format(Motors.getInstance().getGlobalElectricalPower()) + " " + Measurement.Unity.AMPERE.getValue());
+        mTextViewMotorsValue.setText(mNumberFormat.format(Motors.getInstance().getGlobalElectricalPower()) + " " + Measurement.Unity.AMPERE.getValue());
     }
 
     private void updateBatteryValue(Measurement measurement) {
         double value = measurement.getValue();
         mBatteryIndicatorGauge.setValue((float) value);
-        mTextViewBatteryValue.setText(new DecimalFormat("#0").format(value) + " %");
+        mTextViewBatteryValue.setText(mNumberFormat.format(value) + " %");
     }
 }
