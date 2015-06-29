@@ -74,6 +74,7 @@
             android:layout_weight="60"
             android:layout_height="fill_parent"
             android:gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="-75dp"
             >
 
         <bzh.eco.solar.view.SpeedometerGauge
@@ -87,7 +88,7 @@
                 android:layout_width="fill_parent"
                 android:layout_weight="40"
                 android:layout_height="0dp"
-                android:layout_marginTop="-35dp"
+                android:layout_marginTop="-25dp"
                 >
             <TextView
                     android:id="@+id/text_view_car_speed"
