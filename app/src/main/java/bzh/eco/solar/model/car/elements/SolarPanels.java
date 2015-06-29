@@ -184,4 +184,9 @@ public class SolarPanels implements Car.CarElement {
     public List<Measurement> getTemperatureMeasurements() {
         return mTemperatureMeasurements;
     }
+
+    @Override
+    public List<Measurement> getAllMeasurements() {
+        return mMeasurements;
+    }
 }

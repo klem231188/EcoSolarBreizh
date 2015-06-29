@@ -81,4 +81,9 @@ public class Battery implements Car.CarElement {
     public List<Measurement> getElectricalPowerMeasurements() {
         return mElectricalPowerMeasurements;
     }
+
+    @Override
+    public List<Measurement> getAllMeasurements() {
+        return mMeasurements;
+    }
 }

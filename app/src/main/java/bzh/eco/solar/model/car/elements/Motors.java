@@ -134,4 +134,9 @@ public class Motors implements Car.CarElement {
     public List<Measurement> getSpeedMeasurements() {
         return mSpeedMeasurements;
     }
+
+    @Override
+    public List<Measurement> getAllMeasurements() {
+        return mMeasurements;
+    }
 }

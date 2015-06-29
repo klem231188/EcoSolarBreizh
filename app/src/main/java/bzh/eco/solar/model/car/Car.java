@@ -8,6 +8,7 @@ import bzh.eco.solar.model.car.elements.Battery;
 import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.car.elements.SolarPanels;
+import bzh.eco.solar.model.measurement.Measurement;
 
 /**
  * @author : Clément.Tréguer
@@ -45,6 +46,14 @@ public class Car {
         }
     }
 
+    public List<Measurement> getAllMeasurements() {
+        List<Measurement> measurements = new ArrayList<>();
+        for (CarElement carElement : mCarElements) {
+            measurements.addAll(carElement.getAllMeasurements());
+        }
+        return measurements;
+    }
+
     public enum ElementType {
         SOLAR_PANEL,
         MOTOR,
@@ -59,6 +68,8 @@ public class Car {
         ElementType getType();
 
         void update(BluetoothFrame frame);
+
+        List<Measurement> getAllMeasurements();
     }
 }
 

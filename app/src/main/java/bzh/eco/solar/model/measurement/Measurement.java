@@ -2,7 +2,6 @@ package bzh.eco.solar.model.measurement;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import de.greenrobot.event.EventBus;
@@ -131,11 +130,6 @@ public class Measurement implements Serializable {
                 ", maxValue=" + maxValue +
                 ", value=" + value +
                 '}';
-    }
-
-    public String flush() {
-        String timestamp = mDateFormat.format(new Date());
-        return timestamp + " - " + id + " - " + value;
     }
 
     public enum Type {

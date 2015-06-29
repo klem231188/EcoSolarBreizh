@@ -106,4 +106,9 @@ public class Generals implements Car.CarElement {
             }
         }
     }
+
+    @Override
+    public List<Measurement> getAllMeasurements() {
+        return mMeasurements;
+    }
 }
