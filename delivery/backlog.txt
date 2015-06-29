@@ -1,6 +1,5 @@
 @IHM
 - Empêcher la mise en veille
-- Renforcer l’épaisseur du cercle du compteur, et surtout grossir les chiffres des graduations.
 
 @Enregistrement
 - Revoir le format d'enregistrement des données pour pouvoir les traiter facilement avec excel --> format CSV

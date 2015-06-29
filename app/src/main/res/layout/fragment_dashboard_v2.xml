@@ -16,7 +16,8 @@
         <bzh.eco.solar.view.BatteryIndicatorGauge
                 android:layout_width="fill_parent"
                 android:layout_height="150dp"
-                android:id="@+id/battery"/>
+                android:id="@+id/battery"
+                />
 
         <TextView
                 android:id="@+id/text_view_battery_value"
@@ -77,23 +78,24 @@
 
         <bzh.eco.solar.view.SpeedometerGauge
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/speedometer"/>
+                android:layout_weight="55"
+                android:layout_height="0dp"
+                android:id="@+id/speedometer"
+                />
 
         <RelativeLayout
                 android:layout_width="fill_parent"
+                android:layout_weight="45"
                 android:layout_height="0dp"
-                android:layout_weight="60"
                 >
             <TextView
                     android:id="@+id/text_view_car_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="200sp"
+                    android:textSize="185sp"
                     android:layout_marginRight="5dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:textColor="@android:color/white"
                     />
 

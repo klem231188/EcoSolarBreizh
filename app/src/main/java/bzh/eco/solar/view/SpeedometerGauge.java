@@ -29,15 +29,15 @@ import bzh.eco.solar.R;
  */
 public class SpeedometerGauge extends View {
 
-    private static final String TAG = "SpeedometerGauge";
-
     public static final double DEFAULT_MAX_SPEED = 100.0;
 
     public static final double DEFAULT_MAJOR_TICK_STEP = 20.0;
 
     public static final int DEFAULT_MINOR_TICKS = 1;
 
-    public static final int DEFAULT_LABEL_TEXT_SIZE_DP = 12;
+    public static final int DEFAULT_LABEL_TEXT_SIZE_DP = 20;
+
+    private static final String TAG = "SpeedometerGauge";
 
     private double maxSpeed = DEFAULT_MAX_SPEED;
 
@@ -241,44 +241,10 @@ public class SpeedometerGauge extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width;
-        int height;
-
-        //Measure Width
-        if (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST) {
-            //Must be this size
-            width = widthSize;
-        } else {
-            width = -1;
-        }
-
-        //Measure Height
-        if (heightMode == MeasureSpec.EXACTLY || heightMode == MeasureSpec.AT_MOST) {
-            //Must be this size
-            height = heightSize;
-        } else {
-            height = -1;
-        }
-
-        if (height >= 0 && width >= 0) {
-            width = Math.min(height, width);
-            height = width / 2;
-        } else if (width >= 0) {
-            height = width / 2;
-        } else if (height >= 0) {
-            width = height * 2;
-        } else {
-            width = 0;
-            height = 0;
-        }
-
-        //MUST CALL THIS
-        setMeasuredDimension(width, height);
+        int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        this.setMeasuredDimension(parentWidth, parentHeight);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     private void drawNeedle(Canvas canvas) {
@@ -395,13 +361,10 @@ public class SpeedometerGauge extends View {
 
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundPaint.setStyle(Paint.Style.FILL);
-        //backgroundPaint.setColor(Color.rgb(127, 127, 127));
         backgroundPaint.setColor(Color.BLUE);
-        //backgroundPaint.setColor(Color.TRANSPARENT);
 
         backgroundInnerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundInnerPaint.setStyle(Paint.Style.FILL);
-        //backgroundInnerPaint.setColor(Color.rgb(150, 150, 150));
         backgroundInnerPaint.setColor(Color.TRANSPARENT);
 
         txtPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -417,17 +380,17 @@ public class SpeedometerGauge extends View {
         maskPaint.setDither(true);
 
         ticksPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ticksPaint.setStrokeWidth(3.0f);
+        ticksPaint.setStrokeWidth(6.0f);
         ticksPaint.setStyle(Paint.Style.STROKE);
         ticksPaint.setColor(defaultColor);
 
         colorLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         colorLinePaint.setStyle(Paint.Style.STROKE);
-        colorLinePaint.setStrokeWidth(5);
+        colorLinePaint.setStrokeWidth(10);
         colorLinePaint.setColor(defaultColor);
 
         needlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        needlePaint.setStrokeWidth(5);
+        needlePaint.setStrokeWidth(10);
         needlePaint.setStyle(Paint.Style.STROKE);
         needlePaint.setColor(Color.argb(200, 255, 0, 0));
 
