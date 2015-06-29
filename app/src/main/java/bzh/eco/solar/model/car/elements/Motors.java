@@ -75,7 +75,7 @@ public class Motors implements Car.CarElement {
                 .setMeaning("VITESSE MOTEUR DROIT")
                 .setType(Measurement.Type.SPEED)
                 .setUnity(Measurement.Unity.RPM)
-                .setMaxValue(10000)
+                .setMaxValue(1000)
                 .setConvertType(Measurement.ConvertType.INTEGER)
                 .createMeasurement();
         mSpeedMeasurements.add(VITESSE_MOTEUR_DROIT);
@@ -86,7 +86,7 @@ public class Motors implements Car.CarElement {
                 .setMeaning("VITESSE MOTEUR GAUCHE")
                 .setType(Measurement.Type.SPEED)
                 .setUnity(Measurement.Unity.RPM)
-                .setMaxValue(10000)
+                .setMaxValue(1000)
                 .setConvertType(Measurement.ConvertType.INTEGER)
                 .createMeasurement();
         mSpeedMeasurements.add(VITESSE_MOTEUR_GAUCHE);

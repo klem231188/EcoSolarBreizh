@@ -1,6 +1,5 @@
 @IHM
 - Empêcher la mise en veille
-- Mettre tous les chiffres en blanc et en caractères épais (maximum de contraste sur le fond noir)
 - Renforcer l’épaisseur du cercle du compteur, et surtout grossir les chiffres des graduations.
 
 @Enregistrement

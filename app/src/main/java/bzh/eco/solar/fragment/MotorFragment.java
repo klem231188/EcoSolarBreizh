@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import bzh.eco.solar.R;
 import bzh.eco.solar.adapter.MeasurementArrayAdapter;
 import bzh.eco.solar.model.car.elements.Motors;
@@ -29,13 +27,9 @@ public class MotorFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     private MeasurementArrayAdapter mElectricalPowerArrayAdapter;
 
-    private MeasurementArrayAdapter mTemperatureArrayAdapter;
-
     private MeasurementArrayAdapter mSpeedArrayAdapter;
 
     private ListView mListViewElectricalPower;
-
-    private ListView mListViewTemperature;
 
     private ListView mListViewSpeed;
 
@@ -71,11 +65,6 @@ public class MotorFragment extends Fragment {
         mElectricalPowerArrayAdapter.addAll(Motors.getInstance().getElectricalPowerMeasurements());
         mListViewElectricalPower.setAdapter(mElectricalPowerArrayAdapter);
 
-        mListViewTemperature = (ListView) root.findViewById(R.id.list_view_temperature);
-        mTemperatureArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
-        mTemperatureArrayAdapter.addAll(new ArrayList<Measurement>());
-        mListViewTemperature.setAdapter(mTemperatureArrayAdapter);
-
         mListViewSpeed = (ListView) root.findViewById(R.id.list_view_speed);
         mSpeedArrayAdapter = new MeasurementArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
         mSpeedArrayAdapter.addAll(Motors.getInstance().getSpeedMeasurements());
@@ -108,9 +97,6 @@ public class MotorFragment extends Fragment {
         switch (measurement.getType()) {
             case ELECTRICAL_POWER:
                 mElectricalPowerArrayAdapter.notifyDataSetChanged();
-                break;
-            case TEMPERATURE:
-                mTemperatureArrayAdapter.notifyDataSetChanged();
                 break;
             case SPEED:
                 mSpeedArrayAdapter.notifyDataSetChanged();
