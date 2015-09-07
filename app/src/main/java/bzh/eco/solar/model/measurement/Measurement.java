@@ -44,6 +44,8 @@ public class Measurement implements Serializable {
     // Section : Methods(s)
     // -------------------------------------------------------------------------------------
     public void update(BluetoothFrame frame) {
+        value = 0.0;
+
         if (convertType == ConvertType.INTEGER) {
             updateToInteger(frame);
         } else {
