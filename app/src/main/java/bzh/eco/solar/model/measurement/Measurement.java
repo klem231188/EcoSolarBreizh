@@ -1,7 +1,6 @@
 package bzh.eco.solar.model.measurement;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import de.greenrobot.event.EventBus;
@@ -11,6 +10,9 @@ import de.greenrobot.event.EventBus;
  */
 public class Measurement implements Serializable {
 
+    // -------------------------------------------------------------------------------------
+    // Section : Fields(s)
+    // -------------------------------------------------------------------------------------
     private final int id;
 
     private final String meaning;
@@ -25,8 +27,9 @@ public class Measurement implements Serializable {
 
     private double value;
 
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-
+    // -------------------------------------------------------------------------------------
+    // Section : Constructor(s)
+    // -------------------------------------------------------------------------------------
     private Measurement(Builder builder) {
         this.id = builder.mId;
         this.meaning = builder.mMeaning;
@@ -37,30 +40,9 @@ public class Measurement implements Serializable {
         this.value = 0.0;
     }
 
-    public int getID() {
-        return id;
-    }
-
-    public String getMeaning() {
-        return meaning;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public Unity getUnity() {
-        return unity;
-    }
-
-    public double getMaxValue() {
-        return maxValue;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
+    // -------------------------------------------------------------------------------------
+    // Section : Methods(s)
+    // -------------------------------------------------------------------------------------
     public void update(BluetoothFrame frame) {
         if (convertType == ConvertType.INTEGER) {
             updateToInteger(frame);
@@ -73,24 +55,19 @@ public class Measurement implements Serializable {
     }
 
     private void updateToInteger(BluetoothFrame frame) {
-        char[] originalData = frame.getOriginalData();
-        char decade = originalData[0];
-        char unit = originalData[1];
-
-        if (unit == 0x00) {
-            unit = decade;
-            decade = '0';
-        }
-
-        if (Character.isDigit(decade) && Character.isDigit(unit)) {
-
-            value = Character.getNumericValue(decade) * 10;
-            value += Character.getNumericValue(unit);
+        char[] dataArray = frame.getDataArray();
+        int multiple = 1;
+        for (int i = dataArray.length - 1; i >= 0; i--) {
+            char data = dataArray[i];
+            if (Character.isDigit(data)) {
+                value += Character.getNumericValue(data) * multiple;
+                multiple *= 10;
+            }
         }
     }
 
     private void updateToFloat(BluetoothFrame frame) {
-        char[] originalData = frame.getOriginalData();
+        char[] originalData = frame.getDataArray();
         char decade = originalData[0];
         char unit = originalData[1];
         char tenth = originalData[2];
@@ -132,6 +109,36 @@ public class Measurement implements Serializable {
                 '}';
     }
 
+    // -------------------------------------------------------------------------------------
+    // Section : Getter(s)/Setter(s)
+    // -------------------------------------------------------------------------------------
+    public int getID() {
+        return id;
+    }
+
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Unity getUnity() {
+        return unity;
+    }
+
+    public double getMaxValue() {
+        return maxValue;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    // -------------------------------------------------------------------------------------
+    // Section : Inner class(es) & enums
+    // -------------------------------------------------------------------------------------
     public enum Type {
         TEMPERATURE,
         ELECTRICAL_POWER,

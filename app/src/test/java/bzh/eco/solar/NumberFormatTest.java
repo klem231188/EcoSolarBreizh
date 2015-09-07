@@ -23,7 +23,6 @@ public class NumberFormatTest {
         numberFormat.setMaximumFractionDigits(2);
         numberFormat.setRoundingMode(RoundingMode.HALF_UP);
 
-        //assertEquals("1 234", numberFormat.format(1234));
         assertEquals("123", numberFormat.format(123));
         assertEquals("123", numberFormat.format(123.00));
         assertEquals("123,25", numberFormat.format(123.25));

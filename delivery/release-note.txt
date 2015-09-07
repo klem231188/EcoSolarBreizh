@@ -1,39 +1,61 @@
 -------------------------------------------------------------------
+Eco Solar Breizh - V1.0.4 (Septembre 2015)
+-------------------------------------------------------------------
+
+
+-------------------------------------------------------------------
+Eco Solar Breizh - V1.0.3
+-------------------------------------------------------------------
+@IHM
+- Empêcher la mise en veille + Plein écran
+- Mettre tous les chiffres en blanc et en caractères épais (maximum de contraste sur le fond noir)
+- Supprimer le mot « courant » sur l’affichage (ça libérera de la place pour mettre les chiffres en plus grand)
+- Renforcer l’épaisseur du cercle du compteur, et surtout grossir les chiffres des graduations.
+- Afficher la vitesse sur 3 chiffres
+
+@Enregistrement
+- Revoir le format d'enregistrement des données pour pouvoir les traiter facilement avec excel --> format CSV
+- Revoir la fréquence d'enregistrement. Toutes les secondes au lieu d'un événement de mise à jour.
+
+-------------------------------------------------------------------
 Eco Solar Breizh - V1.0.2
 -------------------------------------------------------------------
-- FileWriter
--- Add File writer fragment to write measurement update in a file
+@FileWriter
+- Add File writer fragment to write measurement update in a file
 
-- All
--- Fix measurements max value, unity, ...
+@All
+- Fix measurements max value, unity, ...
 
 -------------------------------------------------------------------
 Eco Solar Breizh - V1.0.1
 -------------------------------------------------------------------
-- Dashboard
--- Add gauge battery
+@IHM
+-- Add gauge battery on dashboard
 
 -------------------------------------------------------------------
 Eco Solar Breizh - V1.0.0
 -------------------------------------------------------------------
-- Service
--- Enable to read data from bluetooth connection
+@Service
+- Enable to read data from bluetooth connection
 
-- Bluetooth
--- Activate bluetooth if inactive
--- List bluetooth device around
--- Ability to connect to one device maximum in a row
+@Bluetooth
+- Activate bluetooth if inactive
+- List bluetooth device around
+- Ability to connect to one device maximum in a row
 
-- Dashboard
--- Speedometer + Text value
--- Cells value (A)
--- Motors value (A)
+@IHM
+@Dashboard
+- Speedometer + Text value
+- Cells value (A)
+- Motors value (A)
 
-- Solar panels fragment
--- electrical measurements
--- temperature measurements
+@IHM
+@Solar panels fragment
+- electrical measurements
+- temperature measurements
 
-- Motors fragment
--- electrical measurements
--- temperature measurements
--- speed measurements
+@IHM
+@Motors fragment
+- electrical measurements
+- temperature measurements
+- speed measurements

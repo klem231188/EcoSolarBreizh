@@ -10,46 +10,37 @@ import java.io.Serializable;
 public class BluetoothFrame implements Serializable {
 
     // -------------------------------------------------------------------------------------
-    // Section : Static Fields(s)
-    // -------------------------------------------------------------------------------------
-    public static final String BLUETOOTH_FRAME_SOLAR_PANEL = "BLUETOOTH_FRAME_SOLAR_PANEL";
-
-    // -------------------------------------------------------------------------------------
     // Section : Fields(s)
     // -------------------------------------------------------------------------------------
-    private char[] mOriginalID;
+    private char[] mIdArray;
 
-    private char[] mOriginalData;
+    private char[] mdataArray;
 
-    private int mID;
-
-    private double mData;
+    private int mId;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s)
     // -------------------------------------------------------------------------------------
     protected BluetoothFrame() {
-        mOriginalID = new char[2];
-        mOriginalData = new char[4];
+        mIdArray = new char[2];
+        mdataArray = new char[4];
     }
 
     public static BluetoothFrame makeInstance(char[] buffer) {
         BluetoothFrame bluetoothFrame = new BluetoothFrame();
 
-        bluetoothFrame.mOriginalID[0] = buffer[0];
-        bluetoothFrame.mOriginalID[1] = buffer[1];
+        bluetoothFrame.mIdArray[0] = buffer[0];
+        bluetoothFrame.mIdArray[1] = buffer[1];
 
-        bluetoothFrame.mID = 0;
-        if (Character.isDigit(bluetoothFrame.mOriginalID[0]) && Character.isDigit(bluetoothFrame.mOriginalID[0])) {
-            bluetoothFrame.mID = Character.getNumericValue(bluetoothFrame.mOriginalID[0]) * 10 + Character.getNumericValue(bluetoothFrame.mOriginalID[1]);
+        bluetoothFrame.mId = 0;
+        if (Character.isDigit(bluetoothFrame.mIdArray[0]) && Character.isDigit(bluetoothFrame.mIdArray[0])) {
+            bluetoothFrame.mId = Character.getNumericValue(bluetoothFrame.mIdArray[0]) * 10 + Character.getNumericValue(bluetoothFrame.mIdArray[1]);
         }
 
-        bluetoothFrame.mOriginalData[0] = buffer[2];
-        bluetoothFrame.mOriginalData[1] = buffer[3];
-        bluetoothFrame.mOriginalData[2] = buffer[4];
-        bluetoothFrame.mOriginalData[3] = buffer[5];
-
-        bluetoothFrame.mData = 0;
+        bluetoothFrame.mdataArray[0] = buffer[2];
+        bluetoothFrame.mdataArray[1] = buffer[3];
+        bluetoothFrame.mdataArray[2] = buffer[4];
+        bluetoothFrame.mdataArray[3] = buffer[5];
 
         return bluetoothFrame;
     }
@@ -59,37 +50,26 @@ public class BluetoothFrame implements Serializable {
     // -------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        StringBuilder ret = new StringBuilder();
-        ret.append("ID = [")
-                .append(Character.isDigit(mOriginalID[0]) ? mOriginalID[0] : '.')
-                .append(Character.isDigit(mOriginalID[1]) ? mOriginalID[1] : '.')
-                .append("] - FRAME = [")
-                .append(Character.isDigit(mOriginalData[0]) ? mOriginalData[0] : '.')
-                .append(Character.isDigit(mOriginalData[1]) ? mOriginalData[1] : '.')
-                .append(Character.isDigit(mOriginalData[2]) ? mOriginalData[2] : '.')
-                .append(Character.isDigit(mOriginalData[3]) ? mOriginalData[3] : '.')
-                .append("]")
-        ;
 
-        return ret.toString();
+        return "ID = ["
+                + (Character.isDigit(mIdArray[0]) ? mIdArray[0] : '.')
+                + (Character.isDigit(mIdArray[1]) ? mIdArray[1] : '.')
+                + "] - FRAME = ["
+                + (Character.isDigit(mdataArray[0]) ? mdataArray[0] : '.')
+                + (Character.isDigit(mdataArray[1]) ? mdataArray[1] : '.')
+                + (Character.isDigit(mdataArray[2]) ? mdataArray[2] : '.')
+                + (Character.isDigit(mdataArray[3]) ? mdataArray[3] : '.')
+                + "]";
     }
 
     // -------------------------------------------------------------------------------------
     // Section : Setter(s)/Getter(s)
     // -------------------------------------------------------------------------------------
-    public char[] getOriginalData() {
-        return mOriginalData;
+    public char[] getDataArray() {
+        return mdataArray;
     }
 
-    public int getID() {
-        return mID;
-    }
-
-    public double getData() {
-        return mData;
-    }
-
-    public void setData(double data) {
-        mData = data;
+    public int getId() {
+        return mId;
     }
 }

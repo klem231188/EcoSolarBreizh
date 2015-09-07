@@ -95,7 +95,7 @@ public class Motors implements Car.CarElement {
     @Override
     public boolean isFrameAccepted(BluetoothFrame frame) {
         for (Measurement measurement : mMeasurements) {
-            if (frame.getID() == measurement.getID()) {
+            if (frame.getId() == measurement.getID()) {
                 return true;
             }
         }
@@ -111,7 +111,7 @@ public class Motors implements Car.CarElement {
     @Override
     public void update(BluetoothFrame frame) {
         for (Measurement measurement : mMeasurements) {
-            if (frame.getID() == measurement.getID()) {
+            if (frame.getId() == measurement.getID()) {
                 measurement.update(frame);
                 break;
             }
