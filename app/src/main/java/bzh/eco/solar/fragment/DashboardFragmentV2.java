@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.math.RoundingMode;
@@ -46,6 +47,10 @@ public class DashboardFragmentV2 extends Fragment {
 
     private NumberFormat mNumberFormat;
 
+    private Button mButtonTurnLeft;
+
+    private Button mButtonTurnRight;
+
     public DashboardFragmentV2() {
         mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
         mNumberFormat.setMaximumFractionDigits(2);
@@ -80,6 +85,8 @@ public class DashboardFragmentV2 extends Fragment {
         mTextViewMotorsValue = (TextView) root.findViewById(R.id.text_view_motors_value);
         mTextViewCellsValue = (TextView) root.findViewById(R.id.text_view_cells_value);
         mTextViewBatteryValue = (TextView) root.findViewById(R.id.text_view_battery_value);
+        mButtonTurnLeft = (Button) root.findViewById(R.id.button_turning_left);
+        mButtonTurnRight = (Button) root.findViewById(R.id.button_turning_right);
         initSpeedometerGauge(root);
         initBatteryIndicatorGauge(root);
 
