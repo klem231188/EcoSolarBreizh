@@ -172,22 +172,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
             >
 
-        <Button
-                android:id="@+id/button_turning_left"
-                android:background="@android:color/holo_green_dark"
-                android:layout_width="fill_parent"
+        <ImageButton
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:id="@+id/button_turning_left"
+                android:src="@drawable/turn_left_off"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
                 />
 
-        <Button
-                android:id="@+id/button_turning_right"
-                android:background="@android:color/holo_green_dark"
-                android:layout_width="fill_parent"
+        <ImageButton android:layout_width="50dp"
+                     android:layout_height="50dp"
+                     android:id="@+id/button_warnings"
+                     android:src="@drawable/warnings_off"
+                     android:background="@android:color/transparent"
+                     android:contentDescription="@string/warnings"
+                     android:cropToPadding="false"
+                     android:layout_marginLeft="40dp"
+                     android:layout_marginRight="40dp"
+                     android:scaleType="fitCenter"
+                />
+
+        <ImageButton
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:id="@+id/button_turning_right"
+                android:src="@drawable/turn_right_off"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
                 />
 
     </LinearLayout>

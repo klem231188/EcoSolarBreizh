@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
+import bzh.eco.solar.model.car.commands.ClignotantWarningCommand;
 import bzh.eco.solar.model.car.elements.Battery;
 import bzh.eco.solar.model.car.elements.Generals;
 import bzh.eco.solar.model.car.elements.Motors;
@@ -21,6 +22,8 @@ public class Car {
 
     private List<CarElement> mCarElements = null;
 
+    private List<CarCommand> mCarCommands = null;
+
     public static Car getInstance() {
         if (mInstance == null) {
             mInstance = new Car();
@@ -36,11 +39,21 @@ public class Car {
         mCarElements.add(SolarPanels.getInstance());
         mCarElements.add(Motors.getInstance());
         mCarElements.add(Battery.getInstance());
+
+        mCarCommands = new ArrayList<>();
+        mCarCommands.add(ClignotantWarningCommand.getInstance());
     }
 
     public void update(BluetoothFrame frame) {
+
+        for (CarCommand carCommand : mCarCommands) {
+            if (carCommand.accepts(frame)) {
+                carCommand.update(frame);
+            }
+        }
+
         for (CarElement carElement : mCarElements) {
-            if (carElement.isFrameAccepted(frame)) {
+            if (carElement.accepts(frame)) {
                 carElement.update(frame);
             }
         }
@@ -63,7 +76,7 @@ public class Car {
 
     public interface CarElement {
 
-        boolean isFrameAccepted(BluetoothFrame frame);
+        boolean accepts(BluetoothFrame frame);
 
         ElementType getType();
 

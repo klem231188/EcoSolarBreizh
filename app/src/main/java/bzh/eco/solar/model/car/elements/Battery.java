@@ -53,7 +53,7 @@ public class Battery implements Car.CarElement {
     }
 
     @Override
-    public boolean isFrameAccepted(BluetoothFrame frame) {
+    public boolean accepts(BluetoothFrame frame) {
         for (Measurement measurement : mMeasurements) {
             if (frame.getId() == measurement.getID()) {
                 return true;

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.math.RoundingMode;
@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import bzh.eco.solar.R;
+import bzh.eco.solar.model.car.commands.ClignotantWarningCommand;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.measurement.Measurement;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
@@ -47,9 +48,11 @@ public class DashboardFragmentV2 extends Fragment {
 
     private NumberFormat mNumberFormat;
 
-    private Button mButtonTurnLeft;
+    private ImageButton mButtonTurnLeft;
 
-    private Button mButtonTurnRight;
+    private ImageButton mButtonTurnRight;
+
+    private ImageButton mButtonWarning;
 
     public DashboardFragmentV2() {
         mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
@@ -85,8 +88,9 @@ public class DashboardFragmentV2 extends Fragment {
         mTextViewMotorsValue = (TextView) root.findViewById(R.id.text_view_motors_value);
         mTextViewCellsValue = (TextView) root.findViewById(R.id.text_view_cells_value);
         mTextViewBatteryValue = (TextView) root.findViewById(R.id.text_view_battery_value);
-        mButtonTurnLeft = (Button) root.findViewById(R.id.button_turning_left);
-        mButtonTurnRight = (Button) root.findViewById(R.id.button_turning_right);
+        mButtonTurnLeft = (ImageButton) root.findViewById(R.id.button_turning_left);
+        mButtonTurnRight = (ImageButton) root.findViewById(R.id.button_turning_right);
+        mButtonWarning = (ImageButton) root.findViewById(R.id.button_warnings);
         initSpeedometerGauge(root);
         initBatteryIndicatorGauge(root);
 
@@ -138,6 +142,30 @@ public class DashboardFragmentV2 extends Fragment {
             case 55:
                 updateMotorsValue();
                 break;
+            default:
+                break;
+        }
+    }
+
+    public void onEvent(ClignotantWarningCommand.Command command) {
+        mButtonTurnLeft.setImageDrawable(getResources().getDrawable(R.drawable.turn_left_off));
+        mButtonTurnRight.setImageDrawable(getResources().getDrawable(R.drawable.turn_right_off));
+        mButtonWarning.setImageDrawable(getResources().getDrawable(R.drawable.warnings_off));
+
+        switch (command) {
+            case CLIGNOTANT_GAUCHE_ON:
+                mButtonTurnLeft.setImageDrawable(getResources().getDrawable(R.drawable.turn_left_on));
+                break;
+
+            case CLIGNOTANT_DROIT_ON:
+                mButtonTurnRight.setImageDrawable(getResources().getDrawable(R.drawable.turn_right_on));
+                break;
+
+            case WARNING_ON:
+                mButtonWarning.setImageDrawable(getResources().getDrawable(R.drawable.warnings_on));
+                break;
+
+            case RIEN:
             default:
                 break;
         }
