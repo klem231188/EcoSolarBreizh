@@ -27,6 +27,7 @@ import bzh.eco.solar.fragment.FileWriterFragment;
 import bzh.eco.solar.fragment.MotorFragment;
 import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
+import bzh.eco.solar.model.voiture.Voiture;
 import bzh.eco.solar.service.BluetoothService;
 
 
@@ -45,6 +46,8 @@ public class MainActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+
+    private Voiture mVoiture;
 
     // -------------------------------------------------------------------------------------
     // Section : Constructor(s) / Factory
@@ -109,6 +112,9 @@ public class MainActivity
     protected void onStart() {
         Log.i(TAG, "onStart");
         super.onStart();
+
+        // Création du modèle de donnée
+        mVoiture = Voiture.getInstance();
     }
 
     @Override

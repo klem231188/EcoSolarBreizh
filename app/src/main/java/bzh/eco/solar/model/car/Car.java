@@ -22,8 +22,6 @@ public class Car {
 
     private List<CarElement> mCarElements = null;
 
-    private List<CarCommand> mCarCommands = null;
-
     public static Car getInstance() {
         if (mInstance == null) {
             mInstance = new Car();
@@ -39,19 +37,9 @@ public class Car {
         mCarElements.add(SolarPanels.getInstance());
         mCarElements.add(Motors.getInstance());
         mCarElements.add(Battery.getInstance());
-
-        mCarCommands = new ArrayList<>();
-        mCarCommands.add(ClignotantWarningCommand.getInstance());
     }
 
     public void update(BluetoothFrame frame) {
-
-        for (CarCommand carCommand : mCarCommands) {
-            if (carCommand.accepts(frame)) {
-                carCommand.update(frame);
-            }
-        }
-
         for (CarElement carElement : mCarElements) {
             if (carElement.accepts(frame)) {
                 carElement.update(frame);

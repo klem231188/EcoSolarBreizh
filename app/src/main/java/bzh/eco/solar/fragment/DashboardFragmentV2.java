@@ -19,6 +19,8 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.commands.ClignotantWarningCommand;
 import bzh.eco.solar.model.car.elements.Motors;
+import bzh.eco.solar.model.voiture.element.impl.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.ClignotantDroit;
 import bzh.eco.solar.model.measurement.Measurement;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
 import bzh.eco.solar.view.SpeedometerGauge;
@@ -167,6 +169,28 @@ public class DashboardFragmentV2 extends Fragment {
 
             case RIEN:
             default:
+                break;
+        }
+    }
+
+    public void onEvent(ClignotantGauche clignotantGauche) {
+        switch (clignotantGauche.getEtat()) {
+            case ACTIF:
+                mButtonTurnLeft.setImageDrawable(getResources().getDrawable(R.drawable.turn_left_on));
+                break;
+            case INACTIF:
+                mButtonTurnLeft.setImageDrawable(getResources().getDrawable(R.drawable.turn_left_off));
+                break;
+        }
+    }
+
+    public void onEvent(ClignotantDroit rightIndicatorLight) {
+        switch (rightIndicatorLight.getEtat()) {
+            case ACTIF:
+                mButtonTurnRight.setImageDrawable(getResources().getDrawable(R.drawable.turn_right_on));
+                break;
+            case INACTIF:
+                mButtonTurnRight.setImageDrawable(getResources().getDrawable(R.drawable.turn_right_off));
                 break;
         }
     }

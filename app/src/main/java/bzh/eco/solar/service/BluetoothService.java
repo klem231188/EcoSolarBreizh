@@ -19,6 +19,7 @@ import java.util.UUID;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.car.Car;
+import bzh.eco.solar.model.voiture.Voiture;
 import bzh.eco.solar.thread.BluetoothConnectionThread;
 import bzh.eco.solar.thread.BluetoothInputProcessingThread;
 import bzh.eco.solar.thread.BluetoothOutputProcessingThread;
@@ -38,13 +39,13 @@ public class BluetoothService extends Service {
 
     public static final String ACTION_BLUETOOTH_SOCKET_CONNECTED = "ACTION_BLUETOOTH_SOCKET_CONNECTED";
 
+    public static final String ACTION_SEND_COMMAND = "ACTION_SEND_COMMAND";
+
     public static final int BLUETOOTH_SOCKET_CONNECTED = 0;
 
     public static final int BLUETOOTH_SOCKET_DISCONNECTED = 1;
 
     public static final int BLUETOOTH_FRAME_PROCESSED = 0;
-
-    public static final String ACTION_SEND_COMMAND = "ACTION_SEND_COMMAND";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
@@ -198,7 +199,7 @@ public class BluetoothService extends Service {
                     case BLUETOOTH_FRAME_PROCESSED: {
                         BluetoothFrame bluetoothFrame = (BluetoothFrame) msg.obj;
                         Car.getInstance().update(bluetoothFrame);
-
+                        Voiture.getInstance().update(bluetoothFrame);
                         break;
                     }
                 }
