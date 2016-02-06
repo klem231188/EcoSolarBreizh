@@ -1,3 +1,11 @@
+@Kelly
+-- IHM Kelly 1 et 2
+-- Réception en bluetooth de l'état du kelly (ON (Succès ou Erreur) / OFF)
+
+@Clignotants
+-- IHM Clignotant gauche, Clignotant droit, Warnings
+-- Réception en bluetooth + Conversion
+
 @Régulateur
 -- IHM (boutons à droite du compteur de vitesse)
 -- Envoi de commande en bluetooth

@@ -5,7 +5,8 @@ import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.voiture.element.ElementVoiture;
-import bzh.eco.solar.model.voiture.element.impl.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
 
 /**
  * @author : Clément.Tréguer
@@ -27,11 +28,12 @@ public class Voiture {
     private Voiture() {
         mElementVoitures = new ArrayList<>();
         mElementVoitures.add(new ClignotantGauche());
+        mElementVoitures.add(new ClignotantDroit());
     }
 
     public void update(BluetoothFrame frame) {
         for (ElementVoiture elementVoiture : mElementVoitures) {
-            if(elementVoiture.getId() == frame.getId()){
+            if (elementVoiture.getIds().contains(frame.getId())) {
                 elementVoiture.update(frame);
                 break;
             }

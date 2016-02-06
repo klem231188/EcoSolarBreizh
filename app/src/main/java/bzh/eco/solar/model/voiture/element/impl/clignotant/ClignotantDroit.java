@@ -1,6 +1,7 @@
-package bzh.eco.solar.model.voiture.element.impl;
+package bzh.eco.solar.model.voiture.element.impl.clignotant;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.voiture.Etat;
@@ -10,29 +11,23 @@ import de.greenrobot.event.EventBus;
 /**
  * @author : Clément.Tréguer
  */
-public class ClignotantGauche implements ElementVoiture {
+public class ClignotantDroit implements ElementVoiture {
 
     private Etat mEtat = null;
 
-    public ClignotantGauche() {
+    public ClignotantDroit() {
         mEtat = Etat.INACTIF;
     }
 
     @Override
-    public int getId() {
-        // TODO : Trouver l'id du clignotant gauche
-        return 23;
+    public List<Integer> getIds() {
+        // TODO : Trouver l'id du clignotant droit
+        return Arrays.asList(666);
     }
 
     @Override
     public void update(BluetoothFrame frame) {
         // TODO : Conversion ici
-        if (new Random().nextBoolean()) {
-            mEtat = Etat.ACTIF;
-        } else {
-            mEtat = Etat.INACTIF;
-        }
-
         EventBus.getDefault().post(this);
     }
 

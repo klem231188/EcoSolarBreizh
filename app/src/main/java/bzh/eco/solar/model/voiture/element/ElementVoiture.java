@@ -1,5 +1,7 @@
 package bzh.eco.solar.model.voiture.element;
 
+import java.util.List;
+
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 
 /**
@@ -7,7 +9,7 @@ import bzh.eco.solar.model.bluetooth.BluetoothFrame;
  */
 public interface ElementVoiture {
 
-    int getId();
+    List<Integer> getIds();
 
     void update(BluetoothFrame frame);
 
