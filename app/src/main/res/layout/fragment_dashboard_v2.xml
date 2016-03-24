@@ -129,40 +129,6 @@
                 android:layout_height="fill_parent"
                 >
 
-            <!--<ImageButton-->
-            <!--android:layout_width="75dp"-->
-            <!--android:layout_height="75dp"-->
-            <!--android:id="@+id/button_speed_regulator"-->
-            <!--android:src="@drawable/speed_regulator_off"-->
-            <!--android:scaleType="fitCenter"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--/>-->
-
-            <!--<RelativeLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:gravity="center_vertical|center_horizontal"-->
-            <!--android:layout_marginLeft="30dp">-->
-            <!--<TextView-->
-            <!--android:id="@+id/text_view_car_speed_regulator"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="0.0"-->
-            <!--android:textSize="40sp"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--/>-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-            <!--android:text="km/h"-->
-            <!--android:textSize="14sp"-->
-            <!--android:layout_toRightOf="@id/text_view_car_speed_regulator"-->
-            <!--android:layout_alignBaseline="@id/text_view_car_speed_regulator"-->
-            <!--/>-->
-            <!--</RelativeLayout>-->
-
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -186,6 +152,19 @@
                           android:id="@+id/textview_valeur_tension_batterie"
                         />
             </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KellyGauche"
+                android:id="@+id/button_kelly_gauche"
+                android:drawableRight="@drawable/orange_button"
+                />
+
         </LinearLayout>
     </LinearLayout>
 

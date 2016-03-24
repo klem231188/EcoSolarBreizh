@@ -1,14 +1,15 @@
 package bzh.eco.solar.fragment;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import bzh.eco.solar.R;
+import bzh.eco.solar.activity.MainActivity;
 import bzh.eco.solar.model.car.commands.ClignotantWarningCommand;
 import bzh.eco.solar.model.car.elements.Motors;
 import bzh.eco.solar.model.measurement.Measurement;
@@ -25,6 +27,7 @@ import bzh.eco.solar.model.voiture.Ids;
 import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
 import bzh.eco.solar.view.SpeedometerGauge;
 import de.greenrobot.event.EventBus;
@@ -60,6 +63,8 @@ public class DashboardFragmentV2 extends Fragment {
     private ImageButton mButtonTurnRight;
 
     private ImageButton mButtonWarning;
+
+    private Button mButtonKellyGauche;
 
     public DashboardFragmentV2() {
         mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
@@ -99,8 +104,10 @@ public class DashboardFragmentV2 extends Fragment {
         mButtonTurnLeft = (ImageButton) root.findViewById(R.id.button_turning_left);
         mButtonTurnRight = (ImageButton) root.findViewById(R.id.button_turning_right);
         mButtonWarning = (ImageButton) root.findViewById(R.id.button_warnings);
+
         initSpeedometerGauge(root);
         initBatteryIndicatorGauge(root);
+        initButtonKellyGauche(root);
 
         return root;
     }
@@ -139,6 +146,20 @@ public class DashboardFragmentV2 extends Fragment {
         switch (id) {
             case Ids.TENSION_BATTERIE:
                 mTextViewValeurTensionBatterie.setText(mNumberFormat.format(Batterie.getInstance().getTension()));
+                break;
+            case Ids.KELLY_GAUCHE_LSB:
+            case Ids.KELLY_GAUCHE_MSB:
+                switch (KellyGauche.getInstance().getEtat()) {
+                    case ETEINT:
+                        mButtonKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.orange_button, 0, 0, 0);
+                        break;
+                    case OK:
+                        mButtonKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.green_button, 0, 0, 0);
+                        break;
+                    case ERREUR:
+                        mButtonKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
+                        break;
+                }
                 break;
             default:
                 break;
@@ -236,6 +257,17 @@ public class DashboardFragmentV2 extends Fragment {
         mBatteryIndicatorGauge.setMax(100);
         mBatteryIndicatorGauge.setMin(0);
         mBatteryIndicatorGauge.setValue(0);
+    }
+
+    private void initButtonKellyGauche(View root) {
+        mButtonKellyGauche = (Button) root.findViewById(R.id.button_kelly_gauche);
+        mButtonKellyGauche.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActionBar.Tab tab = getActivity().getActionBar().getTabAt(MainActivity.SectionsPagerAdapter.KELLY_SECTION);
+                getActivity().getActionBar().selectTab(tab);
+            }
+        });
     }
 
     private void updateSpeedValue(Measurement measurement) {

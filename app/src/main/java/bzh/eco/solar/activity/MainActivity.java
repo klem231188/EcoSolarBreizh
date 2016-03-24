@@ -24,6 +24,7 @@ import bzh.eco.solar.R;
 import bzh.eco.solar.fragment.BluetoothConnectionFragment;
 import bzh.eco.solar.fragment.DashboardFragmentV2;
 import bzh.eco.solar.fragment.FileWriterFragment;
+import bzh.eco.solar.fragment.KellyFragment;
 import bzh.eco.solar.fragment.MotorFragment;
 import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
@@ -228,6 +229,8 @@ public class MainActivity
 
         public static final int MOTOR_SECTION = 3;
 
+        public static final int KELLY_SECTION = 4;
+
         List<Fragment> mFragments;
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -237,6 +240,7 @@ public class MainActivity
             mFragments.add(DashboardFragmentV2.newInstance());
             mFragments.add(SolarPanelFragment.newInstance());
             mFragments.add(MotorFragment.newInstance());
+            mFragments.add(KellyFragment.newInstance());
         }
 
         @Override
@@ -258,8 +262,6 @@ public class MainActivity
         public CharSequence getPageTitle(int position) {
             Locale locale = Locale.getDefault();
 
-            // TODO use list instead and put name of fragment in fragment.
-
             switch (position) {
                 case BLUETOOTH_CONNECTION_SECTION:
                     return getString(R.string.title_bluetooth_connection_section).toUpperCase(locale);
@@ -269,6 +271,8 @@ public class MainActivity
                     return getString(R.string.title_solar_panel_electical_power_section).toUpperCase(locale);
                 case MOTOR_SECTION:
                     return getString(R.string.title_motor_section).toUpperCase(locale);
+                case KELLY_SECTION:
+                    return getString(R.string.title_kelly_section).toUpperCase(locale);
             }
 
             return null;
