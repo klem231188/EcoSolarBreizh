@@ -45,6 +45,57 @@ public class BluetoothFrame implements Serializable {
         return bluetoothFrame;
     }
 
+    public int asInteger() {
+        int value = 0;
+
+        char[] dataArray = getDataArray();
+        int multiple = 1;
+        for (int i = dataArray.length - 1; i >= 0; i--) {
+            char data = dataArray[i];
+            if (Character.isDigit(data)) {
+                value += Character.getNumericValue(data) * multiple;
+                multiple *= 10;
+            }
+        }
+
+        return value;
+    }
+
+    public double asDouble(){
+        double value = 0.0;
+
+        char[] originalData = getDataArray();
+        char decade = originalData[0];
+        char unit = originalData[1];
+        char tenth = originalData[2];
+        char hundredth = originalData[3];
+
+        // Rule 1)
+        if (unit == 0x00) {
+            unit = decade;
+            decade = '0';
+        }
+        // Rule 2)
+        if (hundredth == 0x00) {
+            hundredth = tenth;
+            tenth = '0';
+        }
+        // Rule 3)
+        if (Character.isDigit(decade)
+                && Character.isDigit(unit)
+                && Character.isDigit(tenth)
+                && Character.isDigit(hundredth)) {
+
+            value = Character.getNumericValue(decade) * 10;
+            value += Character.getNumericValue(unit);
+            value += Character.getNumericValue(tenth) * 0.1;
+            value += Character.getNumericValue(hundredth) * 0.01;
+        }
+
+        return value;
+    }
+
+
     // -------------------------------------------------------------------------------------
     // Section : Method(s)
     // -------------------------------------------------------------------------------------

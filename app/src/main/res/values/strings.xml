@@ -21,5 +21,6 @@
     <string name="temperature">Température</string>
     <string name="vitesse">Vitesse</string>
     <string name="kelly_1_lsb">kelly 1 lsb</string>
+    <string name="tension_batterie">Tension batterie</string>
 
 </resources>

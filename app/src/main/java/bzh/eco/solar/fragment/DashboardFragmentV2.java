@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import java.util.Locale;
 import bzh.eco.solar.R;
 import bzh.eco.solar.model.car.commands.ClignotantWarningCommand;
 import bzh.eco.solar.model.car.elements.Motors;
-import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
-import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.measurement.Measurement;
+import bzh.eco.solar.model.voiture.Ids;
+import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
 import bzh.eco.solar.view.SpeedometerGauge;
 import de.greenrobot.event.EventBus;
@@ -47,6 +50,8 @@ public class DashboardFragmentV2 extends Fragment {
     private TextView mTextViewCellsValue = null;
 
     private TextView mTextViewBatteryValue = null;
+
+    private TextView mTextViewValeurTensionBatterie = null;
 
     private NumberFormat mNumberFormat;
 
@@ -90,6 +95,7 @@ public class DashboardFragmentV2 extends Fragment {
         mTextViewMotorsValue = (TextView) root.findViewById(R.id.text_view_motors_value);
         mTextViewCellsValue = (TextView) root.findViewById(R.id.text_view_cells_value);
         mTextViewBatteryValue = (TextView) root.findViewById(R.id.text_view_battery_value);
+        mTextViewValeurTensionBatterie = (TextView) root.findViewById(R.id.textview_valeur_tension_batterie);
         mButtonTurnLeft = (ImageButton) root.findViewById(R.id.button_turning_left);
         mButtonTurnRight = (ImageButton) root.findViewById(R.id.button_turning_right);
         mButtonWarning = (ImageButton) root.findViewById(R.id.button_warnings);
@@ -129,6 +135,16 @@ public class DashboardFragmentV2 extends Fragment {
     // -------------------------------------------------------------------------------------
     // Section : EventBus onEvent Method(s)
     // -------------------------------------------------------------------------------------
+    public void onEvent(Integer id) {
+        switch (id) {
+            case Ids.TENSION_BATTERIE:
+                mTextViewValeurTensionBatterie.setText(mNumberFormat.format(Batterie.getInstance().getTension()));
+                break;
+            default:
+                break;
+        }
+    }
+
     public void onEvent(Measurement measurement) {
         switch (measurement.getID()) {
             case 23:

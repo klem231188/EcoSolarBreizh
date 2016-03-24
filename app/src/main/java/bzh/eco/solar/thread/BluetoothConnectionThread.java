@@ -55,7 +55,7 @@ public class BluetoothConnectionThread extends Thread {
             // From method createRfcommSocketToServiceRecord() :
             // IOException on error, for example Bluetooth not available, or insufficient permissions
             // From method connect() :
-            // Error occurs during connection
+            // Erreur occurs during connection
 
             Log.e(TAG, e.toString());
             Message msg = Message.obtain(mHandler, BluetoothService.BLUETOOTH_SOCKET_DISCONNECTED, mBluetoothSocket);

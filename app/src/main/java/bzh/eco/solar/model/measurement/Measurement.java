@@ -1,5 +1,7 @@
 package bzh.eco.solar.model.measurement;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
@@ -51,6 +53,8 @@ public class Measurement implements Serializable {
         } else {
             updateToFloat(frame);
         }
+
+        Log.i("Measurement", frame.toString());
 
         // Send to event bus changing state
         EventBus.getDefault().post(this);

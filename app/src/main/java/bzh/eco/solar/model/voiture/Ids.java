@@ -35,13 +35,13 @@ public class Ids {
 
     public final static int WARNING_BATTERIE = 30;
 
-    public final static int VARIATEUR_KELLY_1_MSB = 31;
+    public final static int KELLY_GAUCHE_MSB = 31;
 
-    public final static int VARIATEUR_KELLY_1_LSB = 32;
+    public final static int KELLY_GAUCHE_LSB = 32;
 
-    public final static int VARIATEUR_KELLY_2_MSB = 33;
+    public final static int KELLY_DROIT_MSB = 33;
 
-    public final static int VARIATEUR_KELLY_2_LSB = 34;
+    public final static int KELLY_DROIT_LSB = 34;
 
     public final static int TENSION_BATTERIE = 35;
 

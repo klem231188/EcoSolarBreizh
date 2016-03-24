@@ -120,7 +120,7 @@ public class FileWriterFragment extends Fragment {
 
     public File getBluetoothStorageDir(Context context, String bluetoothDir) {
         // Get the directory for the app's private documents directory.
-        File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), bluetoothDir);
+        File file = new File(context.getFilesDir(), bluetoothDir);
         if (!file.mkdirs()) {
             Log.e(TAG, "Directory not created");
         }
@@ -128,7 +128,7 @@ public class FileWriterFragment extends Fragment {
     }
 
     private String getRecordFilename() {
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String date = s.format(new Date());
         return "record" + "-" + date + ".csv";
     }
