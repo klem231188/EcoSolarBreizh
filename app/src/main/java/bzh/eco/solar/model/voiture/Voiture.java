@@ -8,6 +8,7 @@ import bzh.eco.solar.model.voiture.element.ElementVoiture;
 import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.kelly.KellyDroit;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import de.greenrobot.event.EventBus;
 
@@ -31,6 +32,7 @@ public class Voiture {
         mElementsVoitures.add(new ClignotantDroit());
         mElementsVoitures.add(Batterie.getInstance());
         mElementsVoitures.add(KellyGauche.getInstance());
+        mElementsVoitures.add(KellyDroit.getInstance());
     }
 
     public void update(BluetoothFrame frame) {

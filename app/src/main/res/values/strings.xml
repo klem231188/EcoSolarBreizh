@@ -29,5 +29,6 @@
     <string name="signification">Signification : </string>
     <string name="valeur_hexa">Valeur Héxadécimale : </string>
     <string name="title_kelly_section">Kelly</string>
+    <string name="kelly_droit">Kelly Droit</string>
 
 </resources>
