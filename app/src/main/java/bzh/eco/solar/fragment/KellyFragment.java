@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import bzh.eco.solar.R;
+import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.voiture.Ids;
+import bzh.eco.solar.model.voiture.Voiture;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import de.greenrobot.event.EventBus;
 
@@ -74,6 +76,15 @@ public class KellyFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+
+        char[] bufferMSB = {'3', '1', '0', '0', '0', '0', '+', '+'};
+        BluetoothFrame frameMSB = BluetoothFrame.makeInstance(bufferMSB);
+
+        char[] bufferLSB = {'3', '2', '0', '0', '0', '0', '+', '+'};
+        BluetoothFrame frameLSB = BluetoothFrame.makeInstance(bufferLSB);
+
+        Voiture.getInstance().update(frameMSB);
+        Voiture.getInstance().update(frameLSB);
     }
 
     @Override

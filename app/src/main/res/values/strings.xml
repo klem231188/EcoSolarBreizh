@@ -25,9 +25,9 @@
     <string name="kelly_gauche">Kelly Gauche</string>
     <string name="lsb">LSB</string>
     <string name="msb">MSB</string>
-    <string name="detail">Détails</string>
-    <string name="signification">Signification</string>
-    <string name="valeur_hexa">Valeur Héxadécimale</string>
+    <string name="detail">Détails : </string>
+    <string name="signification">Signification : </string>
+    <string name="valeur_hexa">Valeur Héxadécimale : </string>
     <string name="title_kelly_section">Kelly</string>
 
 </resources>

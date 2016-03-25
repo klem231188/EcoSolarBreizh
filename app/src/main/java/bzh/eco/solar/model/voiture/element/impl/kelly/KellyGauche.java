@@ -30,6 +30,11 @@ public class KellyGauche implements ElementVoiture {
         return mInstance;
     }
 
+    public KellyGauche() {
+        msb = new MSB(0);
+        lsb = new LSB(0);
+    }
+
     @Override
     public List<Integer> getIds() {
         return Arrays.asList(Ids.KELLY_GAUCHE_MSB, Ids.KELLY_GAUCHE_LSB);
@@ -46,6 +51,12 @@ public class KellyGauche implements ElementVoiture {
                 break;
             default:
                 break;
+        }
+
+        if(msb.getErreur() == Erreurs.SANS_ERREUR && lsb.getErreur() == Erreurs.SANS_ERREUR) {
+            etat = Etat.OK;
+        } else{
+            etat = Etat.ERREUR;
         }
 
         Log.i("KellyGauche", toString());
