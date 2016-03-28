@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import bzh.eco.solar.R;
-import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.voiture.Ids;
-import bzh.eco.solar.model.voiture.Voiture;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyDroit;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import de.greenrobot.event.EventBus;
@@ -86,6 +84,16 @@ public class KellyFragment extends Fragment {
         mTextViewErreurSignificationMSBKellyDroit = (TextView) root.findViewById(R.id.text_view_erreur_signification_msb_kelly_droit);
         mTextViewErreurDetailsMSBKellyDroit = (TextView) root.findViewById(R.id.text_view_erreur_detail_msb_kelly_droit);
 
+        // Initialisation kelly gauche
+        updateKellyGaucheLsb();
+        updateKellyGaucheMsb();
+        updateKellyGaucheEtat();
+
+        // Initialisation kelly droit
+        updateKellyDroitLsb();
+        updateKellyDroitMsb();
+        updateKellyDroitEtat();
+
         return root;
     }
 
@@ -93,15 +101,15 @@ public class KellyFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-
-        char[] bufferMSB = {'3', '1', '0', '0', '0', '0', '+', '+'};
-        BluetoothFrame frameMSB = BluetoothFrame.makeInstance(bufferMSB);
-
-        char[] bufferLSB = {'3', '2', '0', '0', '0', '8', '+', '+'};
-        BluetoothFrame frameLSB = BluetoothFrame.makeInstance(bufferLSB);
-
-        Voiture.getInstance().update(frameMSB);
-        Voiture.getInstance().update(frameLSB);
+//
+//        char[] bufferMSB = {'3', '1', '0', '0', '0', '0', '+', '+'};
+//        BluetoothFrame frameMSB = BluetoothFrame.makeInstance(bufferMSB);
+//
+//        char[] bufferLSB = {'3', '2', '0', '0', '0', '8', '+', '+'};
+//        BluetoothFrame frameLSB = BluetoothFrame.makeInstance(bufferLSB);
+//
+//        Voiture.getInstance().update(frameMSB);
+//        Voiture.getInstance().update(frameLSB);
     }
 
     @Override
@@ -121,40 +129,25 @@ public class KellyFragment extends Fragment {
     public void onEvent(Integer id) {
         switch (id) {
             case Ids.KELLY_GAUCHE_LSB:
-                mTextViewErreurValeurHexaLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getValeurHexa());
-                mTextViewErreurSignificationLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getSignification());
-                mTextViewErreurDetailsLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getDetail());
+                updateKellyGaucheLsb();
+                updateKellyGaucheEtat();
                 break;
             case Ids.KELLY_GAUCHE_MSB:
-                mTextViewErreurValeurHexaMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getValeurHexa());
-                mTextViewErreurSignificationMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getSignification());
-                mTextViewErreurDetailsMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getDetail());
+                updateKellyGaucheMsb();
+                updateKellyGaucheEtat();
                 break;
             case Ids.KELLY_DROIT_LSB:
-                mTextViewErreurValeurHexaLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getValeurHexa());
-                mTextViewErreurSignificationLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getSignification());
-                mTextViewErreurDetailsLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getDetail());
+                updateKellyDroitLsb();
+                updateKellyDroitEtat();
                 break;
             case Ids.KELLY_DROIT_MSB:
-                mTextViewErreurValeurHexaMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getValeurHexa());
-                mTextViewErreurSignificationMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getSignification());
-                mTextViewErreurDetailsMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getDetail());
+                updateKellyDroitMsb();
+                updateKellyDroitEtat();
                 break;
         }
+    }
 
-        switch (KellyGauche.getInstance().getEtat()) {
-            case ETEINT:
-                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.orange_button, 0, 0, 0);
-                break;
-            case OK:
-                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.green_button, 0, 0, 0);
-                break;
-            case ERREUR:
-                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
-                break;
-        }
-        mTextViewEtatKellyGauche.setText(KellyGauche.getInstance().getEtat().toString());
-
+    private void updateKellyDroitEtat() {
         switch (KellyDroit.getInstance().getEtat()) {
             case ETEINT:
                 mTextViewEtatKellyDroit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.orange_button, 0, 0, 0);
@@ -167,5 +160,44 @@ public class KellyFragment extends Fragment {
                 break;
         }
         mTextViewEtatKellyDroit.setText(KellyDroit.getInstance().getEtat().toString());
+    }
+
+    private void updateKellyGaucheEtat() {
+        switch (KellyGauche.getInstance().getEtat()) {
+            case ETEINT:
+                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.orange_button, 0, 0, 0);
+                break;
+            case OK:
+                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.green_button, 0, 0, 0);
+                break;
+            case ERREUR:
+                mTextViewEtatKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
+                break;
+        }
+        mTextViewEtatKellyGauche.setText(KellyGauche.getInstance().getEtat().toString());
+    }
+
+    private void updateKellyDroitMsb() {
+        mTextViewErreurValeurHexaMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getValeurHexa());
+        mTextViewErreurSignificationMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getSignification());
+        mTextViewErreurDetailsMSBKellyDroit.setText(KellyDroit.getInstance().getMsb().getErreur().getDetail());
+    }
+
+    private void updateKellyDroitLsb() {
+        mTextViewErreurValeurHexaLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getValeurHexa());
+        mTextViewErreurSignificationLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getSignification());
+        mTextViewErreurDetailsLSBKellyDroit.setText(KellyDroit.getInstance().getLsb().getErreur().getDetail());
+    }
+
+    private void updateKellyGaucheMsb() {
+        mTextViewErreurValeurHexaMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getValeurHexa());
+        mTextViewErreurSignificationMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getSignification());
+        mTextViewErreurDetailsMSBKellyGauche.setText(KellyGauche.getInstance().getMsb().getErreur().getDetail());
+    }
+
+    private void updateKellyGaucheLsb() {
+        mTextViewErreurValeurHexaLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getValeurHexa());
+        mTextViewErreurSignificationLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getSignification());
+        mTextViewErreurDetailsLSBKellyGauche.setText(KellyGauche.getInstance().getLsb().getErreur().getDetail());
     }
 }

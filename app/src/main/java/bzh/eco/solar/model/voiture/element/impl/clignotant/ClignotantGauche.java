@@ -23,7 +23,7 @@ public class ClignotantGauche implements ElementVoiture {
     @Override
     public List<Integer> getIds() {
         // TODO : Trouver l'id du clignotant gauche
-        return Arrays.asList(23);
+        return Arrays.asList(9999);
     }
 
     @Override
@@ -34,8 +34,6 @@ public class ClignotantGauche implements ElementVoiture {
         } else {
             mEtat = Etat.INACTIF;
         }
-
-        EventBus.getDefault().post(this);
     }
 
     public Etat getEtat() {

@@ -72,7 +72,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/valeur_hexa"/>
 
                             <TextView
@@ -91,7 +90,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/signification"/>
 
                             <TextView
@@ -110,7 +108,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/detail"/>
 
                             <TextView
@@ -150,7 +147,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/valeur_hexa"/>
 
                             <TextView
@@ -169,7 +165,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/signification"/>
 
                             <TextView
@@ -188,7 +183,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/detail"/>
 
                             <TextView
@@ -266,7 +260,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/valeur_hexa"/>
 
                             <TextView
@@ -285,7 +278,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/signification"/>
 
                             <TextView
@@ -304,7 +296,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/detail"/>
 
                             <TextView
@@ -344,7 +335,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/valeur_hexa"/>
 
                             <TextView
@@ -363,7 +353,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/signification"/>
 
                             <TextView
@@ -382,7 +371,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:text="@string/detail"/>
 
                             <TextView

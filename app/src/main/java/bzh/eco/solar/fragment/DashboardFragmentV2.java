@@ -27,6 +27,7 @@ import bzh.eco.solar.model.voiture.Ids;
 import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.kelly.KellyDroit;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
 import bzh.eco.solar.view.SpeedometerGauge;
@@ -65,6 +66,8 @@ public class DashboardFragmentV2 extends Fragment {
     private ImageButton mButtonWarning;
 
     private Button mButtonKellyGauche;
+
+    private Button mButtonKellyDroit;
 
     public DashboardFragmentV2() {
         mNumberFormat = DecimalFormat.getInstance(Locale.FRANCE);
@@ -108,6 +111,7 @@ public class DashboardFragmentV2 extends Fragment {
         initSpeedometerGauge(root);
         initBatteryIndicatorGauge(root);
         initButtonKellyGauche(root);
+        initButtonKellyDroit(root);
 
         return root;
     }
@@ -158,6 +162,20 @@ public class DashboardFragmentV2 extends Fragment {
                         break;
                     case ERREUR:
                         mButtonKellyGauche.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
+                        break;
+                }
+                break;
+            case Ids.KELLY_DROIT_LSB:
+            case Ids.KELLY_DROIT_MSB:
+                switch (KellyDroit.getInstance().getEtat()) {
+                    case ETEINT:
+                        mButtonKellyDroit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.orange_button, 0, 0, 0);
+                        break;
+                    case OK:
+                        mButtonKellyDroit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.green_button, 0, 0, 0);
+                        break;
+                    case ERREUR:
+                        mButtonKellyDroit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
                         break;
                 }
                 break;
@@ -262,6 +280,17 @@ public class DashboardFragmentV2 extends Fragment {
     private void initButtonKellyGauche(View root) {
         mButtonKellyGauche = (Button) root.findViewById(R.id.button_kelly_gauche);
         mButtonKellyGauche.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActionBar.Tab tab = getActivity().getActionBar().getTabAt(MainActivity.SectionsPagerAdapter.KELLY_SECTION);
+                getActivity().getActionBar().selectTab(tab);
+            }
+        });
+    }
+
+    private void initButtonKellyDroit(View root) {
+        mButtonKellyDroit = (Button) root.findViewById(R.id.button_kelly_droit);
+        mButtonKellyDroit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ActionBar.Tab tab = getActivity().getActionBar().getTabAt(MainActivity.SectionsPagerAdapter.KELLY_SECTION);

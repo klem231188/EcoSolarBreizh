@@ -28,7 +28,6 @@ public class ClignotantDroit implements ElementVoiture {
     @Override
     public void update(BluetoothFrame frame) {
         // TODO : Conversion ici
-        EventBus.getDefault().post(this);
     }
 
     public Etat getEtat() {

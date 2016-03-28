@@ -160,11 +160,22 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="KellyGauche"
+                android:text="@string/kelly_gauche"
                 android:id="@+id/button_kelly_gauche"
                 android:drawableRight="@drawable/orange_button"
                 />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/kelly_droit"
+                android:id="@+id/button_kelly_droit"
+                android:drawableRight="@drawable/orange_button"
+                />
         </LinearLayout>
     </LinearLayout>
 
