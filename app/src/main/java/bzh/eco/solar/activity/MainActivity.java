@@ -30,6 +30,7 @@ import bzh.eco.solar.fragment.SolarPanelFragment;
 import bzh.eco.solar.model.bluetooth.BluetoothDeviceWrapper;
 import bzh.eco.solar.model.voiture.Voiture;
 import bzh.eco.solar.service.BluetoothService;
+import bzh.eco.solar.service.GPSLocationService;
 
 
 public class MainActivity
@@ -114,6 +115,10 @@ public class MainActivity
         Log.i(TAG, "onStart");
         super.onStart();
 
+        // Création du Service GPS
+        Intent startGPSLocationService = new Intent(MainActivity.this, GPSLocationService.class);
+        startService(startGPSLocationService);
+
         // Création du modèle de donnée
         mVoiture = Voiture.getInstance();
     }
@@ -139,6 +144,8 @@ public class MainActivity
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
+        Intent stopGPSLocationService = new Intent(MainActivity.this, GPSLocationService.class);
+        stopService(stopGPSLocationService);
         super.onStop();
     }
 

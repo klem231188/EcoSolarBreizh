@@ -1,5 +1,7 @@
 package bzh.eco.solar.model.voiture;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,9 @@ public class Voiture {
 
     private static Voiture mInstance = null;
 
-    public static Voiture getInstance() {
+    private Location mCoordonneesGPS = null;
+
+    public static synchronized Voiture getInstance() {
         if (mInstance == null) {
             mInstance = new Voiture();
         }
@@ -46,4 +50,11 @@ public class Voiture {
         EventBus.getDefault().post(frame.getId());
     }
 
+    public Location getCoordonneesGPS() {
+        return mCoordonneesGPS;
+    }
+
+    public void setCoordonneesGPS(Location coordonneesGPS) {
+        this.mCoordonneesGPS = coordonneesGPS;
+    }
 }

@@ -3,6 +3,7 @@ package bzh.eco.solar.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import bzh.eco.solar.model.car.Car;
 import bzh.eco.solar.model.measurement.Measurement;
+import bzh.eco.solar.model.voiture.Voiture;
 
 public class FileWriterFragment extends Fragment {
 
@@ -30,7 +32,7 @@ public class FileWriterFragment extends Fragment {
     // -------------------------------------------------------------------------------------
     public static final String TAG = "FileWriterFragment";
 
-    public static final String BLUETOOTH_STORAGE_DIR = "ECOSOLAR_RECORDS";
+    public static final String BLUETOOTH_STORAGE_DIR = "EcoSolarBreizhRecords";
 
     // -------------------------------------------------------------------------------------
     // Section : Fields(s)
@@ -120,7 +122,8 @@ public class FileWriterFragment extends Fragment {
 
     public File getBluetoothStorageDir(Context context, String bluetoothDir) {
         // Get the directory for the app's private documents directory.
-        File file = new File(context.getFilesDir(), bluetoothDir);
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), bluetoothDir);
         if (!file.mkdirs()) {
             Log.e(TAG, "Directory not created");
         }
@@ -140,7 +143,8 @@ public class FileWriterFragment extends Fragment {
                 String id = ";ID=" + measurement.getID();
                 mRecordFileStream.write(id.getBytes());
             }
-            mRecordFileStream.write("\n".getBytes());
+            mRecordFileStream.write(";Latitude;Longitude\n".getBytes());
+            mRecordFileStream.flush();
         } catch (IOException e) {
             Log.e(TAG, "Impossible d'ecrire dans le fichier contenant les trames bluetooth", e);
         }
@@ -160,6 +164,13 @@ public class FileWriterFragment extends Fragment {
                     String value = ";" + mNumberFormat.format(measurement.getValue());
                     mRecordFileStream.write(value.getBytes());
                 }
+
+                Location coordonneesGPS = Voiture.getInstance().getCoordonneesGPS();
+                String latitude = (coordonneesGPS == null) ? "undefined" : String.valueOf(coordonneesGPS.getLatitude());
+                mRecordFileStream.write((";" + latitude).getBytes());
+                String longitude = (coordonneesGPS == null) ? "undefined" : String.valueOf(coordonneesGPS.getLongitude());
+                mRecordFileStream.write((";" + longitude).getBytes());
+
                 mRecordFileStream.write("\n".getBytes());
             } catch (IOException e) {
                 Log.e(TAG, "Impossible d'ecrire dans le fichier contenant les trames bluetooth", e);

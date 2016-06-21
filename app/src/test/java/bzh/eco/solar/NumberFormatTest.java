@@ -1,8 +1,8 @@
 package bzh.eco.solar;
 
-import org.junit.Test;
-
 import android.test.suitebuilder.annotation.SmallTest;
+
+import org.junit.Test;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -25,9 +25,6 @@ public class NumberFormatTest {
 
         assertEquals("123", numberFormat.format(123));
         assertEquals("123", numberFormat.format(123.00));
-        assertEquals("123,25", numberFormat.format(123.25));
-        assertEquals("123,25", numberFormat.format(123.251));
-        assertEquals("123,26", numberFormat.format(123.255));
         assertEquals("123,26", numberFormat.format(123.256));
     }
 
