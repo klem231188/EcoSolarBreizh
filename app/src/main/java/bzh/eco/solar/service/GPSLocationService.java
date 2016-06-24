@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import bzh.eco.solar.model.voiture.Voiture;
 
@@ -51,7 +50,7 @@ public class GPSLocationService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(this, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         Voiture.getInstance().setCoordonneesGPS(location);
     }
 
