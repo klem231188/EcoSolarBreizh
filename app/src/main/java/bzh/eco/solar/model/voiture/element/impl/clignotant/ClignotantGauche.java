@@ -2,19 +2,30 @@ package bzh.eco.solar.model.voiture.element.impl.clignotant;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import bzh.eco.solar.model.bluetooth.BluetoothFrame;
 import bzh.eco.solar.model.voiture.Etat;
+import bzh.eco.solar.model.voiture.Ids;
 import bzh.eco.solar.model.voiture.element.ElementVoiture;
-import de.greenrobot.event.EventBus;
 
 /**
  * @author : Clément.Tréguer
  */
 public class ClignotantGauche implements ElementVoiture {
 
+    public static final int CLIGNONANT_GAUCHE_ACTIF = 20;
+
+    private static ClignotantGauche mInstance = null;
+
     private Etat mEtat = null;
+
+    public static ClignotantGauche getInstance() {
+        if (mInstance == null) {
+            mInstance = new ClignotantGauche();
+        }
+
+        return mInstance;
+    }
 
     public ClignotantGauche() {
         mEtat = Etat.INACTIF;
@@ -22,17 +33,21 @@ public class ClignotantGauche implements ElementVoiture {
 
     @Override
     public List<Integer> getIds() {
-        // TODO : Trouver l'id du clignotant gauche
-        return Arrays.asList(9999);
+        return Arrays.asList(Ids.CLIGNOTANTS);
     }
 
     @Override
     public void update(BluetoothFrame frame) {
-        // TODO : Conversion ici
-        if (new Random().nextBoolean()) {
-            mEtat = Etat.ACTIF;
-        } else {
-            mEtat = Etat.INACTIF;
+        switch (frame.getId()) {
+            case Ids.CLIGNOTANTS:
+                if (frame.asInteger() == CLIGNONANT_GAUCHE_ACTIF) {
+                    mEtat = Etat.ACTIF;
+                } else {
+                    mEtat = Etat.INACTIF;
+                }
+                break;
+            default:
+                break;
         }
     }
 

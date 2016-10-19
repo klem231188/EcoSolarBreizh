@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATE=`date +%d-%m-%Y`
+DATE=`date +%Y-%m-%d`
 BASENAME="ecosolarbreizh"
 FULLNAME=$BASENAME-$DATE.apk
 

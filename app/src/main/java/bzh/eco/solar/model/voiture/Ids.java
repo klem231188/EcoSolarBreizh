@@ -73,5 +73,5 @@ public class Ids {
 
     public final static int ACCELEROMETRE_Z = 73;
 
-
+    public final static int CLIGNOTANTS = 74;
 }

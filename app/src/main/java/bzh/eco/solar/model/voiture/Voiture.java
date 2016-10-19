@@ -10,6 +10,7 @@ import bzh.eco.solar.model.voiture.element.ElementVoiture;
 import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.Warning;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyDroit;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import de.greenrobot.event.EventBus;
@@ -32,8 +33,9 @@ public class Voiture {
 
     private Voiture() {
         mElementsVoitures = new ArrayList<>();
-        mElementsVoitures.add(new ClignotantGauche());
-        mElementsVoitures.add(new ClignotantDroit());
+        mElementsVoitures.add(ClignotantGauche.getInstance());
+        mElementsVoitures.add(ClignotantDroit.getInstance());
+        mElementsVoitures.add(Warning.getInstance());
         mElementsVoitures.add(Batterie.getInstance());
         mElementsVoitures.add(KellyGauche.getInstance());
         mElementsVoitures.add(KellyDroit.getInstance());
@@ -43,7 +45,6 @@ public class Voiture {
         for (ElementVoiture elementVoiture : mElementsVoitures) {
             if (elementVoiture.getIds().contains(frame.getId())) {
                 elementVoiture.update(frame);
-                break;
             }
         }
 

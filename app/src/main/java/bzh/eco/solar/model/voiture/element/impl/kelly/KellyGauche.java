@@ -20,6 +20,8 @@ public class KellyGauche implements ElementVoiture {
 
     private LSB lsb;
 
+    private int tensionBatterie = 0;
+
     private static KellyGauche mInstance = null;
 
     public static KellyGauche getInstance() {
@@ -37,7 +39,7 @@ public class KellyGauche implements ElementVoiture {
 
     @Override
     public List<Integer> getIds() {
-        return Arrays.asList(Ids.KELLY_GAUCHE_MSB, Ids.KELLY_GAUCHE_LSB);
+        return Arrays.asList(Ids.KELLY_GAUCHE_MSB, Ids.KELLY_GAUCHE_LSB, Ids.TENSION_BATTERIE);
     }
 
     @Override
@@ -49,13 +51,18 @@ public class KellyGauche implements ElementVoiture {
             case Ids.KELLY_GAUCHE_LSB:
                 lsb = new LSB(frame.asInteger());
                 break;
+            case Ids.TENSION_BATTERIE:
+                tensionBatterie = frame.asInteger();
+                break;
             default:
                 break;
         }
 
-        if(msb.getErreur() == Erreurs.SANS_ERREUR && lsb.getErreur() == Erreurs.SANS_ERREUR) {
+        if (tensionBatterie == 0) {
+            etat = Etat.ETEINT;
+        } else if (msb.getErreur() == Erreurs.SANS_ERREUR && lsb.getErreur() == Erreurs.SANS_ERREUR) {
             etat = Etat.OK;
-        } else{
+        } else {
             etat = Etat.ERREUR;
         }
 

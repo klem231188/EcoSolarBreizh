@@ -11,23 +11,22 @@ import bzh.eco.solar.model.voiture.element.ElementVoiture;
 /**
  * @author : Clément.Tréguer
  */
-public class ClignotantDroit implements ElementVoiture {
+public class Warning implements ElementVoiture {
+    public static final int WARNING_ACTIF = 3;
 
-    public static final int CLIGNOTANT_DROIT_ACTIF = 100;
-
-    private static ClignotantDroit mInstance = null;
+    private static Warning mInstance = null;
 
     private Etat mEtat = null;
 
-    public static ClignotantDroit getInstance() {
+    public static Warning getInstance() {
         if (mInstance == null) {
-            mInstance = new ClignotantDroit();
+            mInstance = new Warning();
         }
 
         return mInstance;
     }
 
-    public ClignotantDroit() {
+    public Warning() {
         mEtat = Etat.INACTIF;
     }
 
@@ -36,16 +35,11 @@ public class ClignotantDroit implements ElementVoiture {
         return Arrays.asList(Ids.CLIGNOTANTS);
     }
 
-    //0... --> rien
-    //100. --> clignotant droit
-    //20.  --> clignotant gauche
-    //3... --> warning
-
     @Override
     public void update(BluetoothFrame frame) {
         switch (frame.getId()) {
             case Ids.CLIGNOTANTS:
-                if (frame.asInteger() == CLIGNOTANT_DROIT_ACTIF) {
+                if (frame.asInteger() == WARNING_ACTIF) {
                     mEtat = Etat.ACTIF;
                 } else {
                     mEtat = Etat.INACTIF;

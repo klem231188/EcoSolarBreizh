@@ -27,6 +27,7 @@ import bzh.eco.solar.model.voiture.Ids;
 import bzh.eco.solar.model.voiture.element.impl.batterie.Batterie;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantDroit;
 import bzh.eco.solar.model.voiture.element.impl.clignotant.ClignotantGauche;
+import bzh.eco.solar.model.voiture.element.impl.clignotant.Warning;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyDroit;
 import bzh.eco.solar.model.voiture.element.impl.kelly.KellyGauche;
 import bzh.eco.solar.view.BatteryIndicatorGauge;
@@ -176,6 +177,32 @@ public class DashboardFragmentV2 extends Fragment {
                         break;
                     case ERREUR:
                         mButtonKellyDroit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_button, 0, 0, 0);
+                        break;
+                }
+                break;
+            case Ids.CLIGNOTANTS:
+                switch (ClignotantDroit.getInstance().getEtat()) {
+                    case ACTIF:
+                        mButtonTurnRight.setImageResource(R.drawable.turn_right_on);
+                        break;
+                    case INACTIF:
+                        mButtonTurnRight.setImageResource(R.drawable.turn_right_off);
+                        break;
+                }
+                switch (ClignotantGauche.getInstance().getEtat()) {
+                    case ACTIF:
+                        mButtonTurnLeft.setImageResource(R.drawable.turn_left_on);
+                        break;
+                    case INACTIF:
+                        mButtonTurnLeft.setImageResource(R.drawable.turn_left_off);
+                        break;
+                }
+                switch (Warning.getInstance().getEtat()) {
+                    case ACTIF:
+                        mButtonWarning.setImageResource(R.drawable.warnings_on);
+                        break;
+                    case INACTIF:
+                        mButtonWarning.setImageResource(R.drawable.warnings_off);
                         break;
                 }
                 break;
